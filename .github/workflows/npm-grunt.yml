@@ -17,8 +17,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Clean the project cache
         run: npm run clean
-      - name: Lint the project
-        run: npm run lint
       - name: Fix the project
         run: npm run fix
       - name: Compile the project
