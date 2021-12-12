@@ -1,12 +1,20 @@
 import express from 'express';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+
 require('dotenv').config();
 
 const app = express();
+app.use(morgan("dev"));
+app.use(helmet());
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+// getting ip purpouse
+app.set("trust proxy", true); 
+app.set("PORT", process.env.PORT || 3000);
 
-app.get('/', (req, res: express.Response) => {
-  res.send('The sedulous hyena ate the antelope!');
-});
-
-app.listen(process.env.PORT, () => {
-console.log(`Starting app at: ${process.env.PORT}`)
+app.listen(app.get("PORT"), () => {
+console.log(`Starting app at: ${app.get("PORT")}`)
 });
