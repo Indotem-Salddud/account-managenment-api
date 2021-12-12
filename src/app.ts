@@ -5,9 +5,9 @@ import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import {apiDocumentation} from './docs/api-docs.js';
+import * as dotenv from 'dotenv';
 
-require('dotenv').config();
-
+dotenv.config();
 const app = express();
 app.use(morgan('dev'));
 app.use(helmet());
