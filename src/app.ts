@@ -8,5 +8,5 @@ app.get('/', (req, res: express.Response) => {
 });
 
 app.listen(process.env.PORT, () => {
-  console.log("Starting aplication at "+process.env.PORT);
+console.log(`Starting app at: ${process.env.PORT}`)
 });
