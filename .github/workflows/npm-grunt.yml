@@ -1,0 +1,25 @@
+name: TS CI Validation
+
+on:
+  push:
+    branches: "**"
+  pull_request:
+    branches: "**"
+
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Clean the project cache
+        run: npm run clean
+      - name: Lint the project
+        run: npm run lint
+      - name: Fix the project
+        run: npm run fix
+      - name: Compile the project
+        run: npm run compile 
