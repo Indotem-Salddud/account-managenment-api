@@ -19,7 +19,5 @@ jobs:
         run: npm install
       - name: Clean the project cache
         run: npm run clean
-      - name: Fix the project
-        run: npm run fix
       - name: Compile the project
         run: npm run compile 
