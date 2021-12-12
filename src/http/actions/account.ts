@@ -1,5 +1,5 @@
-import { TinyAccount, _tableName } from "../Account";
-import { db } from "../../../http/core/db";
+import { TinyAccount, _tableName } from "../../models/types/Account";
+import { db } from "../core/db";
 
 /**
  * ! Get account data by account ID
