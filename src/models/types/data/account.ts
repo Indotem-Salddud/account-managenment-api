@@ -1,4 +1,4 @@
-import { Account, _tableName } from "../Account";
+import { TinyAccount, _tableName } from "../Account";
 import { db } from "../../../http/core/db";
 
 /**
@@ -13,7 +13,7 @@ export const findById = (accountID: number, callback: Function) => {
     db.query(queryString, [accountID], (err, result) => {
         if (err) { callback(err) }
         const row = result[0];
-        const account: Account = {
+        const account: TinyAccount = {
             id: accountID,
             name: row.name,
             username: row.username,

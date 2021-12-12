@@ -1,7 +1,7 @@
 import { Identificable } from "../library/identificable";
 
 export const _tableName = "Accounts";
-export interface Account extends Identificable { 
+export interface TinyAccount extends Identificable { 
     name: string;
     username: string;
     email: string;
