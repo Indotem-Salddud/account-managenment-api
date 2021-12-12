@@ -1,4 +1,4 @@
-import { Account, _tableName } from "../types/Account";
+import { Account, _tableName } from "../Account";
 
 export const findById = (id: number, callback: Function) => {
 
