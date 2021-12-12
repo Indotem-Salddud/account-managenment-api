@@ -1,2 +1,2 @@
 # account-managenment-api
-Account Managment API
+Account Managments API
