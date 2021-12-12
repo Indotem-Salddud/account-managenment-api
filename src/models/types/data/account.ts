@@ -33,4 +33,4 @@ export const findById = (accountID: number, callback: Function) => {
 export const findAll = (callback: Function) => {
 
 
-};
+};  
