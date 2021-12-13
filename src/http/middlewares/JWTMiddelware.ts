@@ -5,15 +5,17 @@ import {_handleResponse} from '../common/common';
 import {TokenPayload} from '../../models/types/gen/tokenPayload';
 
 export module JWTMiddelware {
-
-    /**
-     * ! Main actor to decode the token and get payload
-     * * whitehatdevv - 2021/12/13
-     * @param req {Request}
-     * @param res {Response}
-     * @returns TokenPayload
-     */
-  export const _decode = (req: express.Request, res: express.Response) : TokenPayload => {
+  /**
+   * ! Main actor to decode the token and get payload
+   * * whitehatdevv - 2021/12/13
+   * @param req {Request}
+   * @param res {Response}
+   * @returns TokenPayload
+   */
+  export const _decode = (
+    req: express.Request,
+    res: express.Response
+  ): TokenPayload => {
     const token: string = req.headers.authorization.split(' ')[1];
     // check token
     if (!token) {
@@ -28,9 +30,9 @@ export module JWTMiddelware {
     // get payload
     const payload = jwt.decode(token, {complete: true});
     return {
-        accountID: payload.payload.accountID,
-        role: payload.payload.role
-    }
+      accountID: payload.payload.accountID,
+      role: payload.payload.role,
+    };
   };
 
   /**
@@ -85,7 +87,7 @@ export module JWTMiddelware {
 
     // validate token
     jwt.verify(token, process.env.JWT_PRIVATE_KEY, (err, value) => {
-      if (err || Date.now()/1000 > value.exp) {
+      if (err || Date.now() / 1000 > value.exp) {
         _handleResponse(
           {
             statusCode: 403,
