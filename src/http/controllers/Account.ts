@@ -1,6 +1,8 @@
 import express from 'express';
 import {TinyAccount} from '../../models/types/Account';
 import {AccountActions} from '../actions/account';
+import {_handleResponse} from '../common/common';
+import {ResponseHandler} from '../../models/types/gen/responseHandler';
 
 export module AccountsController {
   /**
@@ -15,14 +17,23 @@ export module AccountsController {
   ) => {
     const {accountID} = req.params;
     if (!accountID) {
-      //TODO: Response
+      _handleResponse(
+        {statusCode: 400, message: 'Data provided is not valid'},
+        res
+      );
     }
     // call to action
     AccountActions.findById(accountID, (err?: string, data?: TinyAccount) => {
       if (err) {
-        //TODO: Response
+        _handleResponse(
+          {statusCode: 500, message: 'Server response cannot be processed'},
+          res
+        );
       }
-      // TODO: Response with data
+      _handleResponse(
+        {statusCode: 200, message: 'Account data received', data: data},
+        res
+      );
     });
   };
 }
