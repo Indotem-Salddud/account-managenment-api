@@ -4,7 +4,7 @@ import {DebuggerProtocol} from './DebuggerProtocol';
  * ! Module debugger to show logs in cosole
  * * whitehatdevv - 2021/12/13
  */
-export class Debuuger implements DebuggerProtocol {
+export class Debugger implements DebuggerProtocol {
   /**
    * ! Debugger to show log in console
    * * whitehatdevv - 2021/12/13
