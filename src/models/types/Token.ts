@@ -3,8 +3,8 @@
  * * whitehatdevv - 2021/12/12
  */
 export interface Token {
-    token: string;
-    expiration: Number;
-    type: string;
-    identity: string;
+  token: string;
+  expiration: Number;
+  type: string;
+  identity: string;
 }

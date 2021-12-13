@@ -1,6 +1,6 @@
 import express from 'express';
-import { TinyAccount } from '../../models/types/Account';
-import { AccountActions } from '../actions/account';
+import {TinyAccount} from '../../models/types/Account';
+import {AccountActions} from '../actions/account';
 
 export module AccountsController {
   /**
@@ -14,13 +14,15 @@ export module AccountsController {
     res: express.Response
   ) => {
     const {accountID} = req.params;
-    if (!accountID) { //TODO: Response 
+    if (!accountID) {
+      //TODO: Response
     }
     // call to action
     AccountActions.findById(accountID, (err?: string, data?: TinyAccount) => {
-        if (err) { //TODO: Response 
-        }
-        // TODO: Response with data
+      if (err) {
+        //TODO: Response
+      }
+      // TODO: Response with data
     });
   };
 }
