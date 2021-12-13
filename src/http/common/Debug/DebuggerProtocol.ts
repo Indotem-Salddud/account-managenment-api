@@ -8,4 +8,8 @@ export interface DebuggerProtocol {
     type: DebuggerTypes,
     log: string
   ): any;
+  _manageLogType(
+    type: DebuggerTypes, 
+    log: string
+  ): any;
 }
