@@ -8,7 +8,7 @@ export module AccountActions {
    * @param accountID {Number}
    * @param callback {Function}
    */
-  export const findById = (accountID: number, callback: Function) => {
+  export const findById = (accountID: string, callback: Function) => {
     const queryString = `SELECT * FROM ${_tableName} WHERE id=?`;
     db.query(queryString, [accountID], (err, result) => {
       if (err) {
