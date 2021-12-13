@@ -1,3 +1,4 @@
+import {Direction} from '../../models/types/gen/direction';
 import {TinyAccount, _tableName} from '../../models/types/Account';
 import {db} from '../core/db';
 
@@ -15,12 +16,19 @@ export module AccountActions {
         callback(err);
       }
       const row = result[0];
+      const direction: Direction = JSON.parse(row.direction);
       const account: TinyAccount = {
         id: accountID,
         name: row.name,
         username: row.username,
         email: row.email,
         phone: row.phone,
+        street: direction.street,
+        number: direction.number,
+        additionalInformation: direction.additionalInformation,
+        city: direction.city,
+        postalCode: direction.postalCode,
+        country: direction.country,
       };
       callback(null, account);
     });
@@ -40,12 +48,19 @@ export module AccountActions {
       callback(
         null,
         result.map(item => {
+          const direction: Direction = JSON.parse(item.direction);
           return {
             id: item.id,
             name: item.name,
             username: item.username,
             email: item.email,
             phone: item.phone,
+            street: direction.street,
+            number: direction.number,
+            additionalInformation: direction.additionalInformation,
+            city: direction.city,
+            postalCode: direction.postalCode,
+            country: direction.country,
           };
         })
       );
