@@ -1,4 +1,4 @@
-import {Identificable} from './Identificable';
+import {Identificable} from './gen/identificable';
 
 export const _tableName = 'Accounts';
 export interface TinyAccount extends Identificable {
