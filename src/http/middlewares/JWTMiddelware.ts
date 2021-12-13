@@ -1,15 +1,40 @@
 import express from 'express';
 import * as jwt from 'jsonwebtoken';
+import { Token } from '../../models/types/Token';
 import {_handleResponse} from '../common/common';
 
 export module JWTMiddelware {
+
     /**
-     * ! Main actor to verify a token for granted access
+     * ! Main actor to sign a JWT Token
      * * whitehatdevv - 2021/12/13
-     * @param req {Request}
-     * @param res {Response}
-     * @param next {NextFunction}
+     * * Token valid for 2 hours 
+     * TODO: Pending validation of token expiration
+     * @param accountID {string}
+     * @param role {string}
+     * @return token {string}
      */
+    export const _signIn = (accountID: string, role: string) : Token => {
+        return {
+            expiration: Math.floor(Date.now()/1000) + (60*60*2),
+            token: jwt.sign({
+                exp: Math.floor(Date.now()/1000) + (60*60*2),
+                payload: {
+                    accountID: accountID,
+                    role: role
+                }
+            }, process.env.JWT_PRIVATE_KEY),
+            type: "Bearer"
+        };
+    }
+
+  /**
+   * ! Main actor to verify a token for granted access
+   * * whitehatdevv - 2021/12/13
+   * @param req {Request}
+   * @param res {Response}
+   * @param next {NextFunction}
+   */
   export const _verify = (
     req: express.Request,
     res: express.Response,

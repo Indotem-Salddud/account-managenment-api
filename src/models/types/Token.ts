@@ -6,5 +6,5 @@ export interface Token {
   token: string;
   expiration: Number;
   type: string;
-  identity: string;
+  identity?: string;
 }
