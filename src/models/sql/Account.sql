@@ -7,7 +7,7 @@ CREATE TABLE `Accounts` (
     email VARCHAR(150) NOT NULL UNIQUE KEY,
     phone VARCHAR(20) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role TINYINT(1) NOT NULL DEFAULT 1 COMMENT '1 - Customer(Dependent) / 2 - Customer(Manager) / 3 - Admin',
+    role TINYINT(1) NOT NULL DEFAULT 1 COMMENT '1 - Customer(Dependent) / 2 - Customer(Manager)',
     status TINYINT(1) DEFAULT 1 NOT NULL COMMENT '0 - Inactive / 1 - Active',
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB,
