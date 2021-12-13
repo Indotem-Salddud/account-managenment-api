@@ -4,6 +4,9 @@ import {Token} from '../../models/types/Token';
 import {_handleResponse} from '../common/common';
 import {TokenPayload} from '../../models/types/gen/tokenPayload';
 
+// global computation exp time
+const _expMax = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
+
 export module JWTMiddelware {
   /**
    * ! Main actor to decode the token and get payload
@@ -46,10 +49,10 @@ export module JWTMiddelware {
    */
   export const _signIn = (accountID: string, role: string): Token => {
     return {
-      expiration: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
+      expiration: _expMax,
       token: jwt.sign(
         {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
+          exp: _expMax,
           payload: {
             accountID: accountID,
             role: role,
