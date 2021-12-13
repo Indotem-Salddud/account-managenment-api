@@ -3,8 +3,12 @@ import * as jwt from 'jsonwebtoken';
 import {_handleResponse} from '../common/common';
 
 export module JWTMiddelware {
-  export const _verify = (req: express.Request, res: express.Response) => {
-    const token: string = req.headers.authorization;
+  export const _verify = (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    const token: string = req.headers.authorization.split(' ')[1];
     // check token
     if (!token) {
       _handleResponse(
@@ -16,7 +20,18 @@ export module JWTMiddelware {
       );
     }
 
-    jwt.verify
-
+    // validate token
+    jwt.verify(token, process.env.JWT_PRIVATE_KEY, (err, value) => {
+      if (err) {
+        _handleResponse(
+          {
+            statusCode: 403,
+            message: 'Error validating the token',
+          },
+          res
+        );
+      }
+      next();
+    });
   };
 }
