@@ -1,8 +1,10 @@
+import { DebuggerProtocol } from "./DebuggerProtocol";
+
 /**
  * ! Module debugger to show logs in cosole
  * * whitehatdevv - 2021/12/13
  */
-export module Debuuger {
+export class Debuuger implements DebuggerProtocol {
   /**
    * ! Debugger to show log in console
    * * whitehatdevv - 2021/12/13
@@ -10,7 +12,7 @@ export module Debuuger {
    * @param type {DebuggerTypes}
    * @param log {string}
    */
-  export const _printLog = (
+  _printLog = (
     environment: DebbugerEnvironments,
     type: DebuggerTypes,
     log: string
