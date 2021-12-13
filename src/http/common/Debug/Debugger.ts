@@ -38,7 +38,7 @@ export class Debuuger implements DebuggerProtocol {
    * @param type {DebuggerTypes}
    * @param log {string}
    */
-  _manageLogType(type: DebuggerTypes, log: string) {
+  _manageLogType = (type: DebuggerTypes, log: string) => {
     switch (type) {
       case DebuggerTypes.alert:
         console.warn(`----- WARNING: ${log}`);
@@ -50,5 +50,5 @@ export class Debuuger implements DebuggerProtocol {
         console.error(`----- ALERT: ${log}`);
         break;
     }
-  }
+  };
 }
