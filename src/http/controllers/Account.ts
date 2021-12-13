@@ -1,7 +1,7 @@
 import express from 'express';
 import {TinyAccount} from '../../models/types/Account';
 import {AccountActions} from '../actions/account';
-import {_handleResponse} from '../common/common';
+import {_handleResponse} from '../common/HandleResponse';
 
 export module AccountsController {
   /**

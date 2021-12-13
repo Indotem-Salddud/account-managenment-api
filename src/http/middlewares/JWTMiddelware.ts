@@ -1,7 +1,7 @@
 import express from 'express';
 import * as jwt from 'jsonwebtoken';
 import {Token} from '../../models/types/Token';
-import {_handleResponse} from '../common/common';
+import {_handleResponse} from '../common/HandleResponse';
 import {TokenPayload} from '../../models/types/gen/tokenPayload';
 
 // global computation exp time
