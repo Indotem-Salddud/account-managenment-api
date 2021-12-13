@@ -3,6 +3,13 @@ import * as jwt from 'jsonwebtoken';
 import {_handleResponse} from '../common/common';
 
 export module JWTMiddelware {
+    /**
+     * ! Main actor to verify a token for granted access
+     * * whitehatdevv - 2021/12/13
+     * @param req {Request}
+     * @param res {Response}
+     * @param next {NextFunction}
+     */
   export const _verify = (
     req: express.Request,
     res: express.Response,
