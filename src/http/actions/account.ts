@@ -32,5 +32,18 @@ export const findById = (accountID: number, callback: Function) => {
  */
 export const findAll = (callback: Function) => {
 
+    const queryString = `SELECT * FROM ${_tableName}`;
+    db.query(queryString, (err, result) => {
+        if (err) { callback(err) }
+        callback(null, result.map((item) => {
+            return {
+                id: item.id,
+                name: item.name,
+                username: item.username,
+                email: item.email,
+                phone: item.phone
+            }
+        }));
+    });
 
 };  
