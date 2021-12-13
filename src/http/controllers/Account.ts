@@ -35,4 +35,26 @@ export module AccountsController {
       );
     });
   };
+
+  /**
+   * ! Controller function to all account staff
+   * * whitehatdevv - 2021/12/13
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _getAll = async (req, res) => {
+    // call to action
+    AccountActions.findAll((err?: string, data?: TinyAccount) => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Server response cannot be processed'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Account data received', data: data},
+        res
+      );
+    });
+  };
 }

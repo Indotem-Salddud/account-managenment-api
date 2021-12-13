@@ -8,4 +8,9 @@ export const AccountsRoute = (app: express.Application) => {
    * @protected Admin or User with accountID
    */
   app.get(`/:accountID`, [], AccountsController._getById);
+  /**
+   * * Get all account staff
+   * @protected Admin
+   */
+  app.get(`/`, [], AccountsController._getAll);
 };
