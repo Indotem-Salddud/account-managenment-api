@@ -30,10 +30,19 @@ export const AccountsRoute = (app: express.Application) => {
   /**
    * * Update account status by ID
    * @param accountID {Number}
-   * @protected Admin
+   * @protected Admin or User with Account ID
    * @body {
    *  @param status {Number}
    * }
    */
   app.patch('/status/:accountID', AccountsController._updateStatus);
+  /**
+   * * Update account data by ID
+   * @param accountID {Number}
+   * @protected Admin or User with Account ID
+   * @body {
+   *  
+   * } 
+   */
+  app.put('/:accountID', );
 };

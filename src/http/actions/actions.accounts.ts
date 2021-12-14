@@ -1,5 +1,9 @@
 import {Direction} from '../../models/types/gen/gen.direction';
-import {TinyAccount, _tableName} from '../../models/types/model.account';
+import {
+  TinyAccount,
+  UpdateAccountModel,
+  _tableName,
+} from '../../models/types/model.account';
 import * as bcrypt from 'bcryptjs';
 import {db} from '../core/core.db';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
@@ -25,12 +29,7 @@ export module AccountActions {
         username: row.username,
         email: row.email,
         phone: row.phone,
-        street: direction.street,
-        number: direction.number,
-        additionalInformation: direction.additionalInformation,
-        city: direction.city,
-        postalCode: direction.postalCode,
-        country: direction.country,
+        direction: direction,
       };
       callback(null, account);
     });
@@ -57,12 +56,7 @@ export module AccountActions {
             username: item.username,
             email: item.email,
             phone: item.phone,
-            street: direction.street,
-            number: direction.number,
-            additionalInformation: direction.additionalInformation,
-            city: direction.city,
-            postalCode: direction.postalCode,
-            country: direction.country,
+            direction: direction,
           };
         })
       );
@@ -138,5 +132,34 @@ export module AccountActions {
       }
       callback();
     });
+  };
+
+  /**
+   * ! Update account data by ID
+   * * whitehatdevv - 2021/12/14
+   * @param updatedData {UpdateAccountModel}
+   * @param accountID {string}
+   * @param callback {Function}
+   */
+  export const updateData = (
+    updatedData: UpdateAccountModel,
+    accountID: string,
+    callback: Function
+  ) => {
+    const queryString = `UPDATE ${_tableName} SET name=IsNULL(@name, ?), email=IsNULL(@email, ?), phone=IsNULL(@phone, ?), direction=IsNULL(@direction, ?) WHERE id=?`;
+    db.query(
+      queryString,
+      [
+        updatedData.name,
+        updatedData.email,
+        updatedData.phone,
+        JSON.stringify(updatedData.direction),
+        accountID,
+      ],
+      err => {
+        if (err) { callback(err) }
+        callback(null);
+      }
+    );
   };
 }

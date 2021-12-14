@@ -1,5 +1,8 @@
 import express from 'express';
-import {TinyAccount} from '../../models/types/model.account';
+import {
+  TinyAccount,
+  UpdateAccountModel,
+} from '../../models/types/model.account';
 import {AccountActions} from '../actions/actions.accounts';
 import {_handleResponse} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
@@ -179,12 +182,55 @@ export module AccountsController {
       AccountActions.updateStatus(accountID, status, (err: string = null) => {
         if (err) {
           _handleResponse(
-            {statusCode: 500, message: 'Account cannot be updated'},
+            {statusCode: 500, message: 'Account status cannot be updated'},
             res
           );
         }
         _handleResponse(
           {statusCode: 200, message: 'Account status was updated sucessfully'},
+          res
+        );
+      });
+    } else {
+      _handleResponse(
+        {statusCode: 401, message: 'You do not have right access permissions'},
+        res
+      );
+    }
+  };
+
+  /**
+   * ! Update account data by accountID
+   * * whitehatdevv - 2021/12/14
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _updateById = async (req, res) => {
+    const permissions = ac
+      .can(req.user.role)
+      .updateOwn(PermissionActions.ACCOUNT);
+    if (permissions.granted) {
+      const {accountID} =
+        req.user.role == PermissionRoles.USER ? req.user : req.params;
+      if (!accountID) {
+        _handleResponse(
+          {statusCode: 400, message: 'Account ID not provided'},
+          res
+        );
+      }
+
+      //TODO: VALIDATE FIELDS
+      const data: UpdateAccountModel = req.body;
+      // call to action
+      AccountActions.updateData(data, accountID, err => {
+        if (err) {
+          _handleResponse(
+            {statusCode: 500, message: 'Account data cannot be updated'},
+            res
+          );
+        }
+        _handleResponse(
+          {statusCode: 200, message: 'Account data was updated sucessfully'},
           res
         );
       });
