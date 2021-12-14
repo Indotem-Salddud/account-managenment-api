@@ -241,4 +241,38 @@ export module AccountsController {
       );
     }
   };
+
+  /**
+   * ! Update password by account ID
+   * * whitehatdevv - 2021/12/14
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _updatePassword = async (req, res) => {
+    const permissions = ac
+      .can(req.user.role)
+      .updateOwn(PermissionActions.ACCOUNT);
+    if (permissions.granted) {
+      const {accountID} = req.user;
+      //TODO: VALIDATE DATA
+      const {password} = req.body;
+      AccountActions.updatePassword(password, accountID, err => {
+        if (err) {
+          _handleResponse(
+            {statusCode: 500, message: 'Password cannot be updated'},
+            res
+          );
+        }
+        _handleResponse(
+          {statusCode: 200, message: 'Password was updated sucessfully'},
+          res
+        );
+      });
+    } else {
+      _handleResponse(
+        {statusCode: 401, message: 'You do not have right access permissions'},
+        res
+      );
+    }
+  };
 }

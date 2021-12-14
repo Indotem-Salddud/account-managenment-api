@@ -41,8 +41,19 @@ export const AccountsRoute = (app: express.Application) => {
    * @param accountID {Number}
    * @protected Admin or User with Account ID
    * @body {
-   *  
-   * } 
+   *  @param name? {string}
+   *  @param email? {string}
+   *  @param phone? {string}
+   *  @param direction? {direction}
+   * }
    */
   app.put('/:accountID', AccountsController._updateById);
+  /**
+   * * Update account password
+   * @protected Only Account with ID provided by Token
+   * @body {
+   *  @param password {string} 
+   * }
+   */
+  app.put('/password', AccountsController._updatePassword);
 };

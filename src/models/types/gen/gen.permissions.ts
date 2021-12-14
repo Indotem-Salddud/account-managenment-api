@@ -26,7 +26,7 @@ const grantedObject = {
         ACCOUNT: {
             'update:own': ['*'],
             'read:own': ['*'],
-            'delete:own': ['*']
+            'delete:own': ['*'],
         }
     }
 };

@@ -157,9 +157,40 @@ export module AccountActions {
         accountID,
       ],
       err => {
-        if (err) { callback(err) }
+        if (err) {
+          callback(err);
+        }
         callback(null);
       }
     );
+  };
+
+  /**
+   * ! Update account password by ID
+   * * whitehatdevv - 2021/12/14
+   * @param password {string}
+   * @param accountID {string}
+   * @param callback {Function}
+   */
+  export const updatePassword = (
+    password: string,
+    accountID: string,
+    callback: Function
+  ) => {
+    // hash password
+    bcrypt
+      .hash(password, 10)
+      .then(hash => {
+        const queryString = `UPDATE ${_tableName} SET password=? WHERE id=?`;
+        db.query(queryString, [hash, accountID], err => {
+          if (err) {
+            callback(err);
+          }
+          callback(null);
+        });
+      })
+      .catch(err => {
+        callback(err);
+      });
   };
 }
