@@ -1,8 +1,8 @@
 const apiDocumentation = {
-    openapi: '3.0.1',
+    openapi: '1.0.0',
     info: {
-        version: '1.3.0',
-        title: 'My REST API - Documentation',
+        version: '1.0.0',
+        title: 'Indotem REST API - Documentation',
         description: 'Description of my API here',
         termsOfService: 'https://mysite.com/terms',
         contact: {
