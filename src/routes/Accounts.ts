@@ -13,4 +13,8 @@ export const AccountsRoute = (app: express.Application) => {
    * @protected Admin
    */
   app.get(`/`, [], AccountsController._getAll);
+  /**
+   * * Login
+   */
+  app.post('/login', AccountsController._login);
 };

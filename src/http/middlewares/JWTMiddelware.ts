@@ -33,8 +33,7 @@ export module JWTMiddelware {
     // get payload
     const payload = jwt.decode(token, {complete: true});
     return {
-      accountID: payload.payload.accountID,
-      role: payload.payload.role,
+      accountID: payload.payload.accountID
     };
   };
 
@@ -44,18 +43,16 @@ export module JWTMiddelware {
    * * Token valid for 2 hours
    * TODO: Pending validation of token expiration
    * @param accountID {string}
-   * @param role {string}
    * @return token {string}
    */
-  export const _signIn = (accountID: string, role: string): Token => {
+  export const _signIn = (accountID: string): Token => {
     return {
       expiration: _expMax,
       token: jwt.sign(
         {
           exp: _expMax,
           payload: {
-            accountID: accountID,
-            role: role,
+            accountID: accountID
           },
         },
         process.env.JWT_PRIVATE_KEY
