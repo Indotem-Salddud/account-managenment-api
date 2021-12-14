@@ -2,7 +2,7 @@ import {Direction} from '../../models/types/gen/direction';
 import {TinyAccount, _tableName} from '../../models/types/Account';
 import * as bcrypt from 'bcryptjs';
 import {db} from '../core/db';
-import { JWTMiddelware } from '../middlewares/JWTMiddelware';
+import {JWTMiddelware} from '../middlewares/JWTMiddelware';
 
 export module AccountActions {
   /**
@@ -100,6 +100,22 @@ export module AccountActions {
         });
       }
       callback('Account was disabled');
+    });
+  };
+
+  /**
+   * ! Method to delete acount by ID
+   * * whitehatdevv - 2021/12/14
+   * @param accountID {string}
+   * @param callback {Function}
+   */
+  export const deleteAccount = (accountID: string, callback: Function) => {
+    const queryString = `"DELETE FROM ${_tableName} WHERE id=?`;
+    db.query(queryString, [accountID], err => {
+      if (err) {
+        callback(err);
+      }
+      callback();
     });
   };
 }

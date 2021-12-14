@@ -84,4 +84,34 @@ export module AccountsController {
       }
     );
   };
+
+  /**
+   * ! Delete account data by ID
+   * * whitehatdevv - 2021/12/14
+   * TODO: Delete in cascade all relaionships associated
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _deleteAccount = async (req, res) => {
+    const {accountID} = req.params;
+    if (!accountID) {
+      _handleResponse(
+        {statusCode: 400, message: 'Account ID not provided'},
+        res
+      );
+    }
+    // call to action
+    AccountActions.deleteAccount(accountID, (err: string = null) => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Account cannot be deleted'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Account was delete sucessfully'},
+        res
+      );
+    });
+  };
 }
