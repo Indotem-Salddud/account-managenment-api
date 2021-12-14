@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
-import {apiDocumentation} from './docs/api-docs.js';
+import {apiDocumentation} from './docs/api.docs.js';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
