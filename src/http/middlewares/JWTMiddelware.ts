@@ -3,6 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import {Token} from '../../models/types/Token';
 import {_handleResponse} from '../common/HandleResponse';
 import {TokenPayload} from '../../models/types/gen/tokenPayload';
+import { PermissionRoles } from '../../models/types/gen/permissions';
 
 // global computation exp time
 const _expMax = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
@@ -33,7 +34,8 @@ export module JWTMiddelware {
     // get payload
     const payload = jwt.decode(token, {complete: true});
     return {
-      accountID: payload.payload.accountID
+      accountID: payload.payload.accountID,
+      role: payload.payload.role,
     };
   };
 
@@ -52,7 +54,8 @@ export module JWTMiddelware {
         {
           exp: _expMax,
           payload: {
-            accountID: accountID
+            accountID: accountID,
+            role: PermissionRoles.USER
           },
         },
         process.env.JWT_PRIVATE_KEY
@@ -90,12 +93,16 @@ export module JWTMiddelware {
       if (err || Date.now() / 1000 > value.exp) {
         _handleResponse(
           {
-            statusCode: 403,
+            statusCode: 401,
             message: 'Token provided is not valid',
           },
           res
         );
       }
+      req.user = {
+        accountID: value.payload.accountID,
+        role: value.payload.role
+      };
       next();
     });
   };

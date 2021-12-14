@@ -7,12 +7,12 @@ export const AccountsRoute = (app: express.Application) => {
    * @param acccountID {Number}
    * @protected Admin or User with accountID
    */
-  app.get(`/:accountID`, [], AccountsController._getById);
+  app.get(`/:accountID`, AccountsController._getById);
   /**
    * * Get all account staff
    * @protected Admin
    */
-  app.get(`/`, [], AccountsController._getAll);
+  app.get(`/`, AccountsController._getAll);
   /**
    * * Login
    * @body {
@@ -26,7 +26,7 @@ export const AccountsRoute = (app: express.Application) => {
    * @param accountID {Number}
    * @protected Admin
    */
-  app.delete('/:accountID', [], AccountsController._deleteAccount);
+  app.delete('/:accountID', AccountsController._deleteAccount);
   /**
    * * Update account status by ID
    * @param accountID {Number}
@@ -35,5 +35,5 @@ export const AccountsRoute = (app: express.Application) => {
    *  @param status {Number}
    * }
    */
-  app.patch('/status/:accountID', [], AccountsController._updateStatus);
+  app.patch('/status/:accountID', AccountsController._updateStatus);
 };
