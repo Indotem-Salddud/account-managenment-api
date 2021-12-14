@@ -3,7 +3,11 @@ import {TinyAccount} from '../../models/types/Account';
 import {AccountActions} from '../actions/account';
 import {_handleResponse} from '../common/HandleResponse';
 import {JWTMiddelware} from '../middlewares/JWTMiddelware';
-import {ac, PermissionActions, PermissionRoles} from '../../models/types/gen/permissions';
+import {
+  ac,
+  PermissionActions,
+  PermissionRoles,
+} from '../../models/types/gen/permissions';
 
 export module AccountsController {
   /**
@@ -21,7 +25,8 @@ export module AccountsController {
       .can(req.user.role)
       .readOwn(PermissionActions.ACCOUNT);
     if (permissions.granted) {
-      const {accountID} = req.user.role == PermissionRoles.USER ? req.user : req.params;
+      const {accountID} =
+        req.user.role == PermissionRoles.USER ? req.user : req.params;
       if (!accountID) {
         _handleResponse(
           {statusCode: 400, message: 'Data provided is not valid'},
@@ -41,9 +46,10 @@ export module AccountsController {
           res
         );
       });
-    }else{
+    } else {
       _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'}, res
+        {statusCode: 401, message: 'You do not have right access permissions'},
+        res
       );
     }
   };
@@ -56,24 +62,27 @@ export module AccountsController {
    */
   export const _getAll = async (req, res) => {
     // permissions
-    const permissions = ac.can(req.user.role).readAny(PermissionActions.ACCOUNT);
+    const permissions = ac
+      .can(req.user.role)
+      .readAny(PermissionActions.ACCOUNT);
     if (permissions.granted) {
       // call to action
-    AccountActions.findAll((err?: string, data?: TinyAccount) => {
-      if (err) {
+      AccountActions.findAll((err?: string, data?: TinyAccount) => {
+        if (err) {
+          _handleResponse(
+            {statusCode: 500, message: 'Server response cannot be processed'},
+            res
+          );
+        }
         _handleResponse(
-          {statusCode: 500, message: 'Server response cannot be processed'},
+          {statusCode: 200, message: 'Account data received', data: data},
           res
         );
-      }
+      });
+    } else {
       _handleResponse(
-        {statusCode: 200, message: 'Account data received', data: data},
+        {statusCode: 401, message: 'You do not have right access permissions'},
         res
-      );
-    });
-    }else{
-      _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'}, res
       );
     }
   };
@@ -112,26 +121,37 @@ export module AccountsController {
    * @param res {Response}
    */
   export const _deleteAccount = async (req, res) => {
-    const {accountID} = req.params;
-    if (!accountID) {
-      _handleResponse(
-        {statusCode: 400, message: 'Account ID not provided'},
-        res
-      );
-    }
-    // call to action
-    AccountActions.deleteAccount(accountID, (err: string = null) => {
-      if (err) {
+    const permissions = ac
+      .can(req.user.role)
+      .deleteOwn(PermissionActions.ACCOUNT);
+    if (permissions.granted) {
+      const {accountID} =
+        req.user.role == PermissionRoles.USER ? req.user : req.params;
+      if (!accountID) {
         _handleResponse(
-          {statusCode: 500, message: 'Account cannot be deleted'},
+          {statusCode: 400, message: 'Account ID not provided'},
           res
         );
       }
+      // call to action
+      AccountActions.deleteAccount(accountID, (err: string = null) => {
+        if (err) {
+          _handleResponse(
+            {statusCode: 500, message: 'Account cannot be deleted'},
+            res
+          );
+        }
+        _handleResponse(
+          {statusCode: 200, message: 'Account was delete sucessfully'},
+          res
+        );
+      });
+    } else {
       _handleResponse(
-        {statusCode: 200, message: 'Account was delete sucessfully'},
+        {statusCode: 401, message: 'You do not have right access permissions'},
         res
       );
-    });
+    }
   };
 
   /**
@@ -141,27 +161,38 @@ export module AccountsController {
    * @param res {Response}
    */
   export const _updateStatus = async (req, res) => {
-    const {accountID} = req.params;
-    const {status} = req.body;
-    // TODO: VALIDATE ACOUNT STATUS
-    if (!accountID) {
-      _handleResponse(
-        {statusCode: 400, message: 'Account ID not provided'},
-        res
-      );
-    }
-    // call to action
-    AccountActions.updateStatus(accountID, status, (err: string = null) => {
-      if (err) {
+    const permissions = ac
+      .can(req.user.role)
+      .updateOwn(PermissionActions.ACCOUNT);
+    if (permissions.granted) {
+      const {accountID} =
+        req.user.role == PermissionRoles.USER ? req.user : req.params;
+      const {status} = req.body;
+      // TODO: VALIDATE ACOUNT STATUS
+      if (!accountID) {
         _handleResponse(
-          {statusCode: 500, message: 'Account cannot be updated'},
+          {statusCode: 400, message: 'Account ID not provided'},
           res
         );
       }
+      // call to action
+      AccountActions.updateStatus(accountID, status, (err: string = null) => {
+        if (err) {
+          _handleResponse(
+            {statusCode: 500, message: 'Account cannot be updated'},
+            res
+          );
+        }
+        _handleResponse(
+          {statusCode: 200, message: 'Account status was updated sucessfully'},
+          res
+        );
+      });
+    } else {
       _handleResponse(
-        {statusCode: 200, message: 'Account status was updated sucessfully'},
+        {statusCode: 401, message: 'You do not have right access permissions'},
         res
       );
-    });
+    }
   };
 }

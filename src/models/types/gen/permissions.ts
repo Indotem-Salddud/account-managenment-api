@@ -22,8 +22,8 @@ export enum PermissionActions {
  * * whitehatdevv - 2021/12/14
  */
 const grantedObject = {
-    user: {
-        accounts: {
+    USER: {
+        ACCOUNT: {
             'update:own': ['*'],
             'read:own': ['*'],
             'delete:own': ['*']
