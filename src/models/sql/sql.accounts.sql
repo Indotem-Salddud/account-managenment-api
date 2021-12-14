@@ -1,5 +1,3 @@
-CREATE DATABASE IndotemAccountManagenmentAPI;
-
 --- Contains all accounts that are mainly for administrators
 CREATE TABLE `Accounts` (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
