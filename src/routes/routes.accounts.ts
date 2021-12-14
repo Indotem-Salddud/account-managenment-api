@@ -44,5 +44,5 @@ export const AccountsRoute = (app: express.Application) => {
    *  
    * } 
    */
-  app.put('/:accountID', );
+  app.put('/:accountID', AccountsController._updateById);
 };
