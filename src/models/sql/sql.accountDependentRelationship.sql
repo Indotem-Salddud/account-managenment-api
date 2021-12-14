@@ -1,5 +1,5 @@
 -- Relation Many to Many Accounts -> Dependents
-CREATE TABLE `AccountDependentsRelation` (
+CREATE TABLE `AccountDependentsRelation` IF NOT EXISTS (
     accountID INT NOT NULL,
     dependentID INT NOT NULL,
     FOREIGN KEY (accountID) REFERENCE Accounts(id),
