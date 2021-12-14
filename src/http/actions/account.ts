@@ -110,8 +110,29 @@ export module AccountActions {
    * @param callback {Function}
    */
   export const deleteAccount = (accountID: string, callback: Function) => {
-    const queryString = `"DELETE FROM ${_tableName} WHERE id=?`;
+    const queryString = `DELETE FROM ${_tableName} WHERE id=?`;
     db.query(queryString, [accountID], err => {
+      if (err) {
+        callback(err);
+      }
+      callback();
+    });
+  };
+
+  /**
+   * ! Update account status by account ID
+   * * whitehatdevv - 2021/12/14
+   * @param accountID {string}
+   * @param status {string}
+   * @param callback {string}
+   */
+  export const updateStatus = (
+    accountID: string,
+    status: number,
+    callback: Function
+  ) => {
+    const queryString = `UPDATE ${_tableName} SET status=? WHERE id=?`;
+    db.query(queryString, [status, accountID], err => {
       if (err) {
         callback(err);
       }

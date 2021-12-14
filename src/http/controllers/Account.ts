@@ -114,4 +114,35 @@ export module AccountsController {
       );
     });
   };
+
+  /**
+   * ! Update account status by accountID
+   * * whitehatdevv - 2021/12/14
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _updateStatus = async (req, res) => {
+    const {accountID} = req.params;
+    const {status} = req.body;
+    // TODO: VALIDATE ACOUNT STATUS
+    if (!accountID) {
+      _handleResponse(
+        {statusCode: 400, message: 'Account ID not provided'},
+        res
+      );
+    }
+    // call to action
+    AccountActions.updateStatus(accountID, status, (err: string = null) => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Account cannot be updated'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Account status was updated sucessfully'},
+        res
+      );
+    });
+  };
 }

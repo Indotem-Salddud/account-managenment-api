@@ -15,6 +15,10 @@ export const AccountsRoute = (app: express.Application) => {
   app.get(`/`, [], AccountsController._getAll);
   /**
    * * Login
+   * @body {
+   *  @param username: {string}
+   *  @param password: {string}
+   * }
    */
   app.post('/login', AccountsController._login);
   /**
@@ -23,4 +27,13 @@ export const AccountsRoute = (app: express.Application) => {
    * @protected Admin
    */
   app.delete('/:accountID', [], AccountsController._deleteAccount);
+  /**
+   * * Update account status by ID
+   * @param accountID {Number}
+   * @protected Admin
+   * @body {
+   *  @param status {Number}
+   * }
+   */
+  app.patch('/status/:accountID', [], AccountsController._updateStatus);
 };
