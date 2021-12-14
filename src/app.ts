@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import {apiDocumentation} from './docs/api.docs.js';
 import * as dotenv from 'dotenv';
+import { AccountsRoute } from './routes/routes.accounts.js';
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,9 @@ app.set('trust proxy', true);
 app.set('PORT', process.env.PORT || 3000);
 // setting documentation
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
+
+// setting routes
+AccountsRoute(app);
 
 app.listen(app.get('PORT'), () => {
   console.log(`Starting app at: ${app.get('PORT')}`);
