@@ -1,4 +1,4 @@
-import {TokenPayload} from '../gen/tokenPayload';
+import {TokenPayload} from '../gen/gen.token';
 
 /**
  * ! Used for set property user

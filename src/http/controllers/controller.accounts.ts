@@ -1,13 +1,13 @@
 import express from 'express';
-import {TinyAccount} from '../../models/types/Account';
-import {AccountActions} from '../actions/account';
-import {_handleResponse} from '../common/HandleResponse';
-import {JWTMiddelware} from '../middlewares/JWTMiddelware';
+import {TinyAccount} from '../../models/types/model.account';
+import {AccountActions} from '../actions/actions.accounts';
+import {_handleResponse} from '../common/common.responseHandler';
+import {JWTMiddelware} from '../middlewares/middelware.jwt';
 import {
   ac,
   PermissionActions,
   PermissionRoles,
-} from '../../models/types/gen/permissions';
+} from '../../models/types/gen/gen.permissions';
 
 export module AccountsController {
   /**

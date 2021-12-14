@@ -1,5 +1,5 @@
 import express from 'express';
-import { ResponseHandler } from '../../models/types/gen/responseHandler';
+import { ResponseHandler } from '../../models/types/gen/gen.response';
 
 /**
  * ! Manage response and send it to the client

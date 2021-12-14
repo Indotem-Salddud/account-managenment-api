@@ -1,8 +1,8 @@
-import {Direction} from '../../models/types/gen/direction';
-import {TinyAccount, _tableName} from '../../models/types/Account';
+import {Direction} from '../../models/types/gen/gen.direction';
+import {TinyAccount, _tableName} from '../../models/types/model.account';
 import * as bcrypt from 'bcryptjs';
-import {db} from '../core/db';
-import {JWTMiddelware} from '../middlewares/JWTMiddelware';
+import {db} from '../core/core.db';
+import {JWTMiddelware} from '../middlewares/middelware.jwt';
 
 export module AccountActions {
   /**

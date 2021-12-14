@@ -1,5 +1,5 @@
 import express from 'express';
-import {AccountsController} from '../http/controllers/Account';
+import {AccountsController} from '../http/controllers/controller.accounts';
 
 export const AccountsRoute = (app: express.Application) => {
   /**
