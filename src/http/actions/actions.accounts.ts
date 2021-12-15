@@ -6,7 +6,6 @@ import {
 } from '../../models/types/model.account';
 import * as bcrypt from 'bcryptjs';
 import {db} from '../core/core.db';
-import {JWTMiddelware} from '../middlewares/middelware.jwt';
 
 export module AccountActions {
   /**
