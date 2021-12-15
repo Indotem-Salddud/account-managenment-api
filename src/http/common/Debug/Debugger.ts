@@ -6,6 +6,10 @@ import {DebuggerProtocol} from './DebuggerProtocol';
  */
 export class Debugger implements DebuggerProtocol {
 
+  /**
+   * ! Singletong - Unique access
+   * * whitehatdevv - 2021/12/15
+   */
   static shared = new Debugger();
 
   /**
