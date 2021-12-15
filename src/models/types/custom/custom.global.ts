@@ -1,3 +1,4 @@
+import { Debugger } from '../../../http/common/Debug/Debugger';
 import {TokenPayload} from '../gen/gen.token';
 
 /**
@@ -10,4 +11,6 @@ declare global {
       user?: TokenPayload;
     }
   }
+  // set debugger
+  export const Environment = DebbugerEnvironments.debugger;
 }

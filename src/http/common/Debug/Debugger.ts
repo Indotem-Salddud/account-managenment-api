@@ -5,6 +5,9 @@ import {DebuggerProtocol} from './DebuggerProtocol';
  * * whitehatdevv - 2021/12/13
  */
 export class Debugger implements DebuggerProtocol {
+
+  static shared = new Debugger();
+
   /**
    * ! Debugger to show log in console
    * * whitehatdevv - 2021/12/13
