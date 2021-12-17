@@ -24,10 +24,14 @@ export module AccountsController {
     res: express.Response
   ) => {
     // validate permissions
-    const permissions = ac
-      .can(req.user.role)
-      .readOwn(PermissionActions.ACCOUNT);
-    if (permissions.granted) {
+    const requestOwn = req.user.accountID === req.params.accountID;
+    const permissionsGranted =
+      requestOwn ?
+        ac.can(req.user.role).readOwn(PermissionActions.ACCOUNT)
+      :
+        ac.can(req.user.role).readAny(PermissionActions.ACCOUNT)
+    ;
+    if (permissionsGranted) {
       const {accountID} =
         req.user.role == PermissionRoles.USER ? req.user : req.params;
       if (!accountID) {
