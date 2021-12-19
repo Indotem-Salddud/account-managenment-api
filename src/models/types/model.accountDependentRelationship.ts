@@ -1,1 +1,1 @@
-export const _accountDependentRealtionshipTableName = 'Dependents';
+export const _accountDependentRealtionshipTableName = 'AccountDependentsRelation';
