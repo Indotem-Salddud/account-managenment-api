@@ -56,4 +56,10 @@ export const AccountsRoute = (app: express.Application) => {
    * }
    */
   app.put('/password', AccountsController._updatePassword);
+  /**
+   * * Get dependants for a account
+   * @protected Admin or User with Account ID
+   * @param accountID
+   */
+  app.put('/:accountID/dependents', AccountsController._getDependents);
 };
