@@ -198,6 +198,12 @@ export module AccountActions {
         callback(err);
       });
   };
+  /**
+   * ! Get all dependents for a account by account id
+   * * DanBaDo - 2021/12/19
+   * @param accountID {string}
+   * @param callback {Function}
+   */
   export const findAllAccountDependents = (
     accountID: string,
     callback: Function

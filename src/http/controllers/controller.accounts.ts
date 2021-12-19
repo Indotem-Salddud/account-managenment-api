@@ -280,7 +280,13 @@ export module AccountsController {
       );
     }
   };
-
+  
+  /**
+   * ! Get all dependents for a account by account id
+   * * DanBaDo - 2021/12/19
+   * @param req {Request}
+   * @param res {Response}
+   */
   export const _getDependents = async (req,res) => {
     // validate permissions
     const requestOwn = req.user.accountID === req.params.accountID;
