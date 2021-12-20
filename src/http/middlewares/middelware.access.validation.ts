@@ -5,6 +5,12 @@ import { _handleResponse } from '../common/common.responseHandler';
 
 export module AccessControlMiddelware {
 
+    /**
+     * ! Create a validator using Lambda functions
+     * * whitehatdevv - 2021/12/20
+     * @param f lambda(query: Query) => Permission
+     * @returns {MiddelwareObject}
+     */
     export const _grantAccess = (f: (query: Query) => Permission) => {
         return (req: express.Request, res: express.Response, next: express.NextFunction) => {
             // make a lambda function to run a validation
