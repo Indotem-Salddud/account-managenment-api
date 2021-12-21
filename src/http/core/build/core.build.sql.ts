@@ -15,22 +15,31 @@ const _basicSQLCodes = {
 };
 
 const _basicSQLStructure = {
-  select: 'SELECT @columns FROM @table WHERE @condition',
+  select: 'SELECT @columns FROM @table @condition',
   insert: 'INSERT INTO @table VALUES @columns',
   update: 'UPDATE @table SET @columns',
-  delete: 'DELETE FROM @table WHERE @condition',
+  delete: 'DELETE FROM @table @condition',
 };
 
+interface SQLQueryConstructorHelperProtocol {
+  _getter(base: string, get?: [string]);
+  _where(base: string, where?: object);
+}
+
 /**
- * ! Use for create SQL queries dinamically
+ * ! Helper to use for data formatting
  * * whitehatdevv - 2021/12/21
  */
-class SQLQueryConstructor implements SQLQueryConstructorMethods {
-  // * Singleton
-  static shared = new SQLQueryConstructor();
+class SQLQueryConstructorHelper implements SQLQueryConstructorHelperProtocol {
+  // * Methods
 
-  // * Private methods
-  private _getter(base: string, get?: [string]) {
+  /**
+   * ! Set getter and configure the replacement
+   * * whitehatdevv - 2021/12/21
+   * @param base {string} inout
+   * @param get {[string]?}
+   */
+  _getter(base: string, get?: [string]) {
     base.replace(
       _basicSQLCodes.columns,
       !get
@@ -41,12 +50,44 @@ class SQLQueryConstructor implements SQLQueryConstructorMethods {
     );
   }
 
+  /**
+   * ! Handle where and actue according to the values
+   * * whitehatdevv - 2021/12/21
+   * @param base {string} inout
+   * @param where {object}
+   */
+  _where(base: string, where?: object) {
+    base.replace(
+      _basicSQLCodes.condition,
+      !where
+        ? 'WHERE' +
+            Object.keys(where).reduce((acc = '', val) =>
+              acc.length == 0 ? `${val}=${where}` : `${acc}, ${val}=${where}`
+            )
+        : ''
+    );
+  }
+}
+
+/**
+ * ! Use for create SQL queries dinamically
+ * * whitehatdevv - 2021/12/21
+ */
+class SQLQueryConstructor
+  extends SQLQueryConstructorHelper
+  implements SQLQueryConstructorMethods
+{
+  // * Singleton
+  static shared = new SQLQueryConstructor();
+
   // * Methods
   findBy(get?: [string], where?: object): SQLConstructorMiddleType {
     return () => {
       let basic = _basicSQLStructure.select;
       // set getter
-      this._getter(basic, get);
+      super._getter(basic, get);
+      // set where
+      super._where(basic, where);
       return basic;
     };
   }
