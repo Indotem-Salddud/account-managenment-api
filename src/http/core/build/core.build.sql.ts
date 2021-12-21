@@ -1,6 +1,7 @@
 interface SQLQueryMethods {
     _tableName: string;
     findAll<T>() : T;
+    findBy<T>(where?: object) : T;
 }
 
 /**
@@ -8,12 +9,6 @@ interface SQLQueryMethods {
  * * whitehatdevv - 2021/12/21
  */
 class SQLQuery {
-
-    /**
-     * ! SINGLETON
-     * * Unique access to this resource
-     */
-    static shared = new SQLQuery();
 
     // * Properties
     _tableName: string;
