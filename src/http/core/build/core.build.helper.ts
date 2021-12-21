@@ -1,6 +1,13 @@
 interface SQLQueryConstructorHelperProtocol {
-  _setterArray(base: string, get?: [string]): void;
-  _setterObject(base: string, where?: object): void;
+  _setterArray(prop: _basicSQLCodes, base: string, get?: [string]): void;
+  _setterObject(prop: _basicSQLCodes, base: string, where?: object): void;
+}
+
+enum _basicSQLCodes {
+    table = "@table",
+    columns =  "@column",
+    condition = "@condition",
+    values = "@values"
 }
 
 /**
@@ -16,9 +23,9 @@ class SQLQueryConstructorHelper implements SQLQueryConstructorHelperProtocol {
    * @param base {string} inout
    * @param get {[string]?}
    */
-  _setterArray(base: string, get?: [string]): void {
+   _setterArray(prop: _basicSQLCodes, base: string, get?: [string]): void {
     base.replace(
-      _basicSQLCodes.columns,
+      prop,
       !get
         ? get.reduce((acc = '', val) =>
             acc.length == 0 ? `${val}` : `${acc}, ${val}`
@@ -33,9 +40,9 @@ class SQLQueryConstructorHelper implements SQLQueryConstructorHelperProtocol {
    * @param base {string} inout
    * @param where {object}
    */
-  _setterObject(base: string, where?: object): void {
+   _setterObject(prop: _basicSQLCodes, base: string, where?: object): void {
     base.replace(
-      _basicSQLCodes.condition,
+      prop,
       !where
         ? 'WHERE' +
             Object.keys(where).reduce((acc = '', val) =>

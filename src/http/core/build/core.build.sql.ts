@@ -8,16 +8,10 @@ interface SQLQueryConstructorMethods {
 
 type SQLConstructorMiddleType = () => string;
 
-const _basicSQLCodes = {
-  table: '@table',
-  columns: '@column',
-  condition: '@condition',
-};
-
 const _basicSQLStructure = {
   select: 'SELECT @columns FROM @table @condition',
-  insert: 'INSERT INTO @table VALUES @columns',
-  update: 'UPDATE @table SET @columns',
+  insert: 'INSERT INTO @table VALUES @values',
+  update: 'UPDATE @table SET @values',
   delete: 'DELETE FROM @table @condition',
 };
 
@@ -36,10 +30,10 @@ class SQLQueryConstructor
   findBy(get?: [string], where?: object): SQLConstructorMiddleType {
     return () => {
       let basic = _basicSQLStructure.select;
-      // set getter
-      super._setterArray(basic, get);
-      // set where
-      super._setterObject(basic, where);
+      // set columns
+      super._setterArray(_basicSQLCodes.columns, basic, get);
+      // set condition
+      super._setterObject(_basicSQLCodes.condition, basic, where);
       return basic;
     };
   }
@@ -47,8 +41,8 @@ class SQLQueryConstructor
   save(val: object): SQLConstructorMiddleType {
     return () => {
         let basic = _basicSQLStructure.insert;
-        // set columns
-        super._setterObject
+        // set values
+        super._setterObject(_basicSQLCodes.values, basic, val);
         return basic;
     };
   }
