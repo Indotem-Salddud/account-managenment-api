@@ -1,11 +1,13 @@
 interface SQLQueryConstructorMethods {
-  findAll(get?: [string]): string;
-  findBy(where: object, get?: [string]): string;
-  save<T>(val: T): string;
-  update<T>(where?: object, data?: T): string;
-  deleteAll(): string;
-  delete(where?: object): string;
+  findAll(get?: [string]): SQLConstructorMiddleType;
+  findBy(where: object, get?: [string]): SQLConstructorMiddleType;
+  save<T>(val: T): SQLConstructorMiddleType;
+  update<T>(where?: object, data?: T): SQLConstructorMiddleType;
+  deleteAll(): SQLConstructorMiddleType;
+  delete(where?: object): SQLConstructorMiddleType;
 }
+
+type SQLConstructorMiddleType = () => string;
 
 const _basicSQLCodes = {
     table: '@table',
@@ -30,27 +32,39 @@ class SQLQueryConstructor implements SQLQueryConstructorMethods {
   static shared = new SQLQueryConstructor();
 
   // * Methods
-  findAll(get?: [string]): string {
-      return "";
+  findAll(get?: [string]): SQLConstructorMiddleType {
+    return () => {
+        return "";
+    }
   }
 
-  findBy(where: object, get?: [string]): string {
-    return "";
+  findBy(where: object, get?: [string]): SQLConstructorMiddleType {
+    return () => {
+        return "";
+    }
   }
 
-  save<T>(val: T): string {
-    return '';
+  save<T>(val: T): SQLConstructorMiddleType {
+    return () => {
+        return "";
+    }
   }
 
-  update<T>(where?: object, data?: T): string {
-    return '';
+  update<T>(where?: object, data?: T): SQLConstructorMiddleType {
+    return () => {
+        return "";
+    }
   }
 
-  deleteAll(): string {
-    return '';
+  deleteAll(): SQLConstructorMiddleType {
+    return () => {
+        return "";
+    }
   }
 
-  delete(where?: object): string {
-    return '';
+  delete(where?: object): SQLConstructorMiddleType {
+    return () => {
+        return "";
+    }
   }
 }
