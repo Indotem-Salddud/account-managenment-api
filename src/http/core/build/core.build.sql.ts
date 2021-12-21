@@ -3,8 +3,7 @@ interface SQLQueryConstructorProtocol {
   findBy(get?: [string], where?: object): SQLConstructorMiddleType;
   save(val: object): SQLConstructorMiddleType;
   update(data: object, where?: object): SQLConstructorMiddleType;
-  deleteAll(): SQLConstructorMiddleType;
-  delete(where?: object): SQLConstructorMiddleType;
+  deleteBy(where?: object): SQLConstructorMiddleType;
 }
 
 // * Typealias to return a callback with query string
@@ -64,15 +63,12 @@ class SQLQueryConstructor
     };
   }
 
-  deleteAll(): SQLConstructorMiddleType {
+  deleteBy(where?: object): SQLConstructorMiddleType {
     return () => {
-      return '';
-    };
-  }
-
-  delete(where?: object): SQLConstructorMiddleType {
-    return () => {
-      return '';
+      let basic = _basicSQLStructure.delete;
+      // set conditions
+      super._setterObject(_basicSQLCodes.condition, basic, where);
+      return basic;
     };
   }
 }
