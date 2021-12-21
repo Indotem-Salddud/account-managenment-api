@@ -1,7 +1,7 @@
 interface SQLQueryConstructorMethods {
   findBy(get?: [string], where?: object): SQLConstructorMiddleType;
-  save<T>(val: T): SQLConstructorMiddleType;
-  update<T>(where?: object, data?: T): SQLConstructorMiddleType;
+  save(val: object): SQLConstructorMiddleType;
+  update(data: object, where?: object): SQLConstructorMiddleType;
   deleteAll(): SQLConstructorMiddleType;
   delete(where?: object): SQLConstructorMiddleType;
 }
@@ -37,20 +37,23 @@ class SQLQueryConstructor
     return () => {
       let basic = _basicSQLStructure.select;
       // set getter
-      super._getter(basic, get);
+      super._setterArray(basic, get);
       // set where
-      super._where(basic, where);
+      super._setterObject(basic, where);
       return basic;
     };
   }
 
-  save<T>(val: T): SQLConstructorMiddleType {
+  save(val: object): SQLConstructorMiddleType {
     return () => {
-      return '';
+        let basic = _basicSQLStructure.insert;
+        // set columns
+        super._setterObject
+        return basic;
     };
   }
 
-  update<T>(where?: object, data?: T): SQLConstructorMiddleType {
+  update(data: object, where?: object): SQLConstructorMiddleType {
     return () => {
       return '';
     };
