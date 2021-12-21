@@ -1,8 +1,10 @@
+// * Interface to set data inside a property
 interface SQLQueryConstructorHelperProtocol {
   _setterArray(prop: _basicSQLCodes, base: string, get?: [string]): void;
   _setterObject(prop: _basicSQLCodes, base: string, where?: object): void;
 }
 
+// * Enum with code SQL code to match the constructor
 enum _basicSQLCodes {
     table = "@table",
     columns =  "@column",

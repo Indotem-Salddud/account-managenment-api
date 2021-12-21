@@ -1,4 +1,5 @@
-interface SQLQueryConstructorMethods {
+// * Interface with methods needed to perform a query constructor
+interface SQLQueryConstructorProtocol {
   findBy(get?: [string], where?: object): SQLConstructorMiddleType;
   save(val: object): SQLConstructorMiddleType;
   update(data: object, where?: object): SQLConstructorMiddleType;
@@ -6,8 +7,13 @@ interface SQLQueryConstructorMethods {
   delete(where?: object): SQLConstructorMiddleType;
 }
 
+// * Typealias to return a callback with query string
 type SQLConstructorMiddleType = () => string;
 
+/**
+ * ! Enum case to basic query structure
+ * * whitehatdevv - 2021/12/21
+ */
 enum _basicSQLStructure {
   select = 'SELECT @columns FROM @table @condition',
   insert = 'INSERT INTO @table VALUES @values',
@@ -21,7 +27,7 @@ enum _basicSQLStructure {
  */
 class SQLQueryConstructor
   extends SQLQueryConstructorHelper
-  implements SQLQueryConstructorMethods
+  implements SQLQueryConstructorProtocol
 {
   // * Singleton
   static shared = new SQLQueryConstructor();
