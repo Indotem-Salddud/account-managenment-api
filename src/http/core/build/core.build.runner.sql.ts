@@ -1,5 +1,4 @@
 import mysql from 'mysql';
-import {db} from '../core.db';
 
 // * Interface used for query runner callback
 interface SQLQueryResponse<T> {
@@ -43,7 +42,7 @@ class SQLRunner implements SQLRunnerProtocol {
   run<T>(query: string, params: any, callback: SQLResponse<T>) {
     // replace query concurrency to set table name
     const final = query.replace('@table', this._tableName);
-    db.query(final, params, (err, data) => {
+    this._db.query(final, params, (err, data) => {
       callback({
         err: String(err),
         data: data,
