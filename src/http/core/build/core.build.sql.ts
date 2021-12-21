@@ -22,8 +22,8 @@ const _basicSQLStructure = {
 };
 
 interface SQLQueryConstructorHelperProtocol {
-  _getter(base: string, get?: [string]);
-  _where(base: string, where?: object);
+  _getter(base: string, get?: [string]) : void;
+  _where(base: string, where?: object): void;
 }
 
 /**
@@ -39,7 +39,7 @@ class SQLQueryConstructorHelper implements SQLQueryConstructorHelperProtocol {
    * @param base {string} inout
    * @param get {[string]?}
    */
-  _getter(base: string, get?: [string]) {
+  _getter(base: string, get?: [string]) : void {
     base.replace(
       _basicSQLCodes.columns,
       !get
@@ -56,7 +56,7 @@ class SQLQueryConstructorHelper implements SQLQueryConstructorHelperProtocol {
    * @param base {string} inout
    * @param where {object}
    */
-  _where(base: string, where?: object) {
+  _where(base: string, where?: object) : void {
     base.replace(
       _basicSQLCodes.condition,
       !where
