@@ -1,7 +1,7 @@
 interface SQLQueryConstructorMethods {
   _tableName: string;
   findAll(get?: [string]): string;
-  findBy(get?: [string], where?: object): string;
+  findBy(where: object, get?: [string]): string;
   save<T>(val: T): string;
   update<T>(where?: object, data?: T): string;
   deleteAll(): string;
@@ -20,28 +20,40 @@ class SQLQueryConstructor implements SQLQueryConstructorMethods {
   static shared = new SQLQueryConstructor();
 
   // * Methods
-  findAll(get?: [string]): string {
-    return "";
+
+  private getter(get: [string]): string {
+    const columns = get.reduce((acc, val) => (acc += `${val}#`));
+    columns.slice(0, columns.length - 2);
+    columns.replace('#', ',');
+    return columns;
   }
 
-  findBy(get?: [string], where?: object): string {
+  findAll(get?: [string]): string {
+    const query = `SELECT * FROM ${this._tableName}`;
+    if (!get) {
+      const getter = this.getter(get);
+      query.replace('*', getter);
+    }
+    return query;
+  }
+
+  findBy(where: object, get?: [string]): string {
     return "";
   }
 
   save<T>(val: T): string {
-    return "";
-  } 
+    return '';
+  }
 
   update<T>(where?: object, data?: T): string {
-      return "";
-  }  
+    return '';
+  }
 
   deleteAll(): string {
-    return "";
+    return '';
   }
 
   delete(where?: object): string {
-    return "";
-  } 
-
+    return '';
+  }
 }
