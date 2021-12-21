@@ -8,11 +8,11 @@ interface SQLQueryConstructorMethods {
 
 type SQLConstructorMiddleType = () => string;
 
-const _basicSQLStructure = {
-  select: 'SELECT @columns FROM @table @condition',
-  insert: 'INSERT INTO @table VALUES @values',
-  update: 'UPDATE @table SET @values',
-  delete: 'DELETE FROM @table @condition',
+enum _basicSQLStructure {
+  select = 'SELECT @columns FROM @table @condition',
+  insert = 'INSERT INTO @table VALUES @values',
+  update =  'UPDATE @table SET @values',
+  delete = 'DELETE FROM @table @condition',
 };
 
 /**
