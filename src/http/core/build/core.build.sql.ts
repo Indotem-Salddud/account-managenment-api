@@ -17,9 +17,9 @@ type SQLConstructorMiddleType = () => string;
 enum _basicSQLStructure {
   select = 'SELECT @columns FROM @table @condition',
   insert = 'INSERT INTO @table VALUES @values',
-  update =  'UPDATE @table SET @values',
+  update = 'UPDATE @table SET @values',
   delete = 'DELETE FROM @table @condition',
-};
+}
 
 /**
  * ! Use for create SQL queries dinamically
@@ -46,16 +46,21 @@ class SQLQueryConstructor
 
   save(val: object): SQLConstructorMiddleType {
     return () => {
-        let basic = _basicSQLStructure.insert;
-        // set values
-        super._setterObject(_basicSQLCodes.values, basic, val);
-        return basic;
+      let basic = _basicSQLStructure.insert;
+      // set values
+      super._setterObject(_basicSQLCodes.values, basic, val);
+      return basic;
     };
   }
 
   update(data: object, where?: object): SQLConstructorMiddleType {
     return () => {
-      return '';
+      let basic = _basicSQLStructure.update;
+      // set data
+      super._setterObject(_basicSQLCodes.values, basic, data);
+      // set conditions
+      super._setterObject(_basicSQLCodes.condition, basic, where);
+      return basic;
     };
   }
 
