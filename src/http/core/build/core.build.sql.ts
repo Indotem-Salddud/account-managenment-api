@@ -1,8 +1,19 @@
+interface SQLQueryResponse<T> {
+    err?: string;
+    data?: T;
+}
+
+type SQLResponse<T> = (res: SQLQueryResponse<T>) => void;
+
 interface SQLQueryMethods {
     _tableName: string;
-    findAll<T>() : T;
-    findBy<T>(where?: object) : T;
-}
+    findAll<T>() : SQLResponse<T>;
+    findBy<T>(where?: object) : SQLResponse<T>;
+    save<T>(val: T) : SQLResponse<T>;
+    update<T>(where?: object, data?: T) : SQLResponse<T>;
+    deleteAll<T>(): SQLResponse<T>;
+    delete<T>(where?: object) : SQLResponse<T>;
+};
 
 /**
  * ! Use for create SQL queries dinamically
