@@ -1,7 +1,7 @@
 // * Interface to set data inside a property
 interface SQLQueryConstructorHelperProtocol {
-  _setterArray(prop: _basicSQLCodes, base: string, get?: [string]): void;
-  _setterObject(prop: _basicSQLCodes, base: string, where?: object): void;
+  _setterArray(prop: _basicSQLCodes, base: string, d?: [string]): void;
+  _setterObject(prop: _basicSQLCodes, base: string, d?: object): void;
 }
 
 // * Enum with code SQL code to match the constructor
@@ -25,11 +25,11 @@ class SQLQueryConstructorHelper implements SQLQueryConstructorHelperProtocol {
    * @param base {string} inout
    * @param get {[string]?}
    */
-   _setterArray(prop: _basicSQLCodes, base: string, get?: [string]): void {
+   _setterArray(prop: _basicSQLCodes, base: string, d?: [string]): void {
     base.replace(
       prop,
-      !get
-        ? get.reduce((acc = '', val) =>
+      !d
+        ? d.reduce((acc = '', val) =>
             acc.length == 0 ? `${val}` : `${acc}, ${val}`
           )
         : '*'
@@ -42,13 +42,13 @@ class SQLQueryConstructorHelper implements SQLQueryConstructorHelperProtocol {
    * @param base {string} inout
    * @param where {object}
    */
-   _setterObject(prop: _basicSQLCodes, base: string, where?: object): void {
+   _setterObject(prop: _basicSQLCodes, base: string, d?: object): void {
     base.replace(
       prop,
-      !where
+      !d
         ? 'WHERE' +
-            Object.keys(where).reduce((acc = '', val) =>
-              acc.length == 0 ? `${val}=${where}` : `${acc}, ${val}=${where}`
+            Object.keys(d).reduce((acc = '', val) =>
+              acc.length == 0 ? `${val}=${d[val]}` : `${acc}, ${val}=${d[val]}`
             )
         : ''
     );
