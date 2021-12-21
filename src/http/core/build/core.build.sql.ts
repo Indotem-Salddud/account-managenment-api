@@ -1,14 +1,20 @@
+import mysql from 'mysql';
+
 interface SQLQueryResponse<T> {
     err?: string;
     data?: T;
-}
+};
 
 type SQLResponse<T> = (res: SQLQueryResponse<T>) => void;
 
-interface SQLQueryMethods {
+interface SQLNeededInjections {
     _tableName: string;
-    findAll<T>() : SQLResponse<T>;
-    findBy<T>(where?: object) : SQLResponse<T>;
+    _db: mysql.Connection;
+}
+
+interface SQLQueryMethods extends SQLNeededInjections {
+    findAll<T>(get?: object) : SQLResponse<T>;
+    findBy<T>(get?: object, where?: object) : SQLResponse<T>;
     save<T>(val: T) : SQLResponse<T>;
     update<T>(where?: object, data?: T) : SQLResponse<T>;
     deleteAll<T>(): SQLResponse<T>;
@@ -23,14 +29,14 @@ class SQLQuery {
 
     // * Properties
     _tableName: string;
+    _db: mysql.Connection;
 
     // * Inits
-    constructor(tableName: string) {
+    constructor(tableName: string, db: mysql.Connection) {
         this._tableName = tableName;
     }
 
     // * Methods
-
 
 
 }
