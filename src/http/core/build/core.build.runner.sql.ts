@@ -23,7 +23,7 @@ interface SQLRunnerProtocol extends SQLNeededInjections {
    * @param query {string}
    * @param callback {SQLResponse<T>}
    */
-  run<T>(query: SQLConstructorMiddleType, callback: SQLResponse<T>);
+  run<T>(query: string, callback: SQLResponse<T>);
 }
 
 class SQLRunner implements SQLRunnerProtocol {
@@ -38,9 +38,9 @@ class SQLRunner implements SQLRunnerProtocol {
   }
 
   // * Methods
-  run<T>(query: SQLConstructorMiddleType, callback: SQLResponse<T>) {
+  run<T>(query: string, callback: SQLResponse<T>) {
     // replace query concurrency to set table name
-    const final = query().replace('@table', this._tableName);
+    const final = query.replace('@table', this._tableName);
     this._db.query(final, (err, data) => {
       callback({
         err: String(err),
