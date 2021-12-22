@@ -1,7 +1,7 @@
 import mysql from 'mysql';
 
 // * Interface used for query runner callback
-interface SQLQueryResponse<T> {
+export interface SQLQueryResponse<T> {
   err?: string;
   data?: T;
 }
@@ -26,7 +26,7 @@ interface SQLRunnerProtocol extends SQLNeededInjections {
   run<T>(query: string, callback: SQLResponse<T>);
 }
 
-class SQLRunner implements SQLRunnerProtocol {
+export class SQLRunner implements SQLRunnerProtocol {
   // * Properties
   _db: mysql.Connection;
   _tableName: string;

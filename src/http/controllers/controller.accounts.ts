@@ -24,17 +24,7 @@ export module AccountsController {
     req: express.Request,
     res: express.Response
   ) => {
-    // validate permissions
-    const requestOwn = req.user.accountID === req.params.accountID;
-    const permissionsGranted =
-      requestOwn ?
-        ac.can(req.user.role).readOwn(PermissionActions.ACCOUNT)
-      :
-        ac.can(req.user.role).readAny(PermissionActions.ACCOUNT)
-    ;
-    if (permissionsGranted) {
-      const {accountID} =
-        req.user.role == PermissionRoles.USER ? req.user : req.params;
+    const {accountID} = req.params;
       if (!accountID) {
         _handleResponse(
           {statusCode: 400, message: 'Data provided is not valid'},
@@ -54,12 +44,6 @@ export module AccountsController {
           res
         );
       });
-    } else {
-      _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'},
-        res
-      );
-    }
   };
 
   /**

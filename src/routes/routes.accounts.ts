@@ -1,5 +1,9 @@
 import express from 'express';
 import {AccountsController} from '../http/controllers/controller.accounts';
+import { PermissionActions } from '../models/types/gen/gen.permissions';
+import { AccessControlMiddelware } from '../http/middlewares/middelware.access.validation';
+
+const _resource = PermissionActions.ACCOUNT;
 
 export const AccountsRoute = (app: express.Application) => {
   /**
@@ -7,7 +11,9 @@ export const AccountsRoute = (app: express.Application) => {
    * @param acccountID {Number}
    * @protected Admin or User with accountID
    */
-  app.get(`/:accountID`, AccountsController._getById);
+  app.get(`/:accountID`, [AccessControlMiddelware._grantAccess((query) => {
+    return query.readOwn(_resource);
+  })], AccountsController._getById);
   /**
    * * Get all account staff
    * @protected Admin
