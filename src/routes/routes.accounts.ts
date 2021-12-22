@@ -67,5 +67,5 @@ export const AccountsRoute = (app: express.Application) => {
    * @protected Admin or User with Account ID
    * @param accountID
    */
-  app.put('/:accountID/dependents', AccountsController._getDependents);
+  app.get('/:accountID/dependents', AccountsController._getDependents);
 };
