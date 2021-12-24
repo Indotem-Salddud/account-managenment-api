@@ -20,7 +20,7 @@ export module AccessControlMiddelware {
       const permission = f(ac.can(req.user.role));
       if (!permission.granted) {
         _handleResponse(
-          {statusCode: 500, message: 'Server response cannot be processed'},
+          {statusCode: 401, message: "You don't have permission to access the requested resource"},
           res
         );
       }
