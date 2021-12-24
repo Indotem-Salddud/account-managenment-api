@@ -7,9 +7,11 @@ const _resource = PermissionActions.ACCOUNT;
 
 export const DependentsRoute = (app: express.Application) => {
   /**
-   * * Get dependants for a account
+   * * Get dependents for a account
    * @protected Admin or User with Account ID
    * @param accountID
    */
-  app.get('/:accountID/dependents', DependentsController._getDependents);
+  app.get('/dependentsFor/:accountID', AccessControlMiddelware._grantAccess((query) => {
+    return query.readAny(_resource);
+  }), DependentsController._getDependents);
 };
