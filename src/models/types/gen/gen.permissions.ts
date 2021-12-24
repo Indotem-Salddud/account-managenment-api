@@ -15,6 +15,7 @@ export enum PermissionRoles {
  */
 export enum PermissionActions {
   ACCOUNT = 'account',
+  DEPENDENTS = 'dependents'
 }
 
 /**
@@ -27,7 +28,19 @@ const grantedObject = {
             'update:own': ['*'],
             'read:own': ['*'],
             'delete:own': ['*'],
-        }
+        },
+    },
+    ADMIN: {
+      ACCOUNT: {
+        'update:any': ['*'],
+        'read:any': ['*'],
+        'delete:any': ['*'],
+      },
+      DEPENDENTS: {
+        'update:any': ['*'],
+        'read:any': ['*'],
+        'delete:any': ['*'],
+      },
     }
 };
 
