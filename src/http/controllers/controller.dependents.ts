@@ -42,9 +42,10 @@ export module DependentsController {
      */
     export const _getMyDependentById = async (req, res) => {
         const { accountID } = req.user;
+        const { dependentID } = req.params;
         // call to action
         // TODO: Add 404 for dependant not found
-        DependentsActions.findOneAccountOwnedDependantById(accountID, (err?: string, data?: Dependent[]) => {
+        DependentsActions.findOneAccountOwnedDependantById(accountID, dependentID, (err?: string, data?: Dependent[]) => {
             if (err) {
                 _handleResponse(
                     { statusCode: 500, message: 'Server response cannot be processed' },
