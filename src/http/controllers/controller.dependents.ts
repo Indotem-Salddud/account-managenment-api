@@ -34,7 +34,12 @@ export module DependentsController {
             );
         });
     }
-
+    /**
+     * ! Get one owned dependant by id
+     * * DanBaDo - 2021/12/25 ✨🎄✨
+     * @param req {Request}
+     * @param res {Response}
+     */
     export const _getMyDependentById = async (req, res) => {
         const { accountID } = req.user;
         // call to action
