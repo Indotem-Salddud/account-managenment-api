@@ -53,4 +53,35 @@ export module DependentsActions {
       );
     });
   };
+  /**
+   * ! Get one account owned dependent by id
+   * * DanBaDo - 2021/12/25 ✨🎄✨
+   * @param accountID {string}
+   * @param dependentID {string}
+   * @param callback {Function}
+   */
+  export const findOneAccountOwnedDependantById = (
+    accountID: string,
+    dependentID: string,
+    callback: Function
+  ) => {
+    const queryString = `
+      SELECT *
+      FROM ${_dependentTableName}
+      INNER JOIN ${_accountDependentRealtionshipTableName} 
+        ON ${_dependentTableName}.id = ${_accountDependentRealtionshipTableName}.dependentID
+      INNER JOIN ${_tableName}
+        ON ${_accountDependentRealtionshipTableName}.accountID = ${_tableName}.id
+      WHERE ${_tableName}.id = ${accountID} and ${_dependentTableName}.id = ${dependentID}
+    `;
+    db.query(queryString, (err, result) => {
+      if (err) {
+        callback(err);
+      }
+      callback(
+        null,
+        result
+      );
+    });
+  };
 }
