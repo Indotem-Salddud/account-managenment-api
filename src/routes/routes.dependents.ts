@@ -6,6 +6,7 @@ import { AccessControlMiddelware } from '../http/middlewares/middelware.access.v
 const _resource = PermissionActions.ACCOUNT;
 
 export const DependentsRoute = (app: express.Application) => {
+
   /**
    * * Get dependents for a account
    * @protected Admin or User with Account ID
@@ -14,4 +15,14 @@ export const DependentsRoute = (app: express.Application) => {
   app.get('/dependentsFor/:accountID', AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_resource);
   }), DependentsController._getDependents);
+
+  /**
+   * * Get owned dependent for a ID
+   * @protected Logged account
+   * @param dependentID
+   */
+  app.get('myDependents/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
+    return query.readOwn(_resource);
+  }),DependentsController._getMyDependentById)
+  
 };
