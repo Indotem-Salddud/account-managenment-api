@@ -4,12 +4,6 @@ import {
   UpdateAccountModel,
   _tableName,
 } from '../../models/types/model.account';
-import {
-  _dependentTableName,
-} from '../../models/types/model.dependent';
-import {
-  _accountDependentRealtionshipTableName
-} from '../../models/types/model.accountDependentRelationship';
 import * as bcrypt from 'bcryptjs';
 import {db} from '../core/core.db';
 
