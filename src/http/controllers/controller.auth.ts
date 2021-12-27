@@ -6,6 +6,7 @@ import {
     PermissionActions,
   } from '../../models/types/gen/gen.permissions';
 
+export module AuthController {
 /**
    * ! Controller action to perform a login
    * * whitehatdevv - 2021/12/14
@@ -65,3 +66,4 @@ import {
       );
     }
   };
+}
