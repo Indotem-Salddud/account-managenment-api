@@ -60,7 +60,7 @@ export module DependentsActions {
    * @param dependentID {string}
    * @param callback {Function}
    */
-  export const findOneAccountOwnedDependantById = (
+  export const findDependantByOwnerAndID = (
     accountID: string,
     dependentID: string,
     callback: Function
