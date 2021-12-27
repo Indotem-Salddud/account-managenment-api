@@ -46,7 +46,7 @@ export module DependentsController {
         // call to action
         if (dependentID) {
             // TODO: Add 404 for dependant not found
-            DependentsActions.findDependantByOwnerAndID(accountID, dependentID, (err?: string, data?: Dependent) => {
+            DependentsActions.findDependentByOwnerAndID(accountID, dependentID, (err?: string, data?: Dependent) => {
                 if (err) {
                     _handleResponse(
                         { statusCode: 500, message: 'Server response cannot be processed' },

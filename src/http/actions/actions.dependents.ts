@@ -60,7 +60,7 @@ export module DependentsActions {
    * @param dependentID {string}
    * @param callback {Function}
    */
-  export const findDependantByOwnerAndID = (
+  export const findDependentByOwnerAndID = (
     accountID: string,
     dependentID: string,
     callback: Function
@@ -80,6 +80,7 @@ export module DependentsActions {
       }
       callback(
         null,
+        //TODO: Add map parsing address.
         result
       );
     });
@@ -102,7 +103,7 @@ export module DependentsActions {
   ) => {
     // TODO: data validation & sanitization
     const dependentQueryString = `
-      INSER
+      INSERT
       INTO ${_dependentTableName} (name, phone, direction)
       VALUES (${name}, ${phone}, ${direction})
     `;
