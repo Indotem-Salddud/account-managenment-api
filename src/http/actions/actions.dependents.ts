@@ -124,7 +124,7 @@ export module DependentsActions {
             const removeNewDependentQueryString = `
               DELETE
               FROM ${_dependentTableName}
-              WHERE dependentID = ${newDependentId}
+              WHERE id = ${newDependentId}
             `;
             db.query(removeNewDependentQueryString, (err) => {
               if (err) {
