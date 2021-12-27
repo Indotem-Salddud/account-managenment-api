@@ -81,7 +81,17 @@ export module DependentsActions {
       callback(
         null,
         //TODO: Add map parsing address.
-        result
+        result.map(item => {
+          const direction: Direction = JSON.parse(item.direction);
+          return {
+            id: item.id,
+            name: item.name,
+            phone: item.phone,
+            direction: direction,
+            status: item.status,
+            date: item.date,
+          };
+        })
       );
     });
   };
