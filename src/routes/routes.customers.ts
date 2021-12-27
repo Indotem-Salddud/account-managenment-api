@@ -20,14 +20,6 @@ export const CustomersRoute = (app: express.Application) => {
    */
   app.get(`/`, CustomersController._getAll);
   /**
-   * * Login
-   * @body {
-   *  @param username: {string}
-   *  @param password: {string}
-   * }
-   */
-  app.post('/login', CustomersController._login);
-  /**
    * * Delete customer by ID
    * @param customerID {Number}
    * @protected Admin
@@ -54,12 +46,5 @@ export const CustomersRoute = (app: express.Application) => {
    * }
    */
   app.put('/:customerID', CustomersController._updateById);
-  /**
-   * * Update customer password
-   * @protected Only customer with ID provided by Token
-   * @body {
-   *  @param password {string} 
-   * }
-   */
-  app.put('/password', CustomersController._updatePassword);
+
 };
