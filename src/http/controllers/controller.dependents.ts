@@ -73,4 +73,30 @@ export module DependentsController {
             })
         }
     }
+
+    /**
+     * ! Create new dependet for a account
+     * * DanBaDo - 2021-12-27
+     * @param req {Request}
+     * @param res {Response}
+     */
+    export const _newOwnedDependent = async (req, res) => {
+        const { accountID } = req.user;
+        // get dependent data
+        const {name, phone, direction} = req.body;
+        // call to action
+        // TODO: Add 404 for dependant not found
+        DependentsActions.insertNewDependent(accountID, name, phone, direction, (err?: string, data?: Dependent) => {
+            if (err) {
+                _handleResponse(
+                    { statusCode: 500, message: 'Server response cannot be processed' },
+                    res
+                );
+            }
+            _handleResponse(
+                { statusCode: 200, message: 'Dependent created', data: data },
+                res
+            );
+        });
+    }
 }
