@@ -84,4 +84,66 @@ export module DependentsActions {
       );
     });
   };
+  /**
+   * ! Insert new dependent and relationship
+   * * DanBaDo - 2021/12/27 
+   * @param accountID {string}
+   * @param name {string}
+   * @param phone {string}
+   * @param direction {string}
+   * @param callback {Function}
+   */
+  export const insertNewDependent = (
+    accountID: string,
+    name: string,
+    phone: string,
+    direction: string,
+    callback: Function
+  ) => {
+    // TODO: data validation & sanitization
+    const dependentQueryString = `
+      INSER
+      INTO ${_dependentTableName} (name, phone, direction)
+      VALUES (${name}, ${phone}, ${direction})
+    `;
+    // insert dependent
+    db.query(dependentQueryString, (err, result) => {
+      if (err) {
+        callback(err);
+      } else {
+        // insert relation
+        const newDependentId = result.insertId;
+        const relationQueryString = `
+          INSERT
+          INTO ${_accountDependentRealtionshipTableName} (accountID, dependentID)
+          VALUES (${accountID}, ${newDependentId})
+        `;
+        db.query(relationQueryString, (err) => {
+          // if fail inserting relationship, remove new dependent
+          if (err) {
+            const removeNewDependentQueryString = `
+              DELETE
+              FROM ${_dependentTableName}
+              WHERE dependentID = ${newDependentId}
+            `;
+            db.query(removeNewDependentQueryString, (err) => {
+              if (err) {
+                callback(err);
+              }
+            })
+            callback(err);
+          }
+          // return new dependent
+          return {
+            id: newDependentId,
+            name,
+            phone,
+            direction,
+            status: 1,
+            // TODO: what to do for providing new dependent date
+          }
+        });
+      }
+    });
+  }
 }
