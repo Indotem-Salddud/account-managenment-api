@@ -44,18 +44,33 @@ export module DependentsController {
         const { accountID } = req.user;
         const { dependentID } = req.params;
         // call to action
-        // TODO: Add 404 for dependant not found
-        DependentsActions.findOneAccountOwnedDependantById(accountID, dependentID, (err?: string, data?: Dependent[]) => {
-            if (err) {
+        if (dependentID) {
+            // TODO: Add 404 for dependant not found
+            DependentsActions.findOneAccountOwnedDependantById(accountID, dependentID, (err?: string, data?: Dependent[]) => {
+                if (err) {
+                    _handleResponse(
+                        { statusCode: 500, message: 'Server response cannot be processed' },
+                        res
+                    );
+                }
                 _handleResponse(
-                    { statusCode: 500, message: 'Server response cannot be processed' },
+                    { statusCode: 200, message: 'Dependents data received', data: data },
                     res
                 );
-            }
-            _handleResponse(
-                { statusCode: 200, message: 'Dependents data received', data: data },
-                res
-            );
-        });
+            });
+        } else {
+            DependentsActions.findAllAccountDependents(accountID, (err?: string, data?: Dependent[]) => {
+                if (err) {
+                    _handleResponse(
+                        { statusCode: 500, message: 'Server response cannot be processed' },
+                        res
+                    );
+                }
+                _handleResponse(
+                    { statusCode: 200, message: 'Dependents data received', data: data },
+                    res
+                );
+            })
+        }
     }
 }
