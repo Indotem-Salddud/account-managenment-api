@@ -1,2 +1,2 @@
 -- Database creation process
-CREATE DATABASE IndotemcustomerManagenment;
+CREATE DATABASE IndotemCustomerManagenment;

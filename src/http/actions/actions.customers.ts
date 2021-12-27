@@ -92,7 +92,7 @@ export module CustomerActions {
           callback('The password was wrong');
         });
       }
-      callback('customer was disabled');
+      callback('Customer was disabled');
     });
   };
 
@@ -102,7 +102,7 @@ export module CustomerActions {
    * @param customerID {string}
    * @param callback {Function}
    */
-  export const deletecustomer = (customerID: string, callback: Function) => {
+  export const deleteCustomer = (customerID: string, callback: Function) => {
     const queryString = `DELETE FROM ${_tableName} WHERE id=?`;
     db.query(queryString, [customerID], err => {
       if (err) {
@@ -136,7 +136,7 @@ export module CustomerActions {
   /**
    * ! Update customer data by ID
    * * whitehatdevv - 2021/12/14
-   * @param updatedData {UpdatecustomerModel}
+   * @param updatedData {UpdateCustomerModel}
    * @param customerID {string}
    * @param callback {Function}
    */

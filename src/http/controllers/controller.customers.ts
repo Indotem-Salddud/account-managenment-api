@@ -12,7 +12,7 @@ import {
   PermissionRoles,
 } from '../../models/types/gen/gen.permissions';
 
-export module customersController {
+export module CustomersController {
   /**
    * ! Controller function to get customer by their ID
    * * whitehatdevv - 2021/12/13
@@ -39,7 +39,7 @@ export module customersController {
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'customer data received', data: data},
+          {statusCode: 200, message: 'Customer data received', data: data},
           res
         );
       });
@@ -55,7 +55,7 @@ export module customersController {
     // permissions
     const permissions = ac
       .can(req.user.role)
-      .readAny(PermissionActions.customer);
+      .readAny(PermissionActions.CUSTOMER);
     if (permissions.granted) {
       // call to action
       CustomerActions.findAll((err?: string, data?: TinyCustomer) => {
@@ -66,7 +66,7 @@ export module customersController {
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'customer data received', data: data},
+          {statusCode: 200, message: 'Customer data received', data: data},
           res
         );
       });
@@ -111,29 +111,29 @@ export module customersController {
    * @param req {Request}
    * @param res {Response}
    */
-  export const _deletecustomer = async (req, res) => {
+  export const _deleteCustomer = async (req, res) => {
     const permissions = ac
       .can(req.user.role)
-      .deleteOwn(PermissionActions.customer);
+      .deleteOwn(PermissionActions.CUSTOMER);
     if (permissions.granted) {
       const {customerID} =
         req.user.role == PermissionRoles.USER ? req.user : req.params;
       if (!customerID) {
         _handleResponse(
-          {statusCode: 400, message: 'customer ID not provided'},
+          {statusCode: 400, message: 'Customer ID not provided'},
           res
         );
       }
       // call to action
-      CustomerActions.deletecustomer(customerID, (err: string = null) => {
+      CustomerActions.deleteCustomer(customerID, (err: string = null) => {
         if (err) {
           _handleResponse(
-            {statusCode: 500, message: 'customer cannot be deleted'},
+            {statusCode: 500, message: 'Customer cannot be deleted'},
             res
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'customer was delete sucessfully'},
+          {statusCode: 200, message: 'Customer was delete sucessfully'},
           res
         );
       });
@@ -154,7 +154,7 @@ export module customersController {
   export const _updateStatus = async (req, res) => {
     const permissions = ac
       .can(req.user.role)
-      .updateOwn(PermissionActions.customer);
+      .updateOwn(PermissionActions.CUSTOMER);
     if (permissions.granted) {
       const {customerID} =
         req.user.role == PermissionRoles.USER ? req.user : req.params;
@@ -162,7 +162,7 @@ export module customersController {
       // TODO: VALIDATE ACOUNT STATUS
       if (!customerID) {
         _handleResponse(
-          {statusCode: 400, message: 'customer ID not provided'},
+          {statusCode: 400, message: 'Customer ID not provided'},
           res
         );
       }
@@ -170,12 +170,12 @@ export module customersController {
       CustomerActions.updateStatus(customerID, status, (err: string = null) => {
         if (err) {
           _handleResponse(
-            {statusCode: 500, message: 'customer status cannot be updated'},
+            {statusCode: 500, message: 'Customer status cannot be updated'},
             res
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'customer status was updated sucessfully'},
+          {statusCode: 200, message: 'Customer status was updated sucessfully'},
           res
         );
       });
@@ -196,13 +196,13 @@ export module customersController {
   export const _updateById = async (req, res) => {
     const permissions = ac
       .can(req.user.role)
-      .updateOwn(PermissionActions.customer);
+      .updateOwn(PermissionActions.CUSTOMER);
     if (permissions.granted) {
       const {customerID} =
         req.user.role == PermissionRoles.USER ? req.user : req.params;
       if (!customerID) {
         _handleResponse(
-          {statusCode: 400, message: 'customer ID not provided'},
+          {statusCode: 400, message: 'Customer ID not provided'},
           res
         );
       }
@@ -213,12 +213,12 @@ export module customersController {
       CustomerActions.updateData(data, customerID, err => {
         if (err) {
           _handleResponse(
-            {statusCode: 500, message: 'customer data cannot be updated'},
+            {statusCode: 500, message: 'Customer data cannot be updated'},
             res
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'customer data was updated sucessfully'},
+          {statusCode: 200, message: 'Customer data was updated sucessfully'},
           res
         );
       });
@@ -239,7 +239,7 @@ export module customersController {
   export const _updatePassword = async (req, res) => {
     const permissions = ac
       .can(req.user.role)
-      .updateOwn(PermissionActions.customer);
+      .updateOwn(PermissionActions.CUSTOMER);
     if (permissions.granted) {
       const {customerID} = req.user;
       //TODO: VALIDATE DATA

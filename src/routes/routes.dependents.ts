@@ -3,7 +3,7 @@ import {DependentsController} from '../http/controllers/controller.dependents';
 import { PermissionActions } from '../models/types/gen/gen.permissions';
 import { AccessControlMiddelware } from '../http/middlewares/middelware.access.validation';
 
-const _resource = PermissionActions.customer;
+const _resource = PermissionActions.CUSTOMER;
 
 export const DependentsRoute = (app: express.Application) => {
 
@@ -17,7 +17,7 @@ export const DependentsRoute = (app: express.Application) => {
   
   /**
    * * Get dependents for a customer
-   * @protected Admin or User with customer ID
+   * @protected Admin or User with Customer ID
    * @param customerID
    */
   app.get('/dependentsFor/:customerID', AccessControlMiddelware._grantAccess((query) => {

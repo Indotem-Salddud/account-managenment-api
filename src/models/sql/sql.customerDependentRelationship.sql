@@ -1,5 +1,5 @@
 -- Relation Many to Many customers -> Dependents
-CREATE TABLE `customerDependentsRelation` IF NOT EXISTS (
+CREATE TABLE `CustomerDependentsRelation` IF NOT EXISTS (
     customerID INT NOT NULL,
     dependentID INT NOT NULL,
     FOREIGN KEY (customerID) REFERENCE customers(id),

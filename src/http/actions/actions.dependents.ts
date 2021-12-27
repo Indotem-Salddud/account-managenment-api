@@ -20,7 +20,7 @@ export module DependentsActions {
    * @param customerID {string}
    * @param callback {Function}
    */
-  export const findAllcustomerDependents = (
+  export const findAllCustomerDependents = (
     customerID: string,
     callback: Function
   ) => {

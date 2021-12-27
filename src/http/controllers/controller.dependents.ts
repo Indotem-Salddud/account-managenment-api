@@ -21,7 +21,7 @@ export module DependentsController {
         }
         // call to action
         // TODO: Add 204 for empty dependents list and 404 for customer not found
-        DependentsActions.findAllcustomerDependents(customerID, (err?: string, data?: Dependent[]) => {
+        DependentsActions.findAllCustomerDependents(customerID, (err?: string, data?: Dependent[]) => {
             if (err) {
                 _handleResponse(
                     { statusCode: 500, message: 'Server response cannot be processed' },
@@ -59,7 +59,7 @@ export module DependentsController {
                 );
             });
         } else {
-            DependentsActions.findAllcustomerDependents(customerID, (err?: string, data?: Dependent[]) => {
+            DependentsActions.findAllCustomerDependents(customerID, (err?: string, data?: Dependent[]) => {
                 if (err) {
                     _handleResponse(
                         { statusCode: 500, message: 'Server response cannot be processed' },

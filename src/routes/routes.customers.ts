@@ -1,11 +1,11 @@
 import express from 'express';
-import {customersController} from '../http/controllers/controller.customers';
+import {CustomersController} from '../http/controllers/controller.customers';
 import { PermissionActions } from '../models/types/gen/gen.permissions';
 import { AccessControlMiddelware } from '../http/middlewares/middelware.access.validation';
 
-const _resource = PermissionActions.customer;
+const _resource = PermissionActions.CUSTOMER;
 
-export const customersRoute = (app: express.Application) => {
+export const CustomersRoute = (app: express.Application) => {
   /**
    * * Get customer by ID endpoint
    * @param acccountID {Number}
@@ -13,12 +13,12 @@ export const customersRoute = (app: express.Application) => {
    */
   app.get(`/:customerID`, [AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_resource);
-  })], customersController._getById);
+  })], CustomersController._getById);
   /**
    * * Get all customer staff
    * @protected Admin
    */
-  app.get(`/`, customersController._getAll);
+  app.get(`/`, CustomersController._getAll);
   /**
    * * Login
    * @body {
@@ -26,13 +26,13 @@ export const customersRoute = (app: express.Application) => {
    *  @param password: {string}
    * }
    */
-  app.post('/login', customersController._login);
+  app.post('/login', CustomersController._login);
   /**
    * * Delete customer by ID
    * @param customerID {Number}
    * @protected Admin
    */
-  app.delete('/:customerID', customersController._deletecustomer);
+  app.delete('/:customerID', CustomersController._deleteCustomer);
   /**
    * * Update customer status by ID
    * @param customerID {Number}
@@ -41,7 +41,7 @@ export const customersRoute = (app: express.Application) => {
    *  @param status {Number}
    * }
    */
-  app.patch('/status/:customerID', customersController._updateStatus);
+  app.patch('/status/:customerID', CustomersController._updateStatus);
   /**
    * * Update customer data by ID
    * @param customerID {Number}
@@ -53,7 +53,7 @@ export const customersRoute = (app: express.Application) => {
    *  @param direction? {direction}
    * }
    */
-  app.put('/:customerID', customersController._updateById);
+  app.put('/:customerID', CustomersController._updateById);
   /**
    * * Update customer password
    * @protected Only customer with ID provided by Token
@@ -61,5 +61,5 @@ export const customersRoute = (app: express.Application) => {
    *  @param password {string} 
    * }
    */
-  app.put('/password', customersController._updatePassword);
+  app.put('/password', CustomersController._updatePassword);
 };

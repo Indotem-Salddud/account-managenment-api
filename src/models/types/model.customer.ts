@@ -1,7 +1,7 @@
 import {Identificable} from './gen/gen.identificable';
 import {Direction} from './gen/gen.direction';
 
-export const _tableName = 'customers';
+export const _tableName = 'Customers';
 export interface TinyCustomer extends Identificable {
   name: string;
   username: string;

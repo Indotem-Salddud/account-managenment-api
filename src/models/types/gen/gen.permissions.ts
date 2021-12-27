@@ -14,7 +14,7 @@ export enum PermissionRoles {
  * * whitehatdevv - 2021/12/14
  */
 export enum PermissionActions {
-  customer = 'customer',
+  CUSTOMER = 'customer',
   DEPENDENTS = 'dependents'
 }
 
@@ -31,7 +31,7 @@ const grantedObject = {
         },
     },
     ADMIN: {
-      CUSTOMERS: {
+      CUSTOMER: {
         'update:any': ['*'],
         'read:any': ['*'],
         'delete:any': ['*'],
