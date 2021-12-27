@@ -8,6 +8,14 @@ const _resource = PermissionActions.ACCOUNT;
 export const DependentsRoute = (app: express.Application) => {
 
   /**
+   * * Create new owned dependent
+   * @protected Logged account
+   */
+   app.post('myDependents/', AccessControlMiddelware._grantAccess((query) => {
+    return query.createOwn(_resource);
+  }),DependentsController._newOwnedDependent)
+  
+  /**
    * * Get dependents for a account
    * @protected Admin or User with Account ID
    * @param accountID
@@ -24,5 +32,4 @@ export const DependentsRoute = (app: express.Application) => {
   app.get('myDependents/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_resource);
   }),DependentsController._getMyDependentById)
-  
 };
