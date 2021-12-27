@@ -1,4 +1,4 @@
-import {CustomerActions} from '../actions/actions.customers';
+import {AuthActions} from '../actions/actions.auth';
 import {_handleResponse} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
 import {
@@ -16,7 +16,7 @@ export module AuthController {
  export const _login = async (req, res) => {
     const {username, password} = req.body;
     //TODO: VALIDATE FIELDS
-    CustomerActions.login(
+    AuthActions.login(
       username,
       password,
       (err?: string, ctrl: boolean = false, id?: string) => {
@@ -47,7 +47,7 @@ export module AuthController {
       const {customerID} = req.user;
       //TODO: VALIDATE DATA
       const {password} = req.body;
-      CustomerActions.updatePassword(password, customerID, err => {
+      AuthActions.updatePassword(password, customerID, err => {
         if (err) {
           _handleResponse(
             {statusCode: 500, message: 'Password cannot be updated'},
