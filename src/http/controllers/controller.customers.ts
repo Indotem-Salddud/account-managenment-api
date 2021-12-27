@@ -1,9 +1,9 @@
 import express from 'express';
 import {
-  TinyAccount,
-  UpdateAccountModel,
-} from '../../models/types/model.account';
-import {AccountActions} from '../actions/actions.accounts';
+  TinyCustomer,
+  UpdateCustomerModel,
+} from '../../models/types/model.customer';
+import {CustomerActions} from '../actions/actions.customers';
 import {_handleResponse} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
 import {
@@ -12,9 +12,9 @@ import {
   PermissionRoles,
 } from '../../models/types/gen/gen.permissions';
 
-export module AccountsController {
+export module customersController {
   /**
-   * ! Controller function to get account by their ID
+   * ! Controller function to get customer by their ID
    * * whitehatdevv - 2021/12/13
    * @param req {Request}
    * @param res {Response}
@@ -23,15 +23,15 @@ export module AccountsController {
     req: express.Request,
     res: express.Response
   ) => {
-    const {accountID} = req.params;
-      if (!accountID) {
+    const {customerID} = req.params;
+      if (!customerID) {
         _handleResponse(
           {statusCode: 400, message: 'Data provided is not valid'},
           res
         );
       }
       // call to action
-      AccountActions.findById(accountID, (err?: string, data?: TinyAccount) => {
+      CustomerActions.findById(customerID, (err?: string, data?: TinyCustomer) => {
         if (err) {
           _handleResponse(
             {statusCode: 500, message: 'Server response cannot be processed'},
@@ -39,14 +39,14 @@ export module AccountsController {
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'Account data received', data: data},
+          {statusCode: 200, message: 'customer data received', data: data},
           res
         );
       });
   };
 
   /**
-   * ! Controller function to all account staff
+   * ! Controller function to all customer staff
    * * whitehatdevv - 2021/12/13
    * @param req {Request}
    * @param res {Response}
@@ -55,10 +55,10 @@ export module AccountsController {
     // permissions
     const permissions = ac
       .can(req.user.role)
-      .readAny(PermissionActions.ACCOUNT);
+      .readAny(PermissionActions.customer);
     if (permissions.granted) {
       // call to action
-      AccountActions.findAll((err?: string, data?: TinyAccount) => {
+      CustomerActions.findAll((err?: string, data?: TinyCustomer) => {
         if (err) {
           _handleResponse(
             {statusCode: 500, message: 'Server response cannot be processed'},
@@ -66,7 +66,7 @@ export module AccountsController {
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'Account data received', data: data},
+          {statusCode: 200, message: 'customer data received', data: data},
           res
         );
       });
@@ -87,7 +87,7 @@ export module AccountsController {
   export const _login = async (req, res) => {
     const {username, password} = req.body;
     //TODO: VALIDATE FIELDS
-    AccountActions.login(
+    CustomerActions.login(
       username,
       password,
       (err?: string, ctrl: boolean = false, id?: string) => {
@@ -105,35 +105,35 @@ export module AccountsController {
   };
 
   /**
-   * ! Delete account data by ID
+   * ! Delete customer data by ID
    * * whitehatdevv - 2021/12/14
    * TODO: Delete in cascade all relaionships associated
    * @param req {Request}
    * @param res {Response}
    */
-  export const _deleteAccount = async (req, res) => {
+  export const _deletecustomer = async (req, res) => {
     const permissions = ac
       .can(req.user.role)
-      .deleteOwn(PermissionActions.ACCOUNT);
+      .deleteOwn(PermissionActions.customer);
     if (permissions.granted) {
-      const {accountID} =
+      const {customerID} =
         req.user.role == PermissionRoles.USER ? req.user : req.params;
-      if (!accountID) {
+      if (!customerID) {
         _handleResponse(
-          {statusCode: 400, message: 'Account ID not provided'},
+          {statusCode: 400, message: 'customer ID not provided'},
           res
         );
       }
       // call to action
-      AccountActions.deleteAccount(accountID, (err: string = null) => {
+      CustomerActions.deletecustomer(customerID, (err: string = null) => {
         if (err) {
           _handleResponse(
-            {statusCode: 500, message: 'Account cannot be deleted'},
+            {statusCode: 500, message: 'customer cannot be deleted'},
             res
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'Account was delete sucessfully'},
+          {statusCode: 200, message: 'customer was delete sucessfully'},
           res
         );
       });
@@ -146,7 +146,7 @@ export module AccountsController {
   };
 
   /**
-   * ! Update account status by accountID
+   * ! Update customer status by customerID
    * * whitehatdevv - 2021/12/14
    * @param req {Request}
    * @param res {Response}
@@ -154,28 +154,28 @@ export module AccountsController {
   export const _updateStatus = async (req, res) => {
     const permissions = ac
       .can(req.user.role)
-      .updateOwn(PermissionActions.ACCOUNT);
+      .updateOwn(PermissionActions.customer);
     if (permissions.granted) {
-      const {accountID} =
+      const {customerID} =
         req.user.role == PermissionRoles.USER ? req.user : req.params;
       const {status} = req.body;
       // TODO: VALIDATE ACOUNT STATUS
-      if (!accountID) {
+      if (!customerID) {
         _handleResponse(
-          {statusCode: 400, message: 'Account ID not provided'},
+          {statusCode: 400, message: 'customer ID not provided'},
           res
         );
       }
       // call to action
-      AccountActions.updateStatus(accountID, status, (err: string = null) => {
+      CustomerActions.updateStatus(customerID, status, (err: string = null) => {
         if (err) {
           _handleResponse(
-            {statusCode: 500, message: 'Account status cannot be updated'},
+            {statusCode: 500, message: 'customer status cannot be updated'},
             res
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'Account status was updated sucessfully'},
+          {statusCode: 200, message: 'customer status was updated sucessfully'},
           res
         );
       });
@@ -188,7 +188,7 @@ export module AccountsController {
   };
 
   /**
-   * ! Update account data by accountID
+   * ! Update customer data by customerID
    * * whitehatdevv - 2021/12/14
    * @param req {Request}
    * @param res {Response}
@@ -196,29 +196,29 @@ export module AccountsController {
   export const _updateById = async (req, res) => {
     const permissions = ac
       .can(req.user.role)
-      .updateOwn(PermissionActions.ACCOUNT);
+      .updateOwn(PermissionActions.customer);
     if (permissions.granted) {
-      const {accountID} =
+      const {customerID} =
         req.user.role == PermissionRoles.USER ? req.user : req.params;
-      if (!accountID) {
+      if (!customerID) {
         _handleResponse(
-          {statusCode: 400, message: 'Account ID not provided'},
+          {statusCode: 400, message: 'customer ID not provided'},
           res
         );
       }
 
       //TODO: VALIDATE FIELDS
-      const data: UpdateAccountModel = req.body;
+      const data: UpdateCustomerModel = req.body;
       // call to action
-      AccountActions.updateData(data, accountID, err => {
+      CustomerActions.updateData(data, customerID, err => {
         if (err) {
           _handleResponse(
-            {statusCode: 500, message: 'Account data cannot be updated'},
+            {statusCode: 500, message: 'customer data cannot be updated'},
             res
           );
         }
         _handleResponse(
-          {statusCode: 200, message: 'Account data was updated sucessfully'},
+          {statusCode: 200, message: 'customer data was updated sucessfully'},
           res
         );
       });
@@ -231,7 +231,7 @@ export module AccountsController {
   };
 
   /**
-   * ! Update password by account ID
+   * ! Update password by customer ID
    * * whitehatdevv - 2021/12/14
    * @param req {Request}
    * @param res {Response}
@@ -239,12 +239,12 @@ export module AccountsController {
   export const _updatePassword = async (req, res) => {
     const permissions = ac
       .can(req.user.role)
-      .updateOwn(PermissionActions.ACCOUNT);
+      .updateOwn(PermissionActions.customer);
     if (permissions.granted) {
-      const {accountID} = req.user;
+      const {customerID} = req.user;
       //TODO: VALIDATE DATA
       const {password} = req.body;
-      AccountActions.updatePassword(password, accountID, err => {
+      CustomerActions.updatePassword(password, customerID, err => {
         if (err) {
           _handleResponse(
             {statusCode: 500, message: 'Password cannot be updated'},

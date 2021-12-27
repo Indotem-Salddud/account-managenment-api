@@ -6,7 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import {apiDocumentation} from './docs/api.docs.js';
 import * as dotenv from 'dotenv';
-import { AccountsRoute } from './routes/routes.accounts.js';
+import { customersRoute } from './routes/routes.customers.js';
 import { Debugger } from './http/common/Debug/Debugger.js';
 
 dotenv.config();
@@ -24,7 +24,7 @@ app.set('PORT', process.env.PORT || 3000);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 
 // setting routes
-AccountsRoute(app);
+customersRoute(app);
 
 app.listen(app.get('PORT'), () => {
   Debugger.shared._printLog(Environment, DebuggerTypes.debug, `Starting app at: ${app.get('PORT')}`);

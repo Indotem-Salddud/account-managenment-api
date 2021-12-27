@@ -34,7 +34,7 @@ export module JWTMiddelware {
     // get payload
     const payload = jwt.decode(token, {complete: true});
     return {
-      accountID: payload.payload.accountID,
+      customerID: payload.payload.customerID,
       role: payload.payload.role,
     };
   };
@@ -44,17 +44,17 @@ export module JWTMiddelware {
    * * whitehatdevv - 2021/12/13
    * * Token valid for 2 hours
    * TODO: Pending validation of token expiration
-   * @param accountID {string}
+   * @param customerID {string}
    * @return token {string}
    */
-  export const _signIn = (accountID: string): Token => {
+  export const _signIn = (customerID: string): Token => {
     return {
       expiration: _expMax,
       token: jwt.sign(
         {
           exp: _expMax,
           payload: {
-            accountID: accountID,
+            customerID: customerID,
             role: PermissionRoles.USER
           },
         },
@@ -100,7 +100,7 @@ export module JWTMiddelware {
         );
       }
       req.user = {
-        accountID: value.payload.accountID,
+        customerID: value.payload.customerID,
         role: value.payload.role
       };
       next();

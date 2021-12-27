@@ -1,2 +1,2 @@
-# account-managenment-api
-Account Managments API
+# customer-managenment-api
+customer Managments API

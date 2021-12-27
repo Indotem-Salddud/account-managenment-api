@@ -1,41 +1,41 @@
 import {Direction} from '../../models/types/gen/gen.direction';
 import {
-  TinyAccount,
-  UpdateAccountModel,
+  TinyCustomer,
+  UpdateCustomerModel,
   _tableName,
-} from '../../models/types/model.account';
+} from '../../models/types/model.customer';
 import * as bcrypt from 'bcryptjs';
 import {db} from '../core/core.db';
 
-export module AccountActions {
+export module CustomerActions {
   /**
-   * ! Get account data by account ID
+   * ! Get customer data by customer ID
    * * whitehatdevv - 2021/12/12
-   * @param accountID {Number}
+   * @param customerID {Number}
    * @param callback {Function}
    */
-  export const findById = (accountID: string, callback: Function) => {
+  export const findById = (customerID: string, callback: Function) => {
     const queryString = `SELECT * FROM ${_tableName} WHERE id=?`;
-    db.query(queryString, [accountID], (err, result) => {
+    db.query(queryString, [customerID], (err, result) => {
       if (err) {
         callback(err);
       }
       const row = result[0];
       const direction: Direction = JSON.parse(row.direction);
-      const account: TinyAccount = {
-        id: accountID,
+      const customer: TinyCustomer = {
+        id: customerID,
         name: row.name,
         username: row.username,
         email: row.email,
         phone: row.phone,
         direction: direction,
       };
-      callback(null, account);
+      callback(null, customer);
     });
   };
 
   /**
-   * ! Get all accounts data storage in DB
+   * ! Get all customers data storage in DB
    * * whitehatdevv - 2021/12/12
    * @param callback {Function}
    */
@@ -63,7 +63,7 @@ export module AccountActions {
   };
 
   /**
-   * ! Perform a login comparing password and status of account
+   * ! Perform a login comparing password and status of customer
    * * whitehatdevv - 2021/12/14
    * @param username {string}
    * @param password {string}
@@ -79,10 +79,10 @@ export module AccountActions {
       if (err) {
         callback(err);
       }
-      const {id, status, accountPassword} = result[0];
+      const {id, status, customerPassword} = result[0];
       if (status == 1) {
         // check password
-        bcrypt.compare(password, accountPassword, (err, ctrl) => {
+        bcrypt.compare(password, customerPassword, (err, ctrl) => {
           if (err) {
             callback(err);
           }
@@ -92,19 +92,19 @@ export module AccountActions {
           callback('The password was wrong');
         });
       }
-      callback('Account was disabled');
+      callback('customer was disabled');
     });
   };
 
   /**
    * ! Method to delete acount by ID
    * * whitehatdevv - 2021/12/14
-   * @param accountID {string}
+   * @param customerID {string}
    * @param callback {Function}
    */
-  export const deleteAccount = (accountID: string, callback: Function) => {
+  export const deletecustomer = (customerID: string, callback: Function) => {
     const queryString = `DELETE FROM ${_tableName} WHERE id=?`;
-    db.query(queryString, [accountID], err => {
+    db.query(queryString, [customerID], err => {
       if (err) {
         callback(err);
       }
@@ -113,19 +113,19 @@ export module AccountActions {
   };
 
   /**
-   * ! Update account status by account ID
+   * ! Update customer status by customer ID
    * * whitehatdevv - 2021/12/14
-   * @param accountID {string}
+   * @param customerID {string}
    * @param status {string}
    * @param callback {string}
    */
   export const updateStatus = (
-    accountID: string,
+    customerID: string,
     status: number,
     callback: Function
   ) => {
     const queryString = `UPDATE ${_tableName} SET status=? WHERE id=?`;
-    db.query(queryString, [status, accountID], err => {
+    db.query(queryString, [status, customerID], err => {
       if (err) {
         callback(err);
       }
@@ -134,15 +134,15 @@ export module AccountActions {
   };
 
   /**
-   * ! Update account data by ID
+   * ! Update customer data by ID
    * * whitehatdevv - 2021/12/14
-   * @param updatedData {UpdateAccountModel}
-   * @param accountID {string}
+   * @param updatedData {UpdatecustomerModel}
+   * @param customerID {string}
    * @param callback {Function}
    */
   export const updateData = (
-    updatedData: UpdateAccountModel,
-    accountID: string,
+    updatedData: UpdateCustomerModel,
+    customerID: string,
     callback: Function
   ) => {
     const queryString = `UPDATE ${_tableName} SET name=IsNULL(@name, ?), email=IsNULL(@email, ?), phone=IsNULL(@phone, ?), direction=IsNULL(@direction, ?) WHERE id=?`;
@@ -153,7 +153,7 @@ export module AccountActions {
         updatedData.email,
         updatedData.phone,
         JSON.stringify(updatedData.direction),
-        accountID,
+        customerID,
       ],
       err => {
         if (err) {
@@ -165,15 +165,15 @@ export module AccountActions {
   };
 
   /**
-   * ! Update account password by ID
+   * ! Update customer password by ID
    * * whitehatdevv - 2021/12/14
    * @param password {string}
-   * @param accountID {string}
+   * @param customerID {string}
    * @param callback {Function}
    */
   export const updatePassword = (
     password: string,
-    accountID: string,
+    customerID: string,
     callback: Function
   ) => {
     // hash password
@@ -181,7 +181,7 @@ export module AccountActions {
       .hash(password, 10)
       .then(hash => {
         const queryString = `UPDATE ${_tableName} SET password=? WHERE id=?`;
-        db.query(queryString, [hash, accountID], err => {
+        db.query(queryString, [hash, customerID], err => {
           if (err) {
             callback(err);
           }

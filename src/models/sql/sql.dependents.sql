@@ -1,4 +1,4 @@
--- Contains all dependen mixed with accounts
+-- Contains all dependen mixed with customers
 CREATE TABLE `Dependents` IF NOT EXISTS (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,

@@ -1,37 +1,37 @@
 import {Direction} from '../../models/types/gen/gen.direction';
 import {
-  TinyAccount,
-  UpdateAccountModel,
+  TinyCustomer,
+  UpdateCustomerModel,
   _tableName,
-} from '../../models/types/model.account';
+} from '../../models/types/model.customer';
 import {
   _dependentTableName,
 } from '../../models/types/model.dependent';
 import {
-  _accountDependentRealtionshipTableName
-} from '../../models/types/model.accountDependentRelationship';
+  _customerDependentRealtionshipTableName
+} from '../../models/types/model.customerDependentRelationship';
 import * as bcrypt from 'bcryptjs';
 import {db} from '../core/core.db';
 
 export module DependentsActions {
   /**
-   * ! Get all dependents for a account by account id
+   * ! Get all dependents for a customer by customer id
    * * DanBaDo - 2021/12/19
-   * @param accountID {string}
+   * @param customerID {string}
    * @param callback {Function}
    */
-  export const findAllAccountDependents = (
-    accountID: string,
+  export const findAllcustomerDependents = (
+    customerID: string,
     callback: Function
   ) => {
     const queryString = `
       SELECT *
       FROM ${_dependentTableName}
-      INNER JOIN ${_accountDependentRealtionshipTableName} 
-        ON ${_dependentTableName}.id = ${_accountDependentRealtionshipTableName}.dependentID
+      INNER JOIN ${_customerDependentRealtionshipTableName} 
+        ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID
       INNER JOIN ${_tableName}
-        ON ${_accountDependentRealtionshipTableName}.accountID = ${_tableName}.id
-      WHERE ${_tableName}.id = ${accountID}
+        ON ${_customerDependentRealtionshipTableName}.customerID = ${_tableName}.id
+      WHERE ${_tableName}.id = ${customerID}
     `;
     db.query(queryString, (err, result) => {
       if (err) {
@@ -54,25 +54,25 @@ export module DependentsActions {
     });
   };
   /**
-   * ! Get one account owned dependent by id
+   * ! Get one customer owned dependent by id
    * * DanBaDo - 2021/12/25 ✨🎄✨
-   * @param accountID {string}
+   * @param customerID {string}
    * @param dependentID {string}
    * @param callback {Function}
    */
   export const findDependentByOwnerAndID = (
-    accountID: string,
+    customerID: string,
     dependentID: string,
     callback: Function
   ) => {
     const queryString = `
       SELECT *
       FROM ${_dependentTableName}
-      INNER JOIN ${_accountDependentRealtionshipTableName} 
-        ON ${_dependentTableName}.id = ${_accountDependentRealtionshipTableName}.dependentID
+      INNER JOIN ${_customerDependentRealtionshipTableName} 
+        ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID
       INNER JOIN ${_tableName}
-        ON ${_accountDependentRealtionshipTableName}.accountID = ${_tableName}.id
-      WHERE ${_tableName}.id = ${accountID} and ${_dependentTableName}.id = ${dependentID}
+        ON ${_customerDependentRealtionshipTableName}.customerID = ${_tableName}.id
+      WHERE ${_tableName}.id = ${customerID} and ${_dependentTableName}.id = ${dependentID}
     `;
     db.query(queryString, (err, result) => {
       if (err) {
@@ -98,14 +98,14 @@ export module DependentsActions {
   /**
    * ! Insert new dependent and relationship
    * * DanBaDo - 2021/12/27 
-   * @param accountID {string}
+   * @param customerID {string}
    * @param name {string}
    * @param phone {string}
    * @param direction {string}
    * @param callback {Function}
    */
   export const insertNewDependent = (
-    accountID: string,
+    customerID: string,
     name: string,
     phone: string,
     direction: string,
@@ -126,8 +126,8 @@ export module DependentsActions {
         const newDependentId = result.insertId;
         const relationQueryString = `
           INSERT
-          INTO ${_accountDependentRealtionshipTableName} (accountID, dependentID)
-          VALUES (${accountID}, ${newDependentId})
+          INTO ${_customerDependentRealtionshipTableName} (customerID, dependentID)
+          VALUES (${customerID}, ${newDependentId})
         `;
         db.query(relationQueryString, (err) => {
           // if fail inserting relationship, remove new dependent

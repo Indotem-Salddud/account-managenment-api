@@ -5,6 +5,6 @@ import { PermissionRoles } from "./gen.permissions";
  * * whitehatdevv - 2021/12/14
  */
 export interface TokenPayload {
-  accountID: string;
+  customerID: string;
   role: PermissionRoles;
 }
