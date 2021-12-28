@@ -80,7 +80,6 @@ export module DependentsActions {
       }
       callback(
         null,
-        //TODO: Add map parsing address.
         result.map(item => {
           const direction: Direction = JSON.parse(item.direction);
           return {
@@ -111,7 +110,6 @@ export module DependentsActions {
     direction: string,
     callback: Function
   ) => {
-    // TODO: data validation & sanitization
     const dependentQueryString = `
       INSERT
       INTO ${_dependentTableName} (name, phone, direction)
@@ -145,14 +143,17 @@ export module DependentsActions {
             callback(err);
           }
           // return new dependent
-          return {
-            id: newDependentId,
-            name,
-            phone,
-            direction,
-            status: 1,
-            // TODO: what to do for providing new dependent date
-          }
+          callback(
+            null,
+            {
+              id: newDependentId,
+              name,
+              phone,
+              direction,
+              status: 1,
+              // TODO: what to do for providing new dependent date
+            }
+          );
         });
       }
     });
