@@ -5,7 +5,7 @@ import {
   _tableName,
 } from '../../models/types/model.customer';
 import { db } from '../core/core.db';
-import { SQLRunner } from '../core/build/core.build.runner.sql';
+import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
 
 // * SQL Runner to perform MYSQL Requests
 const _runner = new SQLRunner(db, _tableName);
@@ -44,21 +44,22 @@ export module CustomerActions {
    */
   export const findAll = (callback: Function) => {
     const queryString = `SELECT * FROM ${_tableName}`;
-    db.query(queryString, (err, result) => {
-      if (err) {
-        callback(err);
+    _runner.run(queryString, (res: SQLQueryResponse<Array<TinyCustomer>>)=>{
+      if (res.err) {
+        callback(res.err);
       }
       callback(
         null,
-        result.map(item => {
-          const direction: Direction = JSON.parse(item.direction);
+        res.data.map(item => {
+          //TODO: parse direction
+          //const direction: Direction = JSON.parse(item.direction);
           return {
             id: item.id,
             name: item.name,
             username: item.username,
             email: item.email,
             phone: item.phone,
-            direction: direction,
+            //direction: direction,
           };
         })
       );
