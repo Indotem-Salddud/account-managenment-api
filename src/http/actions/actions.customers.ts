@@ -4,8 +4,11 @@ import {
   UpdateCustomerModel,
   _tableName,
 } from '../../models/types/model.customer';
-import * as bcrypt from 'bcryptjs';
-import {db} from '../core/core.db';
+import { db } from '../core/core.db';
+import { SQLRunner } from '../core/build/core.build.runner.sql';
+
+// * SQL Runner to perform MYSQL Requests
+const _runner = new SQLRunner(db, _tableName);
 
 export module CustomerActions {
   /**
@@ -15,12 +18,12 @@ export module CustomerActions {
    * @param callback {Function}
    */
   export const findById = (customerID: string, callback: Function) => {
-    const queryString = `SELECT * FROM ${_tableName} WHERE id=?`;
-    db.query(queryString, [customerID], (err, result) => {
-      if (err) {
-        callback(err);
+    const queryString = `SELECT * FROM ${_tableName} WHERE id=${customerID}`;
+    _runner.run(queryString, (res) => {
+      if (res.err) {
+        callback(res.err);
       }
-      const row = result[0];
+      const row = res.data[0];
       const direction: Direction = JSON.parse(row.direction);
       const customer: TinyCustomer = {
         id: customerID,

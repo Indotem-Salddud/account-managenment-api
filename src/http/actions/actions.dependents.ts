@@ -1,7 +1,5 @@
 import {Direction} from '../../models/types/gen/gen.direction';
 import {
-  TinyCustomer,
-  UpdateCustomerModel,
   _tableName,
 } from '../../models/types/model.customer';
 import {
@@ -10,7 +8,6 @@ import {
 import {
   _customerDependentRealtionshipTableName
 } from '../../models/types/model.customerDependentRelationship';
-import * as bcrypt from 'bcryptjs';
 import {db} from '../core/core.db';
 
 export module DependentsActions {
