@@ -20,3 +20,15 @@ export interface UpdateCustomerModel {
   phone?: string;
   direction?: Direction;
 }
+
+export interface CustomerDTO {
+  id?: Number;
+  name?: string;
+  username: string;
+  email: string;
+  phone: string;
+  direction: string;
+  password: string;
+  status: Number;
+  date: number;
+}
