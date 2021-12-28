@@ -59,18 +59,10 @@ export module DependentsController {
                 );
             });
         } else {
-            DependentsActions.findAllCustomerDependents(customerID, (err?: string, data?: Dependent[]) => {
-                if (err) {
-                    _handleResponse(
-                        { statusCode: 500, message: 'Server response cannot be processed' },
-                        res
-                    );
-                }
-                _handleResponse(
-                    { statusCode: 200, message: 'Dependents data received', data: data },
-                    res
-                );
-            })
+            _handleResponse(
+                { statusCode: 400, message: 'A dependent id is needed.'},
+                res
+            );
         }
     }
 

@@ -16,6 +16,14 @@ export const DependentsRoute = (app: express.Application) => {
   }),DependentsController._newOwnedDependent)
   
   /**
+   * * Get owned dependents
+   * @protected Logged customer
+   */
+   app.get('/all-my-dependents/', AccessControlMiddelware._grantAccess((query) => {
+    return query.readOwn(_resource);
+  }), DependentsController._getDependents);
+
+  /**
    * * Get dependents for a customer
    * @protected Admin or User with Customer ID
    * @param customerID
