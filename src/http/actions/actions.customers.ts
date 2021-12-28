@@ -1,5 +1,6 @@
 import {Direction} from '../../models/types/gen/gen.direction';
 import {
+  CustomerDTO,
   TinyCustomer,
   UpdateCustomerModel,
   _tableName,
@@ -44,7 +45,7 @@ export module CustomerActions {
    */
   export const findAll = (callback: Function) => {
     const queryString = `SELECT * FROM ${_tableName}`;
-    _runner.run(queryString, (res: SQLQueryResponse<Array<TinyCustomer>>)=>{
+    _runner.run(queryString, (res: SQLQueryResponse<Array<CustomerDTO>>)=>{
       if (res.err) {
         callback(res.err);
       }
@@ -52,7 +53,7 @@ export module CustomerActions {
         null,
         res.data.map(item => {
           //TODO: parse direction
-          //const direction: Direction = JSON.parse(item.direction);
+          const direction: Direction = JSON.parse(item.direction);
           return {
             id: item.id,
             name: item.name,
