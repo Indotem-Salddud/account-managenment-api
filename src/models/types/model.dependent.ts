@@ -9,3 +9,13 @@ export interface Dependent extends Identificable {
   status: number;
   date: Date;
 }
+export interface DependentDTO {
+  id?: Number;
+  name?: string;
+  username?: string;
+  email?: string;
+  phone?: string;
+  direction?: string;
+  status?: Number;
+  date?: number;
+}
