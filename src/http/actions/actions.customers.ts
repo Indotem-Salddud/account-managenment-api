@@ -115,7 +115,15 @@ export module CustomerActions {
     customerID: string,
     callback: Function
   ) => {
-    const queryString = `UPDATE ${_tableName} SET name=IsNULL(@name, ${updatedData.name}), email=IsNULL(@email, ${updatedData.email}), phone=IsNULL(@phone, ${updatedData.phone}), direction=IsNULL(@direction, ${updatedData.direction}) WHERE id=${customerID}`;
+    const queryString = `
+      UPDATE ${_tableName}
+      SET
+        name=IsNULL(@name, ${updatedData.name}),
+        email=IsNULL(@email, ${updatedData.email}),
+        phone=IsNULL(@phone, ${updatedData.phone}),
+        direction=IsNULL(@direction, ${updatedData.direction})
+      WHERE id=${customerID}
+    `;
     _runner.run(queryString, (res) => {
       if (res.err) {
         callback(res.err)
