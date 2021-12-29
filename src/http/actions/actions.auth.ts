@@ -3,6 +3,10 @@ import * as bcrypt from 'bcryptjs';
 import {
     _tableName,
   } from '../../models/types/model.customer';
+import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
+
+// * SQL Runner to perform MYSQL Requests
+const _runner = new SQLRunner(db, _tableName);
 
 
 export module AuthActions {
@@ -19,12 +23,12 @@ export module AuthActions {
     password: string,
     callback: Function
   ) => {
-    const queryString = `SELECT id, password, status FROM ${_tableName} WHERE email=? OR username=?`;
-    db.query(queryString, [username, username], (err, result) => {
-      if (err) {
-        callback(err);
+    const queryString = `SELECT id, password, status FROM @table WHERE email=${username} OR username=${username}`;
+    _runner.run(queryString, (res) => {
+      if (res.err) {
+        callback(res.err);
       }
-      const {id, status, customerPassword} = result[0];
+      const {id, status, customerPassword} = res.data[0];
       if (status == 1) {
         // check password
         bcrypt.compare(password, customerPassword, (err, ctrl) => {
@@ -58,10 +62,10 @@ export module AuthActions {
     bcrypt
       .hash(password, 10)
       .then(hash => {
-        const queryString = `UPDATE ${_tableName} SET password=? WHERE id=?`;
-        db.query(queryString, [hash, customerID], err => {
-          if (err) {
-            callback(err);
+        const queryString = `UPDATE @table SET password=${hash} WHERE id=${customerID}`;
+        _runner.run(queryString, (res) => {
+          if (res.err) {
+            callback(res.err);
           }
           callback(null);
         });
