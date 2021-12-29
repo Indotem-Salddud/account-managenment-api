@@ -19,7 +19,7 @@ export module CustomerActions {
    * @param callback {Function}
    */
   export const findById = (customerID: string, callback: Function) => {
-    const queryString = `SELECT * FROM ${_tableName} WHERE id=${customerID}`;
+    const queryString = `SELECT * FROM @table WHERE id=${customerID}`;
     _runner.run(queryString, (res) => {
       if (res.err) {
         callback(res.err);
@@ -44,7 +44,7 @@ export module CustomerActions {
    * @param callback {Function}
    */
   export const findAll = (callback: Function) => {
-    const queryString = `SELECT * FROM ${_tableName}`;
+    const queryString = `SELECT * FROM @table`;
     _runner.run(queryString, (res: SQLQueryResponse<Array<CustomerDTO>>)=>{
       if (res.err) {
         callback(res.err);
@@ -73,7 +73,7 @@ export module CustomerActions {
    * @param callback {Function}
    */
   export const deleteCustomer = (customerID: string, callback: Function) => {
-    const queryString = `DELETE FROM ${_tableName} WHERE id=${customerID}`;
+    const queryString = `DELETE FROM @table WHERE id=${customerID}`;
     _runner.run(queryString, (res)=>{
       if (res.err) {
         callback(res.err)
@@ -94,7 +94,7 @@ export module CustomerActions {
     status: number,
     callback: Function
   ) => {
-    const queryString = `UPDATE ${_tableName} SET status=${status} WHERE id=${customerID}`;
+    const queryString = `UPDATE @table SET status=${status} WHERE id=${customerID}`;
     _runner.run(queryString,(res)=>{
       if (res.err) {
         callback(res.err);
@@ -116,7 +116,7 @@ export module CustomerActions {
     callback: Function
   ) => {
     const queryString = `
-      UPDATE ${_tableName}
+      UPDATE @table
       SET
         name=IsNULL(@name, ${updatedData.name}),
         email=IsNULL(@email, ${updatedData.email}),
