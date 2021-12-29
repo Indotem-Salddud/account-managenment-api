@@ -16,6 +16,14 @@ export const DependentsRoute = (app: express.Application) => {
   }),DependentsController._newOwnedDependent)
   
   /**
+   * * Create new dependent for a customer
+   * @protected Admin
+   */
+   app.post('/dependents/', AccessControlMiddelware._grantAccess((query) => {
+    return query.createAny(_resource);
+  }),DependentsController._newDependentForCustomer)
+  
+  /**
    * * Get owned dependents
    * @protected Logged customer
    */

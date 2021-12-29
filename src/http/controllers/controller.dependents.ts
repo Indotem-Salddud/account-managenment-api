@@ -1,7 +1,7 @@
 import {DependentsActions} from '../actions/actions.dependents';
 import {_handleResponse} from '../common/common.responseHandler';
 import { PermissionRoles} from '../../models/types/gen/gen.permissions';
-import { Dependent } from '../../models/types/model.dependent';
+import { Dependent, newDependentForCustomerDTO } from '../../models/types/model.dependent';
 
 export module DependentsController {
     /**
@@ -67,7 +67,7 @@ export module DependentsController {
     }
 
     /**
-     * ! Create new dependet for a customer
+     * ! Owner create new dependet
      * * DanBaDo - 2021-12-27
      * @param req {Request}
      * @param res {Response}
@@ -91,4 +91,70 @@ export module DependentsController {
             );
         });
     }
+
+    /**
+     * ! Create new dependet for a customer
+     * * DanBaDo - 2021-12-29
+     * @param req {Request}
+     * @param res {Response}
+     */
+    export const _newDependentForCustomer = async (req, res)=>{
+        const data: newDependentForCustomerDTO = req.body;
+        const customers = data.customersIds;
+        const dependent = data.dependent;
+        DependentsActions.newDependent(
+            dependent.name,
+            dependent.phone,
+            dependent.direction,
+            (err: string, newDependent: Dependent) => {
+                if (err) {
+                    _handleResponse(
+                        { statusCode: 500, message: 'Server response cannot be processed' },
+                        res
+                    )
+                }
+                customers.forEach(
+                    (customerId) => {
+                        DependentsActions.linkDependentToCustomer(
+                            newDependent.id,
+                            customerId,
+                            (err)=>{
+                                if (err) {
+                                    _handleResponse(
+                                        {
+                                            statusCode: 206,
+                                            message: "Fail linking dependent to one or more customers",
+                                            data: {
+                                                id: newDependent.id,
+                                                name: dependent.name,
+                                                phone: dependent.phone,
+                                                direction: dependent.direction,
+                                                status: "Fail linking dependent to one or more customers"
+                                            }
+                                        },
+                                        res
+                                    );
+                                }
+                            }
+                        );
+                    }
+                );
+                _handleResponse(
+                    {
+                        statusCode: 201,
+                        message: "Dependent data saved and linked to owners",
+                        data: {
+                            id: newDependent.id,
+                            name: dependent.name,
+                            phone: dependent.phone,
+                            direction: dependent.direction,
+                            status: "Dependent data saved and linked to owners"
+                        }
+                    },
+                    res
+                );
+            }
+        
+        );
+    };
 }

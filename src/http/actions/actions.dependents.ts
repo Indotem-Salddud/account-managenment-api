@@ -11,10 +11,12 @@ import {
   _customerDependentRealtionshipTableName
 } from '../../models/types/model.customerDependentRelationship';
 import {db} from '../core/core.db';
-import { SQLQueryResponse,SQLRunner } from '../core/build/core.build.runner.sql';
+import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
+import { SQLInsertResponse } from '../../models/types/gen/gen.SQLResponse';
 
-// * SQL Runner to perform MYSQL Requests
-const _runner = new SQLRunner(db, _tableName);
+// * SQL Runners to perform MYSQL Requests
+const _dependentsRunner = new SQLRunner(db, _dependentTableName);
+const _relationshipRunner = new SQLRunner(db, _customerDependentRealtionshipTableName);
 
 export module DependentsActions {
   /**
@@ -30,13 +32,13 @@ export module DependentsActions {
     const queryString = `
       SELECT *
       FROM ${_dependentTableName}
-      INNER JOIN ${_customerDependentRealtionshipTableName} 
-        ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID
-      INNER JOIN @table
-        ON ${_customerDependentRealtionshipTableName}.customerID = @table.id
+      INNER JOIN @table 
+        ON ${_dependentTableName}.id = @table.dependentID
+      INNER JOIN ${_tableName}
+        ON @table.customerID = ${_tableName}.id
       WHERE @table.id = ${customerID}
     `;
-    _runner.run(queryString, (res: SQLQueryResponse<Array<DependentDTO>>)=>{
+    _relationshipRunner.run(queryString, (res: SQLQueryResponse<Array<DependentDTO>>)=>{
       if (res.err) {
         callback(res.err);
       }
@@ -69,15 +71,15 @@ export module DependentsActions {
     callback: Function
   ) => {
     const queryString = `
-      SELECT *
-      FROM ${_dependentTableName}
-      INNER JOIN ${_customerDependentRealtionshipTableName} 
-        ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID
-      INNER JOIN @table
-        ON ${_customerDependentRealtionshipTableName}.customerID = @table.id
-      WHERE @table.id = ${customerID} and ${_dependentTableName}.id = ${dependentID}
-    `;
-    _runner.run(queryString, (res) => {
+    SELECT *
+    FROM ${_dependentTableName}
+    INNER JOIN @table 
+      ON ${_dependentTableName}.id = @table.dependentID
+    INNER JOIN ${_tableName}
+      ON @table.customerID = ${_tableName}.id
+    WHERE @table.id = ${customerID}
+  `;
+  _relationshipRunner.run(queryString, (res) => {
       if (res.err) {
         callback(res.err)
       }
@@ -112,11 +114,11 @@ export module DependentsActions {
   ) => {
     const dependentQueryString = `
       INSERT
-      INTO ${_dependentTableName} (name, phone, direction)
+      INTO @table (name, phone, direction)
       VALUES (${name}, ${phone}, ${direction})
     `;
     // insert dependent
-    _runner.run(dependentQueryString, (res) => {
+    _dependentsRunner.run(dependentQueryString, (res) => {
       if (res.err) {
         callback(res.err)
       } else {
@@ -125,18 +127,18 @@ export module DependentsActions {
         const newDependentId = row.id;
         const relationQueryString = `
           INSERT
-          INTO ${_customerDependentRealtionshipTableName} (customerID, dependentID)
+          INTO @table (customerID, dependentID)
           VALUES (${customerID}, ${newDependentId})
         `;
-        _runner.run(relationQueryString, (res) => {
+        _relationshipRunner.run(relationQueryString, (res) => {
           // if fail inserting relationship, remove new dependent
           if (res.err) {
             const removeNewDependentQueryString = `
               DELETE
-              FROM ${_dependentTableName}
+              FROM @table
               WHERE id = ${newDependentId}
             `;
-            _runner.run(removeNewDependentQueryString, (res) => {
+            _dependentsRunner.run(removeNewDependentQueryString, (res) => {
               if (res.err) {
                 callback(res.err)
               }
@@ -159,4 +161,67 @@ export module DependentsActions {
       }
     });
   }
+
+  /**
+   * ! Insert new dependent
+   * * DanBaDo - 2021/12/29
+   * @param name {string}
+   * @param phone {string}
+   * @param direction {string}
+   * @param callback {Function}
+   */
+  export const newDependent = (
+    name: string,
+    phone: string,
+    direction: string,
+    callback: Function
+  ) => {
+    const queryString = `
+      INSERT
+      INTO @table (name, phone, direction)
+      VALUES (${name}, ${phone}, ${direction})
+    `;
+    //TODO: Unify Carlos & Daniel interfaces
+    _dependentsRunner.run( queryString, (res: SQLQueryResponse<SQLInsertResponse>) => {
+      if (res.err) {
+        callback(res.err)
+      }
+      callback(
+        null,
+        {
+          id: res.data.insertId,
+          name,
+          phone,
+          direction,
+          status: 1,
+          // TODO: what to do for providing new dependent date
+        }
+      )
+    });
+  };
+
+  /**
+   * ! Link dependent to customer
+   * * DanBaDo - 2021/12/29
+   * @param dependentId {string}
+   * @param customerId {string}
+   * @param callback {Function}
+   */
+  export const linkDependentToCustomer = (
+    dependentId: string,
+    customerId: string,
+    callback: Function
+  ) => {
+    const queryString = `
+      INSERT
+      INTO @table (customerID, dependentID)
+      VALUES (${customerId}, ${dependentId})
+    `;
+    _relationshipRunner.run(queryString, (res) => {
+      if (res.err) {
+        callback(res.err)
+      }
+      callback()
+    });
+  };
 }
