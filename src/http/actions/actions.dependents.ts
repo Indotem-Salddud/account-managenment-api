@@ -3,12 +3,15 @@ import {
   _tableName,
 } from '../../models/types/model.customer';
 import {
+  newDependentDTO,
   _dependentTableName,
 } from '../../models/types/model.dependent';
 import {
   _customerDependentRealtionshipTableName
 } from '../../models/types/model.customerDependentRelationship';
 import {db} from '../core/core.db';
+import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
+import { SQLInsertResponse } from '../../models/types/gen/gen.SQLResponse';
 
 export module DependentsActions {
   /**
@@ -155,4 +158,57 @@ export module DependentsActions {
       }
     });
   }
+
+  //TODO: Unify Carlos & Daniel runners
+
+  const _dependentsRunner = new SQLRunner(db, _dependentTableName);
+  const _realtionshipRunner = new SQLRunner(db, _customerDependentRealtionshipTableName);
+
+  export const newDependent = (
+    name: string,
+    phone: string,
+    direction: string,
+    callback: Function
+  ) => {
+    const queryString = `
+      INSERT
+      INTO ${_dependentTableName} (name, phone, direction)
+      VALUES (${name}, ${phone}, ${direction})
+    `;
+    //TODO: Unify Carlos & Daniel interfaces
+    _dependentsRunner.run( queryString, (res: SQLQueryResponse<SQLInsertResponse>) => {
+      if (res.err) {
+        callback(res.err)
+      }
+      callback(
+        null,
+        {
+          id: res.data.insertId,
+          name,
+          phone,
+          direction,
+          status: 1,
+          // TODO: what to do for providing new dependent date
+        }
+      )
+    });
+  };
+
+  export const linkDependentToCustomer = (
+    dependentId: string,
+    customerId: string,
+    callback: Function
+  ) => {
+    const queryString = `
+      INSERT
+      INTO ${_customerDependentRealtionshipTableName} (customerID, dependentID)
+      VALUES (${customerId}, ${dependentId})
+    `;
+    _realtionshipRunner.run(queryString, (res) => {
+      if (res.err) {
+        callback(res.err)
+      }
+      callback()
+    });
+  };
 }
