@@ -12,20 +12,21 @@ export interface Dependent extends Identificable {
 }
 
 /**
- * ! Interface used new dependent
- * * DanBaDo - 2021/12/29
- */
-export interface newDependentDTO {
-  name: string;
-  phone?: string;
-  direction?: string;
-}
-
-/**
  * ! Interface used for link new dependent to multiple customers
  * * DanBaDo - 2021/12/29
  */
 export interface newDependentForCustomerDTO {
   customersIds: Array<string>;
-  dependent: newDependentDTO;
+  dependent: DependentDTO;
+}
+
+export interface DependentDTO {
+  id?: Number;
+  name?: string;
+  username?: string;
+  email?: string;
+  phone?: string;
+  direction?: string;
+  status?: Number;
+  date?: number;
 }
