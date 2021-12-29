@@ -73,10 +73,10 @@ export module CustomerActions {
    * @param callback {Function}
    */
   export const deleteCustomer = (customerID: string, callback: Function) => {
-    const queryString = `DELETE FROM ${_tableName} WHERE id=?`;
-    db.query(queryString, [customerID], err => {
-      if (err) {
-        callback(err);
+    const queryString = `DELETE FROM ${_tableName} WHERE id=${customerID}`;
+    _runner.run(queryString, (res)=>{
+      if (res.err) {
+        callback(res.err)
       }
       callback();
     });
@@ -94,12 +94,12 @@ export module CustomerActions {
     status: number,
     callback: Function
   ) => {
-    const queryString = `UPDATE ${_tableName} SET status=? WHERE id=?`;
-    db.query(queryString, [status, customerID], err => {
-      if (err) {
-        callback(err);
+    const queryString = `UPDATE ${_tableName} SET status=${status} WHERE id=${customerID}`;
+    _runner.run(queryString,(res)=>{
+      if (res.err) {
+        callback(res.err);
       }
-      callback();
+      callback()
     });
   };
 
@@ -115,22 +115,12 @@ export module CustomerActions {
     customerID: string,
     callback: Function
   ) => {
-    const queryString = `UPDATE ${_tableName} SET name=IsNULL(@name, ?), email=IsNULL(@email, ?), phone=IsNULL(@phone, ?), direction=IsNULL(@direction, ?) WHERE id=?`;
-    db.query(
-      queryString,
-      [
-        updatedData.name,
-        updatedData.email,
-        updatedData.phone,
-        JSON.stringify(updatedData.direction),
-        customerID,
-      ],
-      err => {
-        if (err) {
-          callback(err);
-        }
-        callback(null);
+    const queryString = `UPDATE ${_tableName} SET name=IsNULL(@name, ${updatedData.name}), email=IsNULL(@email, ${updatedData.email}), phone=IsNULL(@phone, ${updatedData.phone}), direction=IsNULL(@direction, ${updatedData.direction}) WHERE id=${customerID}`;
+    _runner.run(queryString, (res) => {
+      if (res.err) {
+        callback(res.err)
       }
-    );
+      callback()
+    });
   };
 }
