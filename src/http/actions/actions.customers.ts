@@ -52,7 +52,6 @@ export module CustomerActions {
       callback(
         null,
         res.data.map(item => {
-          //TODO: parse direction
           const direction: Direction = JSON.parse(item.direction);
           return {
             id: item.id,
@@ -60,7 +59,7 @@ export module CustomerActions {
             username: item.username,
             email: item.email,
             phone: item.phone,
-            //direction: direction,
+            direction: direction,
           };
         })
       );
