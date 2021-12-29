@@ -163,7 +163,14 @@ export module DependentsActions {
 
   const _dependentsRunner = new SQLRunner(db, _dependentTableName);
   const _realtionshipRunner = new SQLRunner(db, _customerDependentRealtionshipTableName);
-
+  /**
+   * ! Insert new dependent
+   * * DanBaDo - 2021/12/29
+   * @param name {string}
+   * @param phone {string}
+   * @param direction {string}
+   * @param callback {Function}
+   */
   export const newDependent = (
     name: string,
     phone: string,
@@ -194,6 +201,13 @@ export module DependentsActions {
     });
   };
 
+  /**
+   * ! Link dependent to customer
+   * * DanBaDo - 2021/12/29
+   * @param dependentId {string}
+   * @param customerId {string}
+   * @param callback {Function}
+   */
   export const linkDependentToCustomer = (
     dependentId: string,
     customerId: string,

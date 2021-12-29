@@ -67,7 +67,7 @@ export module DependentsController {
     }
 
     /**
-     * ! Create new dependet for a customer
+     * ! Owner create new dependet
      * * DanBaDo - 2021-12-27
      * @param req {Request}
      * @param res {Response}
@@ -92,6 +92,12 @@ export module DependentsController {
         });
     }
 
+    /**
+     * ! Create new dependet for a customer
+     * * DanBaDo - 2021-12-29
+     * @param req {Request}
+     * @param res {Response}
+     */
     export const _newDependentForCustomer = async (req, res)=>{
         const data: newDependentForCustomerDTO = req.body;
         const customers = data.customersIds;
