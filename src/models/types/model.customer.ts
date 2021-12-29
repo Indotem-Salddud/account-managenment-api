@@ -24,11 +24,11 @@ export interface UpdateCustomerModel {
 export interface CustomerDTO {
   id?: Number;
   name?: string;
-  username: string;
-  email: string;
-  phone: string;
-  direction: string;
-  password: string;
-  status: Number;
-  date: number;
+  username?: string;
+  email?: string;
+  phone?: string;
+  direction?: string;
+  password?: string;
+  status?: Number;
+  date?: number;
 }
