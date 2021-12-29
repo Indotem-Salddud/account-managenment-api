@@ -4,11 +4,17 @@ import {
 } from '../../models/types/model.customer';
 import {
   _dependentTableName,
+  Dependent,
+  DependentDTO,
 } from '../../models/types/model.dependent';
 import {
   _customerDependentRealtionshipTableName
 } from '../../models/types/model.customerDependentRelationship';
 import {db} from '../core/core.db';
+import { SQLQueryResponse,SQLRunner } from '../core/build/core.build.runner.sql';
+
+// * SQL Runner to perform MYSQL Requests
+const _runner = new SQLRunner(db, _tableName);
 
 export module DependentsActions {
   /**
@@ -26,17 +32,17 @@ export module DependentsActions {
       FROM ${_dependentTableName}
       INNER JOIN ${_customerDependentRealtionshipTableName} 
         ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID
-      INNER JOIN ${_tableName}
-        ON ${_customerDependentRealtionshipTableName}.customerID = ${_tableName}.id
-      WHERE ${_tableName}.id = ${customerID}
+      INNER JOIN @table
+        ON ${_customerDependentRealtionshipTableName}.customerID = @table.id
+      WHERE @table.id = ${customerID}
     `;
-    db.query(queryString, (err, result) => {
-      if (err) {
-        callback(err);
+    _runner.run(queryString, (res: SQLQueryResponse<Array<DependentDTO>>)=>{
+      if (res.err) {
+        callback(res.err);
       }
       callback(
         null,
-        result.map(item => {
+        res.data.map(item => {
           const direction: Direction = JSON.parse(item.direction);
           return {
             id: item.id,
@@ -67,28 +73,25 @@ export module DependentsActions {
       FROM ${_dependentTableName}
       INNER JOIN ${_customerDependentRealtionshipTableName} 
         ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID
-      INNER JOIN ${_tableName}
-        ON ${_customerDependentRealtionshipTableName}.customerID = ${_tableName}.id
-      WHERE ${_tableName}.id = ${customerID} and ${_dependentTableName}.id = ${dependentID}
+      INNER JOIN @table
+        ON ${_customerDependentRealtionshipTableName}.customerID = @table.id
+      WHERE @table.id = ${customerID} and ${_dependentTableName}.id = ${dependentID}
     `;
-    db.query(queryString, (err, result) => {
-      if (err) {
-        callback(err);
+    _runner.run(queryString, (res) => {
+      if (res.err) {
+        callback(res.err)
       }
-      callback(
-        null,
-        result.map(item => {
-          const direction: Direction = JSON.parse(item.direction);
-          return {
-            id: item.id,
-            name: item.name,
-            phone: item.phone,
-            direction: direction,
-            status: item.status,
-            date: item.date,
-          };
-        })
-      );
+      const row = res.data[0];
+      const direction: Direction = JSON.parse(row.direction);
+      const dependent: Dependent = {
+        id: row.id,
+        name: row.name,
+        phone: row.phone,
+        direction: direction,
+        status: row.status,
+        date: row.date,
+      };
+      callback(null, dependent);
     });
   };
   /**
@@ -113,31 +116,32 @@ export module DependentsActions {
       VALUES (${name}, ${phone}, ${direction})
     `;
     // insert dependent
-    db.query(dependentQueryString, (err, result) => {
-      if (err) {
-        callback(err);
+    _runner.run(dependentQueryString, (res) => {
+      if (res.err) {
+        callback(res.err)
       } else {
         // insert relation
-        const newDependentId = result.insertId;
+        const row = res.data[0];
+        const newDependentId = row.id;
         const relationQueryString = `
           INSERT
           INTO ${_customerDependentRealtionshipTableName} (customerID, dependentID)
           VALUES (${customerID}, ${newDependentId})
         `;
-        db.query(relationQueryString, (err) => {
+        _runner.run(relationQueryString, (res) => {
           // if fail inserting relationship, remove new dependent
-          if (err) {
+          if (res.err) {
             const removeNewDependentQueryString = `
               DELETE
               FROM ${_dependentTableName}
               WHERE id = ${newDependentId}
             `;
-            db.query(removeNewDependentQueryString, (err) => {
-              if (err) {
-                callback(err);
+            _runner.run(removeNewDependentQueryString, (res) => {
+              if (res.err) {
+                callback(res.err)
               }
             })
-            callback(err);
+            callback(res.err)
           }
           // return new dependent
           callback(
