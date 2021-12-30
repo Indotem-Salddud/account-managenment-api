@@ -1,6 +1,9 @@
 import express from 'express';
 import {AuthController} from '../http/controllers/controller.auth';
+import { PermissionActions } from '../models/types/gen/gen.permissions';
+import { AccessControlMiddelware } from '../http/middlewares/middelware.access.validation';
 
+const _resource = PermissionActions.CUSTOMER;
 
 export const CustomersRoute = (app: express.Application) => {
 
@@ -19,5 +22,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param password {string} 
    * }
    */
-    app.put('/password', AuthController._updatePassword);
+    app.put('/password', AccessControlMiddelware._grantAccess((query) => {
+      return query.updateOwn(_resource);
+    }), AuthController._updatePassword);
    };
