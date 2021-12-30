@@ -54,7 +54,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Admin
    * @param dependentID
    */
-  app.get('/dependent/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
+  app.get('/dependents/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_resource);
   }),DependentsController._getDependentById);
 
@@ -64,7 +64,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Admin
    */
      app.delete('/dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
-      return query.readAny(_resource)
+      return query.deleteAny(_resource)
     }), DependentsController._deleteDependent);
 
   /**
