@@ -1,6 +1,7 @@
 import {DependentsActions} from '../actions/actions.dependents';
 import {_handleResponse} from '../common/common.responseHandler';
-import { PermissionRoles} from '../../models/types/gen/gen.permissions';
+import { PermissionRoles, ac,
+    PermissionActions} from '../../models/types/gen/gen.permissions';
 import { Dependent, newDependentForCustomerDTO } from '../../models/types/model.dependent';
 
 export module DependentsController {
@@ -182,4 +183,44 @@ export module DependentsController {
             }
         )
     };
+
+     /**
+   * ! Delete customer data by ID
+   * * Alcazar87 - 2021/12/29
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _deleteDependent = async (req, res) => {
+    const permissions = ac
+      .can(req.user.role)
+      .deleteOwn(PermissionActions.DEPENDENTS);
+    if (permissions.granted) {
+      const {dependentID} =
+        req.user.role == PermissionRoles.USER ? req.user : req.params;
+      if (!dependentID) {
+        _handleResponse(
+          {statusCode: 400, message: 'Dependent ID not provided'},
+          res
+        );
+      }
+      // call to action
+      DependentsActions.deleteDependent(dependentID, (err: string = null) => {
+        if (err) {
+          _handleResponse(
+            {statusCode: 500, message: 'Dependent cannot be deleted'},
+            res
+          );
+        }
+        _handleResponse(
+          {statusCode: 200, message: 'Dependent was delete sucessfully'},
+          res
+        );
+      });
+    } else {
+      _handleResponse(
+        {statusCode: 401, message: 'You do not have right access permissions'},
+        res
+      );
+    }
+  };
 }
