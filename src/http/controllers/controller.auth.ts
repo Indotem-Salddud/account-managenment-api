@@ -40,30 +40,20 @@ export module AuthController {
    * @param res {Response}
    */
    export const _updatePassword = async (req, res) => {
-    const permissions = ac
-      .can(req.user.role)
-      .updateOwn(PermissionActions.CUSTOMER);
-    if (permissions.granted) {
-      const {customerID} = req.user;
-      //TODO: VALIDATE DATA
-      const {password} = req.body;
-      AuthActions.updatePassword(password, customerID, err => {
-        if (err) {
-          _handleResponse(
-            {statusCode: 500, message: 'Password cannot be updated'},
-            res
-          );
-        }
+    const {customerID} = req.user;
+    //TODO: VALIDATE DATA
+    const {password} = req.body;
+    AuthActions.updatePassword(password, customerID, err => {
+      if (err) {
         _handleResponse(
-          {statusCode: 200, message: 'Password was updated sucessfully'},
+          {statusCode: 500, message: 'Password cannot be updated'},
           res
         );
-      });
-    } else {
+      }
       _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'},
+        {statusCode: 200, message: 'Password was updated sucessfully'},
         res
       );
-    }
+    });
   };
 }
