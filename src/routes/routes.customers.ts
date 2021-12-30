@@ -18,13 +18,17 @@ export const CustomersRoute = (app: express.Application) => {
    * * Get all customer staff
    * @protected Admin
    */
-  app.get(`/`, CustomersController._getAll);
+  app.get(`/`, AccessControlMiddelware._grantAccess((query) => {
+    return query.readAny(_resource)
+  }), CustomersController._getAll);
   /**
    * * Delete customer by ID
    * @param customerID {Number}
    * @protected Admin
    */
-  app.delete('/:customerID', CustomersController._deleteCustomer);
+  app.delete('/:customerID', AccessControlMiddelware._grantAccess((query) => {
+    return query.readAny(_resource)
+  }), CustomersController._deleteCustomer);
   /**
    * * Update customer status by ID
    * @param customerID {Number}
