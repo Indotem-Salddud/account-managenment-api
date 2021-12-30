@@ -181,7 +181,6 @@ export module DependentsActions {
       INTO @table (name, phone, direction)
       VALUES (${name}, ${phone}, ${direction})
     `;
-    //TODO: Unify Carlos & Daniel interfaces
     _dependentsRunner.run( queryString, (res: SQLQueryResponse<SQLInsertResponse>) => {
       if (res.err) {
         callback(res.err)
@@ -240,7 +239,7 @@ export module DependentsActions {
       FROM @table
       WHERE id = ${dependentId}
     `
-    _dependentsRunner.run(queryString,(res: SQLQueryResponse<DependentDTO>) => {
+    _dependentsRunner.run(queryString,(res) => {
       if (res.err) {
         callback(res.err)
       }
