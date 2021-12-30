@@ -29,6 +29,11 @@ const grantedObject = {
             'read:own': ['*'],
             'delete:own': ['*'],
         },
+        DEPENDENTS: {
+          'update:own': ['*'],
+          'read:own': ['*'],
+          'delete:own': ['*'],
+        },
     },
     ADMIN: {
       CUSTOMER: {
