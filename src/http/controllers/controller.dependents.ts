@@ -118,7 +118,7 @@ export module DependentsController {
                         DependentsActions.linkDependentToCustomer(
                             newDependent.id,
                             customerId,
-                            (err)=>{
+                            (err: string)=>{
                                 if (err) {
                                     _handleResponse(
                                         {
@@ -156,5 +156,30 @@ export module DependentsController {
             }
         
         );
+    };
+
+    /**
+     * ! Get dependet by id
+     * * DanBaDo - 2021-12-29
+     * @param req {Request}
+     * @param res {Response}
+     */
+    export const _getDependentById = async (req, res) => {
+        const { dependentID } = req.params;
+        DependentsActions.getDependentById(
+            dependentID,
+            (err: string, data: Dependent) => {
+                if (err) {
+                    _handleResponse(
+                        { statusCode: 500, message: 'Server response cannot be processed' },
+                        res
+                    );
+                }
+                _handleResponse(
+                    { statusCode: 200, message: 'Dependent data downloaded', data },
+                    res
+                );
+            }
+        )
     };
 }
