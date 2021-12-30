@@ -224,4 +224,31 @@ export module DependentsActions {
       callback()
     });
   };
+
+  /**
+   * ! Find dependent by id
+   * * DanBaDo - 2021/12/29
+   * @param dependentId {string}
+   * @param callback {Function}
+   */
+  export const getDependentById = (
+    dependentId: string,
+    callback: Function
+  ) => {
+    const queryString = `
+      SELECT *
+      FROM @table
+      WHERE id = ${dependentId}
+    `
+    _dependentsRunner.run(queryString,(res: SQLQueryResponse<DependentDTO>) => {
+      if (res.err) {
+        callback(res.err)
+      }
+      const row = res.data[0];
+      const direction: Direction = JSON.parse(row.direction);
+      const dependent: Dependent = {...row};
+      dependent.direction = direction;
+      callback(null, dependent);
+    });
+  };
 }
