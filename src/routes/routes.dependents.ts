@@ -48,4 +48,13 @@ export const DependentsRoute = (app: express.Application) => {
   app.get('my-dependents/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_resource);
   }),DependentsController._getMyDependentById)
+
+  /**
+   * * Get dependent by ID
+   * @protected Admin
+   * @param dependentID
+   */
+  app.get('/dependent/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
+    return query.readAny(_resource);
+  }),DependentsController._getDependentById);
 };
