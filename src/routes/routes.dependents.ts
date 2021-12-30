@@ -67,5 +67,14 @@ export const DependentsRoute = (app: express.Application) => {
       return query.readAny(_resource)
     }), DependentsController._deleteDependent);
 
+  /**
+   * * Delete own dependent by ID
+   * @param dependentID {Number}
+   * @protected Logged customer
+   */
+       app.delete('/my-dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+        return query.deleteOwn(_resource)
+      }), DependentsController._deleteDependent);
+
 
 };
