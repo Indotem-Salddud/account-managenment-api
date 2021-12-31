@@ -27,7 +27,7 @@ export const CustomersRoute = (app: express.Application) => {
    * @protected Admin
    */
   app.delete('/:customerID', AccessControlMiddelware._grantAccess((query) => {
-    return query.readAny(_resource)
+    return query.deleteAny(_resource)
   }), CustomersController._deleteCustomer);
   /**
    * * Update customer status by ID
