@@ -6,14 +6,13 @@ import { Dependent, newDependentForCustomerDTO } from '../../models/types/model.
 
 export module DependentsController {
     /**
-     * ! Get all dependents for a customer by customer id
+     * ! Get all owned dependents
      * * DanBaDo - 2021/12/19
      * @param req {Request}
      * @param res {Response}
      */
-    export const _getDependents = async (req, res) => {
-        const { customerID } =
-            req.user.role == PermissionRoles.USER ? req.user : req.params;
+    export const _getMyDependents = async (req, res) => {
+        const { customerID } = req.user;
         if (!customerID) {
             _handleResponse(
                 { statusCode: 400, message: 'Data provided is not valid' },
@@ -35,6 +34,35 @@ export module DependentsController {
             );
         });
     }
+        /**
+     * ! Get all dependents for a customer
+     * * DanBaDo - 2022/1/1
+     * @param req {Request}
+     * @param res {Response}
+     */
+         export const _getAllCustomerDependents = async (req, res) => {
+            const { customerID } = req.params;
+            if (!customerID) {
+                _handleResponse(
+                    { statusCode: 400, message: 'Data provided is not valid' },
+                    res
+                );
+            }
+            // call to action
+            // TODO: Add 204 for empty dependents list and 404 for customer not found
+            DependentsActions.findAllCustomerDependents(customerID, (err?: string, data?: Dependent[]) => {
+                if (err) {
+                    _handleResponse(
+                        { statusCode: 500, message: 'Server response cannot be processed' },
+                        res
+                    );
+                }
+                _handleResponse(
+                    { statusCode: 200, message: 'Dependents data received', data: data },
+                    res
+                );
+            });
+        }
     /**
      * ! Get one owned dependant by id
      * * DanBaDo - 2021/12/25 ✨🎄✨
@@ -68,7 +96,7 @@ export module DependentsController {
     }
 
     /**
-     * ! Owner create new dependet
+     * ! Owner create new dependent
      * * DanBaDo - 2021-12-27
      * @param req {Request}
      * @param res {Response}
@@ -191,12 +219,8 @@ export module DependentsController {
    * @param res {Response}
    */
   export const _deleteDependent = async (req, res) => {
-    const permissions = ac
-      .can(req.user.role)
-      .deleteOwn(PermissionActions.DEPENDENTS);
-    if (permissions.granted) {
-      const {dependentID} =
-        req.user.role == PermissionRoles.USER ? req.user : req.params;
+
+      const {dependentID} = req.params;
       if (!dependentID) {
         _handleResponse(
           {statusCode: 400, message: 'Dependent ID not provided'},
@@ -216,11 +240,6 @@ export module DependentsController {
           res
         );
       });
-    } else {
-      _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'},
-        res
-      );
-    }
+
   };
 }

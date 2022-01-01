@@ -16,7 +16,7 @@ export const DependentsRoute = (app: express.Application) => {
   }),DependentsController._newOwnedDependent)
   
   /**
-   * * Create new dependent for a customer
+   * * Create new dependent for one or many customer
    * @protected Admin
    */
    app.post('/dependents/', AccessControlMiddelware._grantAccess((query) => {
@@ -29,7 +29,7 @@ export const DependentsRoute = (app: express.Application) => {
    */
    app.get('/all-my-dependents/', AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_resource);
-  }), DependentsController._getDependents);
+  }), DependentsController._getMyDependents);
 
   /**
    * * Get dependents for a customer
@@ -38,7 +38,7 @@ export const DependentsRoute = (app: express.Application) => {
    */
    app.get('/dependents-for/:customerID', AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_resource);
-  }), DependentsController._getDependents);
+  }), DependentsController._getAllCustomerDependents);
 
   /**
    * * Get owned dependent for a ID
