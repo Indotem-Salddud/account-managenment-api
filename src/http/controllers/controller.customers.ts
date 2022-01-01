@@ -127,12 +127,7 @@ export module CustomersController {
    * @param res {Response}
    */
   export const _updateStatus = async (req, res) => {
-    const permissions = ac
-      .can(req.user.role)
-      .updateOwn(PermissionActions.CUSTOMER);
-    if (permissions.granted) {
-      const {customerID} =
-        req.user.role == PermissionRoles.USER ? req.user : req.params;
+      const {customerID} = req.user;
       const {status} = req.body;
       // TODO: VALIDATE ACOUNT STATUS
       if (!customerID) {
@@ -154,12 +149,6 @@ export module CustomersController {
           res
         );
       });
-    } else {
-      _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'},
-        res
-      );
-    }
   };
 
   /**
@@ -169,12 +158,7 @@ export module CustomersController {
    * @param res {Response}
    */
   export const _updateById = async (req, res) => {
-    const permissions = ac
-      .can(req.user.role)
-      .updateOwn(PermissionActions.CUSTOMER);
-    if (permissions.granted) {
-      const {customerID} =
-        req.user.role == PermissionRoles.USER ? req.user : req.params;
+      const {customerID} = req.user;
       if (!customerID) {
         _handleResponse(
           {statusCode: 400, message: 'Customer ID not provided'},
@@ -197,12 +181,6 @@ export module CustomersController {
           res
         );
       });
-    } else {
-      _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'},
-        res
-      );
-    }
   };
 
 }
