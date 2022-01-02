@@ -260,8 +260,6 @@ export module DependentsActions {
       const queryString = `
       DELETE 
       FROM ${_dependentTableName}
-      INNER JOIN ${_customerDependentRealtionshipTableName} 
-      ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID 
       WHERE id=${dependentID}`;
       _dependentsRunner.run(queryString, (res)=>{
         if (res.err) {
@@ -270,4 +268,22 @@ export module DependentsActions {
         callback();
       });
     };
+     /**
+   * ! Method to delete dependent relationship by ID
+   * * Alcazar87 - 2021/12/30
+   * @param dependentID {string}
+   * @param callback {Function}
+   */
+      export const deleteRelationshipUponDependent = (dependentID: string, callback: Function) => {
+        const queryString = `
+        DELETE 
+        FROM ${_customerDependentRealtionshipTableName}}
+        WHERE dependentID=${dependentID}`;
+        _relationshipRunner.run(queryString, (res)=>{
+          if (res.err) {
+            callback(res.err)
+          }
+          callback();
+        });
+      };
 }
