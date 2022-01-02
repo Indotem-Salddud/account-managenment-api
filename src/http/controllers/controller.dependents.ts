@@ -1,7 +1,9 @@
-import {DependentsActions} from '../actions/actions.dependents';
-import {_handleResponse} from '../common/common.responseHandler';
-import { PermissionRoles, ac,
-    PermissionActions} from '../../models/types/gen/gen.permissions';
+import { DependentsActions } from '../actions/actions.dependents';
+import { _handleResponse } from '../common/common.responseHandler';
+import {
+    PermissionRoles, ac,
+    PermissionActions
+} from '../../models/types/gen/gen.permissions';
 import { Dependent, newDependentForCustomerDTO } from '../../models/types/model.dependent';
 
 export module DependentsController {
@@ -34,35 +36,35 @@ export module DependentsController {
             );
         });
     }
-        /**
-     * ! Get all dependents for a customer
-     * * DanBaDo - 2022/1/1
-     * @param req {Request}
-     * @param res {Response}
-     */
-         export const _getAllCustomerDependents = async (req, res) => {
-            const { customerID } = req.params;
-            if (!customerID) {
+    /**
+ * ! Get all dependents for a customer
+ * * DanBaDo - 2022/1/1
+ * @param req {Request}
+ * @param res {Response}
+ */
+    export const _getAllCustomerDependents = async (req, res) => {
+        const { customerID } = req.params;
+        if (!customerID) {
+            _handleResponse(
+                { statusCode: 400, message: 'Data provided is not valid' },
+                res
+            );
+        }
+        // call to action
+        // TODO: Add 204 for empty dependents list and 404 for customer not found
+        DependentsActions.findAllCustomerDependents(customerID, (err?: string, data?: Dependent[]) => {
+            if (err) {
                 _handleResponse(
-                    { statusCode: 400, message: 'Data provided is not valid' },
+                    { statusCode: 500, message: 'Server response cannot be processed' },
                     res
                 );
             }
-            // call to action
-            // TODO: Add 204 for empty dependents list and 404 for customer not found
-            DependentsActions.findAllCustomerDependents(customerID, (err?: string, data?: Dependent[]) => {
-                if (err) {
-                    _handleResponse(
-                        { statusCode: 500, message: 'Server response cannot be processed' },
-                        res
-                    );
-                }
-                _handleResponse(
-                    { statusCode: 200, message: 'Dependents data received', data: data },
-                    res
-                );
-            });
-        }
+            _handleResponse(
+                { statusCode: 200, message: 'Dependents data received', data: data },
+                res
+            );
+        });
+    }
     /**
      * ! Get one owned dependant by id
      * * DanBaDo - 2021/12/25 ✨🎄✨
@@ -89,7 +91,7 @@ export module DependentsController {
             });
         } else {
             _handleResponse(
-                { statusCode: 400, message: 'A dependent id is needed.'},
+                { statusCode: 400, message: 'A dependent id is needed.' },
                 res
             );
         }
@@ -104,7 +106,7 @@ export module DependentsController {
     export const _newOwnedDependent = async (req, res) => {
         const { customerID } = req.user;
         // get dependent data
-        const {name, phone, direction} = req.body;
+        const { name, phone, direction } = req.body;
         // call to action
         // TODO: Add 404 for dependant not found
         DependentsActions.insertNewDependent(customerID, name, phone, direction, (err?: string, data?: Dependent) => {
@@ -127,7 +129,7 @@ export module DependentsController {
      * @param req {Request}
      * @param res {Response}
      */
-    export const _newDependentForCustomer = async (req, res)=>{
+    export const _newDependentForCustomer = async (req, res) => {
         const data: newDependentForCustomerDTO = req.body;
         const customers = data.customersIds;
         const dependent = data.dependent;
@@ -147,7 +149,7 @@ export module DependentsController {
                         DependentsActions.linkDependentToCustomer(
                             newDependent.id,
                             customerId,
-                            (err: string)=>{
+                            (err: string) => {
                                 if (err) {
                                     _handleResponse(
                                         {
@@ -183,7 +185,7 @@ export module DependentsController {
                     res
                 );
             }
-        
+
         );
     };
 
@@ -212,34 +214,44 @@ export module DependentsController {
         )
     };
 
-     /**
-   * ! Delete customer data by ID
-   * * Alcazar87 - 2021/12/29
-   * @param req {Request}
-   * @param res {Response}
-   */
-  export const _deleteDependent = async (req, res) => {
-
-      const {dependentID} = req.params;
-      if (!dependentID) {
-        _handleResponse(
-          {statusCode: 400, message: 'Dependent ID not provided'},
-          res
-        );
-      }
-      // call to action
-      DependentsActions.deleteDependent(dependentID, (err: string = null) => {
-        if (err) {
-          _handleResponse(
-            {statusCode: 500, message: 'Dependent cannot be deleted'},
-            res
-          );
+    /**
+  * ! Delete customer data by ID
+  * * Alcazar87 - 2021/12/29
+  * @param req {Request}
+  * @param res {Response}
+  */
+    export const _deleteDependent = async (req, res) => {
+        const { customerID } = req.user;
+        const { dependentID } = req.params;
+        if (!dependentID) {
+            _handleResponse(
+                { statusCode: 400, message: 'Dependent ID not provided' },
+                res
+            );
         }
-        _handleResponse(
-          {statusCode: 200, message: 'Dependent was delete sucessfully'},
-          res
-        );
-      });
+        // call to action
+        DependentsActions.deleteDependent(customerID, dependentID, (err: string = null) => {
+            if (err) {
+                _handleResponse(
+                    { statusCode: 500, message: 'Dependent cannot be deleted' },
+                    res
+                );
+            }
+            //Delete dependent relationship
+            DependentsActions.deleteRelationshipUponDependent(customerID, dependentID, (err: string = null) => {
+                if (err) {
+                    _handleResponse(
+                        { statusCode: 500, message: 'Dependent relationship cannot be deleted' },
+                        res
+                    );
+                }
+            }
+            );
+            _handleResponse(
+                { statusCode: 200, message: 'Dependent was delete sucessfully' },
+                res
+            );
+        });
 
-  };
+    };
 }

@@ -256,18 +256,42 @@ export module DependentsActions {
    * @param dependentID {string}
    * @param callback {Function}
    */
-    export const deleteDependent = (dependentID: string, callback: Function) => {
+    export const deleteDependent = (customerID: string, dependentID: string, callback: Function) => {
       const queryString = `
       DELETE 
       FROM ${_dependentTableName}
-      INNER JOIN ${_customerDependentRealtionshipTableName} 
-      ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID 
-      WHERE id=${dependentID}`;
-      _dependentsRunner.run(queryString, (res)=>{
+      INNER JOIN @table
+        ON ${_dependentTableName}.id = @table.dependentID
+      INNER JOIN ${_tableName}
+        ON @table.customerID = ${_tableName}.id
+      WHERE
+          ${_dependentTableName}.id=${dependentID}
+        AND
+          ${_tableName}.id=${customerID}`;
+      _relationshipRunner.run(queryString, (res)=>{
         if (res.err) {
           callback(res.err)
         }
         callback();
       });
     };
+     /**
+   * ! Method to delete dependent relationship by ID
+   * * Alcazar87 - 2021/12/30
+   * @param dependentID {string}
+   * @param callback {Function}
+   */
+      export const deleteRelationshipUponDependent = (customerID, dependentID: string, callback: Function) => {
+        const queryString = `
+        DELETE 
+        FROM @table
+        WHERE
+          dependentID=${dependentID} and customerID=${customerID}`;
+        _relationshipRunner.run(queryString, (res)=>{
+          if (res.err) {
+            callback(res.err)
+          }
+          callback();
+        });
+      };
 }
