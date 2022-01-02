@@ -221,7 +221,7 @@ export module DependentsController {
   * @param res {Response}
   */
     export const _deleteDependent = async (req, res) => {
-
+        const { customerID } = req.user;
         const { dependentID } = req.params;
         if (!dependentID) {
             _handleResponse(
@@ -230,7 +230,7 @@ export module DependentsController {
             );
         }
         // call to action
-        DependentsActions.deleteDependent(dependentID, (err: string = null) => {
+        DependentsActions.deleteDependent(customerID, dependentID, (err: string = null) => {
             if (err) {
                 _handleResponse(
                     { statusCode: 500, message: 'Dependent cannot be deleted' },
@@ -238,7 +238,7 @@ export module DependentsController {
                 );
             }
             //Delete dependent relationship
-            DependentsActions.deleteRelationshipUponDependent(dependentID, (err: string = null) => {
+            DependentsActions.deleteRelationshipUponDependent(customerID, dependentID, (err: string = null) => {
                 if (err) {
                     _handleResponse(
                         { statusCode: 500, message: 'Dependent relationship cannot be deleted' },
