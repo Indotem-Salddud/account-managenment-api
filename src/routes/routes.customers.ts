@@ -54,4 +54,8 @@ export const CustomersRoute = (app: express.Application) => {
   app.put('/:customerID', AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
   }), CustomersController._updateById);
+
+  app.post('/account/', AccessControlMiddelware._grantAccess((query) => {
+    return query.createAny(_resource)
+  }), CustomersController._newCustomer);
 };
