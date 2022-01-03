@@ -77,4 +77,33 @@ export const DependentsRoute = (app: express.Application) => {
       }), DependentsController._deleteDependent);
 
 
+  /**Update own dependent data by ID
+   * @param dependentID {Number}
+   * @protected Logged customer
+   * @body {
+   *  @param name? {string}
+   *  @param phone? {string}
+   *  @param direction? {direction}
+   * }
+   */
+  app.put('/my-dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+    return query.updateOwn(_resource)
+  }), DependentsController._updateDependentById);
+
+  /**Update dependent data by ID
+   * @param dependentID {Number}
+   * @protected Admin
+   * @body {
+   *  @param name? {string}
+   *  @param phone? {string}
+   *  @param direction? {direction}
+   * }
+   */
+   app.put('/dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+    return query.updateAny(_resource)
+  }), DependentsController._updateDependentById);
+
+      
+
+
 };
