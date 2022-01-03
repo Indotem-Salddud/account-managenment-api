@@ -20,6 +20,17 @@ export interface newDependentForCustomerDTO {
   dependent: DependentDTO;
 }
 
+/**
+ * ! Interface used for updating dependents
+ * * Alcazar87 - 2022/01/03
+ */
+
+export interface UpdateDependentModel {
+  name?: string;
+  phone?: string;
+  direction?: Direction;
+}
+
 export interface DependentDTO {
   id?: Number;
   name?: string;
