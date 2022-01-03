@@ -6,6 +6,7 @@ import {
   _dependentTableName,
   Dependent,
   DependentDTO,
+  UpdateDependentModel,
 } from '../../models/types/model.dependent';
 import {
   _customerDependentRealtionshipTableName
@@ -284,7 +285,7 @@ export module DependentsActions {
       export const deleteRelationshipUponDependent = (customerID: string, dependentID: string, callback: Function) => {
         const queryString = `
         DELETE 
-        ${dependentID} 
+
         FROM @table
         INNER JOIN ${_dependentTableName}
         ON ${_dependentTableName}.id = @table.dependentID
@@ -299,4 +300,41 @@ export module DependentsActions {
           callback();
         });
       };
+
+   /**
+   * ! Update dependent data by ID
+   * * Alcazar87 - 2021/12/30
+   * @param updatedData {UpdateDependentModel}
+   * @param dependentID {string}
+   * @param customerID {string}
+   * @param callback {Function}
+   */
+  export const updateDependentData = (
+    updatedData: UpdateDependentModel,
+    customerID: string,
+    dependentID: string,
+    callback: Function
+  ) => {
+    const queryString = `
+      UPDATE ${_dependentTableName}
+      SET
+        name=IsNULL(@name, ${updatedData.name}),
+        phone=IsNULL(@phone, ${updatedData.phone}),
+        direction=IsNULL(@direction, ${updatedData.direction})
+      INNER JOIN ${_customerDependentRealtionshipTableName}
+      ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID
+      INNER JOIN ${_tableName}
+      ON ${_customerDependentRealtionshipTableName}.customerID = ${_tableName}.id
+      WHERE
+      dependentID=${dependentID} and customerID=${customerID}
+    `;
+    _dependentsRunner.run(queryString, (res) => {
+      if (res.err) {
+        callback(res.err)
+      }
+      callback()
+    });
+  };
+
+  
 }
