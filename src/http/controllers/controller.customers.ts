@@ -183,39 +183,4 @@ export module CustomersController {
         );
       });
   };
-
-  /**
-   * ! Insert new customer
-   * * DanBaDo 2022/01/02
-   * @param req {Request}
-   * @param res {Response}
-   */
-  export const _newCustomer = async (
-      req: express.Request,
-      res: express.Response
-    ) => {
-    // get customer data
-    const { name, username, email, phone, direction, password } = req.body;
-    // call to action
-    CustomerActions.insertNewCustomer(
-      name,
-      username,
-      email,
-      phone,
-      direction,
-      password,
-      (err?: string, data?: TinyCustomer) => {
-        if (err) {
-          _handleResponse(
-            { statusCode: 500, message: 'Server response cannot be processed' },
-            res
-          );
-        }
-        _handleResponse(
-          { statusCode: 200, message: 'Customer created', data: data },
-          res
-        );
-      }
-    );
-  };
 }

@@ -133,49 +133,4 @@ export module CustomerActions {
       callback()
     });
   };
-  
-  /**
-   * ! Insert new customer
-   * * DanBaDo - 2021/12/14
-   * @param name {string}
-   * @param username {string}
-   * @param email {string}
-   * @param phone {string}
-   * @param direction {Direcction}
-   * @param password {string}
-   * @param callback {Function}
-   */
-  export const insertNewCustomer = (
-    name: string,
-    username: string,
-    email: string,
-    phone: string,
-    direction: Direction,
-    password: string,
-    callback: Function
-  ) => {
-    bcrypt
-      .hash(password, 10)
-      .then(hash => {
-        const queryString = `
-          INSER
-          INTO @table (name, username, email, phone, direction, password)
-          VALUES (${name}, ${username}, ${email}, ${phone}, ${direction}, ${hash})
-        `;
-        _runner.run(queryString, (res: SQLQueryResponse<SQLInsertResponse>) => {
-          if (res.err) {
-            callback(res.err);
-          }
-          callback(
-            {
-              id: res.data.insertId,
-              name, username, email, phone, direction, status: 1 }
-              //TODO: how to provide the date
-          );
-        });
-      })
-      .catch(err => {
-        callback(err);
-      });
-  };
 }
