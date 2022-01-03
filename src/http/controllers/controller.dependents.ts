@@ -4,7 +4,7 @@ import {
     PermissionRoles, ac,
     PermissionActions
 } from '../../models/types/gen/gen.permissions';
-import { Dependent, newDependentForCustomerDTO } from '../../models/types/model.dependent';
+import { Dependent, newDependentForCustomerDTO, UpdateDependentModel } from '../../models/types/model.dependent';
 
 export module DependentsController {
     /**
@@ -254,4 +254,39 @@ export module DependentsController {
         });
 
     };
+
+    /**
+   * ! Update dependent data by dependentID
+   * * Alcazar87 - 2022/01/03
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _updateDependentById = async (req, res) => {
+    const { customerID } = req.user;
+    const {dependentID} = req.params;
+    if (!dependentID) {
+      _handleResponse(
+        {statusCode: 400, message: 'Dependent ID not provided'},
+        res
+      );
+    }
+
+    //TODO: VALIDATE FIELDS
+    const data: UpdateDependentModel = req.body;
+    // call to action
+    DependentsActions.updateDependentData(data, dependentID,customerID, err => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Dependent data cannot be updated'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Dependent data was updated sucessfully'},
+        res
+      );
+    });
+};
+
+ 
 }
