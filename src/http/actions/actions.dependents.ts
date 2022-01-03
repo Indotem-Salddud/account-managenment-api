@@ -253,6 +253,7 @@ export module DependentsActions {
    /**
    * ! Method to delete dependent by ID
    * * Alcazar87 - 2021/12/30
+   * @param customerID {string}
    * @param dependentID {string}
    * @param callback {Function}
    */
@@ -260,8 +261,6 @@ export module DependentsActions {
       const queryString = `
       DELETE 
       FROM ${_dependentTableName}
-      INNER JOIN @table
-        ON ${_dependentTableName}.id = @table.dependentID
       INNER JOIN ${_tableName}
         ON @table.customerID = ${_tableName}.id
       WHERE
@@ -278,13 +277,19 @@ export module DependentsActions {
      /**
    * ! Method to delete dependent relationship by ID
    * * Alcazar87 - 2021/12/30
+   * @param customerID {string}
    * @param dependentID {string}
    * @param callback {Function}
    */
-      export const deleteRelationshipUponDependent = (customerID, dependentID: string, callback: Function) => {
+      export const deleteRelationshipUponDependent = (customerID: string, dependentID: string, callback: Function) => {
         const queryString = `
         DELETE 
+        ${dependentID} 
         FROM @table
+        INNER JOIN ${_dependentTableName}
+        ON ${_dependentTableName}.id = @table.dependentID
+        INNER JOIN ${_tableName}
+        ON @table.customerID = ${_tableName}.id
         WHERE
           dependentID=${dependentID} and customerID=${customerID}`;
         _relationshipRunner.run(queryString, (res)=>{
