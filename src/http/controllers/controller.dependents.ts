@@ -230,18 +230,18 @@ export module DependentsController {
             );
         }
         // call to action
-        DependentsActions.deleteDependent(customerID, dependentID, (err: string = null) => {
+        DependentsActions.deleteRelationshipUponDependent(customerID, dependentID, (err: string = null) => {
             if (err) {
                 _handleResponse(
-                    { statusCode: 500, message: 'Dependent cannot be deleted' },
+                    { statusCode: 500, message: 'Dependent relationship cannot be deleted' },
                     res
                 );
             }
-            //Delete dependent relationship
-            DependentsActions.deleteRelationshipUponDependent(customerID, dependentID, (err: string = null) => {
+            //Delete dependent
+            DependentsActions.deleteDependent(customerID, dependentID, (err: string = null) => {
                 if (err) {
                     _handleResponse(
-                        { statusCode: 500, message: 'Dependent relationship cannot be deleted' },
+                        { statusCode: 500, message: 'Dependent cannot be deleted' },
                         res
                     );
                 }
