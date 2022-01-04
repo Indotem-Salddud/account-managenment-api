@@ -103,6 +103,18 @@ export const DependentsRoute = (app: express.Application) => {
     return query.updateAny(_resource)
   }), DependentsController._updateDependentById);
 
+  /**
+   * * Update dependent status by ID
+   * @param dependentID {Number}
+   * @protected Admin
+   * @body {
+   *  @param status {Number}
+   * }
+   */
+   app.patch('/status/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+    return query.updateAny(_resource)
+  }), DependentsController._updateDependentStatus);
+
       
 
 
