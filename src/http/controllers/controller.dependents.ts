@@ -288,5 +288,36 @@ export module DependentsController {
     });
 };
 
+/**
+   * ! Update dependent status by dependentID
+   * * Alcazar87 - 2022/01/04
+   * @param req {Request}
+   * @param res {Response}
+   */
+ export const _updateDependentStatus = async (req, res) => {
+    const {dependentID} = req.params;
+    const {status} = req.body;
+    // TODO: VALIDATE ACOUNT STATUS
+    if (!dependentID) {
+      _handleResponse(
+        {statusCode: 400, message: 'Dependent ID not provided'},
+        res
+      );
+    }
+    // call to action
+    DependentsActions.updateDependentStatus(dependentID, status, (err: string = null) => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Dependent status cannot be updated'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Dependent status was updated sucessfully'},
+        res
+      );
+    });
+};
+
  
 }
