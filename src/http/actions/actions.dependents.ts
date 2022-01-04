@@ -336,5 +336,29 @@ export module DependentsActions {
     });
   };
 
+   /**
+   * ! Update dependent status by dependent ID
+   * * Alcazar87 - 2022/01/04
+   * @param dependentID {string}
+   * @param status {string}
+   * @param callback {string}
+   */
+    export const updateDependentStatus = (
+      dependentID: string,
+      status: number,
+      callback: Function
+    ) => {
+      const queryString = `
+      UPDATE @table 
+      SET status=${status} 
+      WHERE id=${dependentID}`;
+      _dependentsRunner.run(queryString,(res)=>{
+        if (res.err) {
+          callback(res.err);
+        }
+        callback()
+      });
+    };
+
   
 }
