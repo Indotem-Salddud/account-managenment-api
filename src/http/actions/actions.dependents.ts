@@ -360,5 +360,36 @@ export module DependentsActions {
       });
     };
 
+   /**
+   * ! Update dependent status by dependent ID
+   * * Alcazar87 - 2022/01/04
+   * @param customerID {string}
+   * @param dependentID {string}
+   * @param status {string}
+   * @param callback {string}
+   */
+    export const updateOwnDependentStatus = (
+      customerID: string,
+      dependentID: string,
+      status: number,
+      callback: Function
+    ) => {
+      const queryString = `
+      UPDATE @table 
+      SET status=${status} 
+      INNER JOIN ${_customerDependentRealtionshipTableName}
+      ON ${_dependentTableName}.id = ${_customerDependentRealtionshipTableName}.dependentID
+      INNER JOIN ${_tableName}
+      ON ${_customerDependentRealtionshipTableName}.customerID = ${_tableName}.id
+      WHERE
+      dependentID=${dependentID} and customerID=${customerID}`;
+      _dependentsRunner.run(queryString,(res)=>{
+        if (res.err) {
+          callback(res.err);
+        }
+        callback()
+      });
+    }; 
+
   
 }
