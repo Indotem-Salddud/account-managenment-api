@@ -30,15 +30,27 @@ export const CustomersRoute = (app: express.Application) => {
     return query.deleteAny(_resource)
   }), CustomersController._deleteCustomer);
   /**
-   * * Update customer status by ID
+   * * Update own customer status
    * @param customerID {Number}
-   * @protected Admin or User with customer ID
+   * @protected Logged customer
    * @body {
    *  @param status {Number}
    * }
    */
-  app.patch('/status/:customerID', AccessControlMiddelware._grantAccess((query) => {
+  app.patch('/myStatus/', AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
+  }), CustomersController._updateStatus);
+
+  /**
+   * * Update customer status by ID
+   * @param customerID {Number}
+   * @protected Admin
+   * @body {
+   *  @param status {Number}
+   * }
+   */
+   app.patch('/status/:customerID', AccessControlMiddelware._grantAccess((query) => {
+    return query.updateAny(_resource)
   }), CustomersController._updateStatus);
   /**
    * * Update customer data by ID
