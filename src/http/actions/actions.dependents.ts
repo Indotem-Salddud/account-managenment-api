@@ -393,7 +393,7 @@ export module DependentsActions {
     }; 
     /**
      * ! Get customer owners by dependant ID
-     * * DanBaDo - 2021/12/19
+     * * DanBaDo - 2022/01/06
      * @param customerID {string}
      * @param callback {Function}
      */
