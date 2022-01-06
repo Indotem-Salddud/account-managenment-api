@@ -47,7 +47,7 @@ export const CustomersRoute = (app: express.Application) => {
    */
   app.patch('/myStatus/', AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
-  }), CustomersController._updateStatus);
+  }), CustomersController._updateOwnStatus);
 
   /**
    * * Update customer status by ID
@@ -59,7 +59,7 @@ export const CustomersRoute = (app: express.Application) => {
    */
    app.patch('/status/:customerID', AccessControlMiddelware._grantAccess((query) => {
     return query.updateAny(_resource)
-  }), CustomersController._updateStatus);
+  }), CustomersController._updateStatusById);
   /**
    * * Update customer data by ID
    * @param customerID {Number}

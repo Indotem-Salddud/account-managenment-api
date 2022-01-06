@@ -78,30 +78,18 @@ export module CustomersController {
    * @param res {Response}
    */
   export const _getAll = async (req, res) => {
-    // permissions
-    const permissions = ac
-      .can(req.user.role)
-      .readAny(PermissionActions.CUSTOMER);
-    if (permissions.granted) {
-      // call to action
-      CustomerActions.findAll((err?: string, data?: TinyCustomer) => {
-        if (err) {
-          _handleResponse(
-            {statusCode: 500, message: 'Server response cannot be processed'},
-            res
-          );
-        }
+    CustomerActions.findAll((err?: string, data?: TinyCustomer) => {
+      if (err) {
         _handleResponse(
-          {statusCode: 200, message: 'Customer data received', data: data},
+          {statusCode: 500, message: 'Server response cannot be processed'},
           res
         );
-      });
-    } else {
+      }
       _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'},
+        {statusCode: 200, message: 'Customer data received', data: data},
         res
       );
-    }
+    });
   };
 
 
@@ -113,37 +101,26 @@ export module CustomersController {
    * @param res {Response}
    */
   export const _deleteCustomer = async (req, res) => {
-    const permissions = ac
-      .can(req.user.role)
-      .deleteOwn(PermissionActions.CUSTOMER);
-    if (permissions.granted) {
-      const {customerID} =
-        req.user.role == PermissionRoles.USER ? req.user : req.params;
-      if (!customerID) {
-        _handleResponse(
-          {statusCode: 400, message: 'Customer ID not provided'},
-          res
-        );
-      }
-      // call to action
-      CustomerActions.deleteCustomer(customerID, (err: string = null) => {
-        if (err) {
-          _handleResponse(
-            {statusCode: 500, message: 'Customer cannot be deleted'},
-            res
-          );
-        }
-        _handleResponse(
-          {statusCode: 200, message: 'Customer was delete sucessfully'},
-          res
-        );
-      });
-    } else {
+    const {customerID} = req.params;
+    if (!customerID) {
       _handleResponse(
-        {statusCode: 401, message: 'You do not have right access permissions'},
+        {statusCode: 400, message: 'Customer ID not provided'},
         res
       );
     }
+    // call to action
+    CustomerActions.deleteCustomer(customerID, (err: string = null) => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Customer cannot be deleted'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Customer was delete sucessfully'},
+        res
+      );
+    });
   };
 
   /**
@@ -152,8 +129,8 @@ export module CustomersController {
    * @param req {Request}
    * @param res {Response}
    */
-  export const _updateStatus = async (req, res) => {
-      const {customerID} = req.user;
+  export const _updateStatusById = async (req, res) => {
+      const {customerID} = req.params;
       const {status} = req.body;
       // TODO: VALIDATE ACOUNT STATUS
       if (!customerID) {
@@ -178,35 +155,60 @@ export module CustomersController {
   };
 
   /**
+   * ! Update customer status by customerID
+   * * whitehatdevv - 2021/12/14
+   * @param req {Request}
+   * @param res {Response}
+   */
+   export const _updateOwnStatus = async (req, res) => {
+    const {customerID} = req.user;
+    const {status} = req.body;
+    // TODO: VALIDATE ACOUNT STATUS
+    // call to action
+    CustomerActions.updateStatus(customerID, status, (err: string = null) => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Customer status cannot be updated'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Customer status was updated sucessfully'},
+        res
+      );
+    });
+};
+
+
+  /**
    * ! Update customer data by customerID
    * * whitehatdevv - 2021/12/14
    * @param req {Request}
    * @param res {Response}
    */
   export const _updateById = async (req, res) => {
-      const {customerID} = req.user;
-      if (!customerID) {
+    const {customerID} = req.params;
+    if (!customerID) {
+      _handleResponse(
+        {statusCode: 400, message: 'Customer ID not provided'},
+        res
+      );
+    }
+    //TODO: VALIDATE FIELDS
+    const data: UpdateCustomerModel = req.body;
+    // call to action
+    CustomerActions.updateData(data, customerID, err => {
+      if (err) {
         _handleResponse(
-          {statusCode: 400, message: 'Customer ID not provided'},
+          {statusCode: 500, message: 'Customer data cannot be updated'},
           res
         );
       }
-
-      //TODO: VALIDATE FIELDS
-      const data: UpdateCustomerModel = req.body;
-      // call to action
-      CustomerActions.updateData(data, customerID, err => {
-        if (err) {
-          _handleResponse(
-            {statusCode: 500, message: 'Customer data cannot be updated'},
-            res
-          );
-        }
-        _handleResponse(
-          {statusCode: 200, message: 'Customer data was updated sucessfully'},
-          res
-        );
-      });
+      _handleResponse(
+        {statusCode: 200, message: 'Customer data was updated sucessfully'},
+        res
+      );
+    });
   };
 
   /**
