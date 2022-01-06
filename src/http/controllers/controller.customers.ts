@@ -208,4 +208,29 @@ export module CustomersController {
         );
       });
   };
+
+  /**
+   * ! Update own customer account data
+   * * DanBaDo - 2022/01/06 🐫🎁🐫🎁🐫🎁
+   * @param req {Request}
+   * @param res {Response}
+   */
+   export const _updateOwnCustomerAccount = async (req, res) => {
+    const {customerID} = req.user;
+    //TODO: VALIDATE FIELDS
+    const data: UpdateCustomerModel = req.body;
+    // call to action
+    CustomerActions.updateData(data, customerID, err => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Customer data cannot be updated'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Customer data was updated sucessfully'},
+        res
+      );
+    });
+  };
 }
