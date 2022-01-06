@@ -45,6 +45,31 @@ export module CustomersController {
         );
       });
   };
+  /**
+   * ! Controller function to get own customer account
+   * * DanBaDo - 2022/01/06 👑🎁👑🎁👑
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _getOwnCustomerAccount = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    const {customerID} = req.user;
+      // call to action
+      CustomerActions.findById(customerID, (err?: string, data?: TinyCustomer) => {
+        if (err) {
+          _handleResponse(
+            {statusCode: 500, message: 'Server response cannot be processed'},
+            res
+          );
+        }
+        _handleResponse(
+          {statusCode: 200, message: 'Customer data received', data: data},
+          res
+        );
+      });
+  };
 
   /**
    * ! Controller function to all customer staff
