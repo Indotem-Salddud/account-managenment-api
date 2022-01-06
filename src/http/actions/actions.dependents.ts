@@ -1,5 +1,6 @@
 import {Direction} from '../../models/types/gen/gen.direction';
 import {
+  CustomerDTO,
   _tableName,
 } from '../../models/types/model.customer';
 import {
@@ -390,6 +391,44 @@ export module DependentsActions {
         callback()
       });
     }; 
-
+    /**
+     * ! Get customer owners by dependant ID
+     * * DanBaDo - 2021/12/19
+     * @param customerID {string}
+     * @param callback {Function}
+     */
+    export const getOwnersByDependentId = (
+      dependentID: string,
+      callback: Function
+    ) => {
+      const queryString = `
+        SELECT *
+        FROM ${_tableName}
+        INNER JOIN @table 
+          ON ${_tableName}.id = @table.custonerID
+        INNER JOIN ${_dependentTableName}
+          ON @table.customerID = ${_dependentTableName}.id
+        WHERE ${_dependentTableName}.id = ${dependentID}
+      `;
+      _relationshipRunner.run(queryString, (res: SQLQueryResponse<Array<CustomerDTO>>)=>{
+        if (res.err) {
+          callback(res.err);
+        }
+        callback(
+          null,
+          res.data.map(item => {
+            const direction: Direction = JSON.parse(item.direction);
+            return {
+              id: item.id,
+              name: item.name,
+              phone: item.phone,
+              direction: direction,
+              status: item.status,
+              date: item.date,
+            };
+          })
+        );
+      });
+    };
   
 }
