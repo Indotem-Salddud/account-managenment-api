@@ -351,7 +351,31 @@ export module DependentsController {
     });
 };
 
- 
+    /**
+     * ! Get owner by dependet id
+     * * DanBaDo - 2022-01-06 🧦👔
+     * @param req {Request}
+     * @param res {Response}
+     */
+    export const _getOwnersByDependentId = async (req, res) => {
+        const { dependentID } = req.params;
+        DependentsActions.getOwnersByDependentId(
+            dependentID,
+            (err: string, data: Dependent) => {
+                if (err) {
+                    _handleResponse(
+                        { statusCode: 500, message: 'Server response cannot be processed' },
+                        res
+                    );
+                }
+                _handleResponse(
+                    { statusCode: 200, message: 'Dependent data downloaded', data },
+                    res
+                );
+            }
+        )
+    };
+
 
 
 }
