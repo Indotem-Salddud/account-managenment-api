@@ -128,7 +128,13 @@ export const DependentsRoute = (app: express.Application) => {
     return query.updateOwn(_resource)
   }), DependentsController._updateOwnDependentStatus);
 
-      
-
+  /**
+   * * Get customer owner by dependent ID
+   * @protected Admin
+   * @param dependentID
+   */
+   app.get('/dependentOwners/:depedentID/', AccessControlMiddelware._grantAccess((query) => {
+    return query.readAny(_resource);
+  }),DependentsController._getOwnersByDependentId);
 
 };
