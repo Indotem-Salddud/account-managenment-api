@@ -15,6 +15,14 @@ export const CustomersRoute = (app: express.Application) => {
     return query.readOwn(_resource);
   })], CustomersController._getById);
   /**
+   * * Get own customer account
+   * @param acccountID {Number}
+   * @protected Logged customer
+   */
+    app.get(`/myAccount/`, [AccessControlMiddelware._grantAccess((query) => {
+    return query.readOwn(_resource);
+  })], CustomersController._getOwnCustomerAccount);
+  /**
    * * Get all customer staff
    * @protected Admin
    */
