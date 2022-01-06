@@ -3,7 +3,8 @@ import {DependentsController} from '../http/controllers/controller.dependents';
 import { PermissionActions } from '../models/types/gen/gen.permissions';
 import { AccessControlMiddelware } from '../http/middlewares/middelware.access.validation';
 
-const _resource = PermissionActions.CUSTOMER;
+const _dependent = PermissionActions.DEPENDENTS;
+const _customer = PermissionActions.CUSTOMER;
 
 export const DependentsRoute = (app: express.Application) => {
 
@@ -12,7 +13,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Logged customer
    */
    app.post('/my-dependents/', AccessControlMiddelware._grantAccess((query) => {
-    return query.createOwn(_resource);
+    return query.createOwn(_dependent);
   }),DependentsController._newOwnedDependent)
   
   /**
@@ -20,7 +21,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Admin
    */
    app.post('/dependents/', AccessControlMiddelware._grantAccess((query) => {
-    return query.createAny(_resource);
+    return query.createAny(_dependent);
   }),DependentsController._newDependentForCustomer)
   
   /**
@@ -28,7 +29,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Logged customer
    */
    app.get('/all-my-dependents/', AccessControlMiddelware._grantAccess((query) => {
-    return query.readOwn(_resource);
+    return query.readOwn(_dependent);
   }), DependentsController._getMyDependents);
 
   /**
@@ -37,7 +38,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @param customerID
    */
    app.get('/dependents-for/:customerID', AccessControlMiddelware._grantAccess((query) => {
-    return query.readAny(_resource);
+    return query.readAny(_dependent);
   }), DependentsController._getAllCustomerDependents);
 
   /**
@@ -46,7 +47,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @param dependentID
    */
   app.get('my-dependents/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
-    return query.readOwn(_resource);
+    return query.readOwn(_dependent);
   }),DependentsController._getMyDependentById)
 
   /**
@@ -55,7 +56,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @param dependentID
    */
   app.get('/dependents/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
-    return query.readAny(_resource);
+    return query.readAny(_dependent);
   }),DependentsController._getDependentById);
 
   /**
@@ -64,7 +65,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Admin
    */
      app.delete('/dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
-      return query.deleteAny(_resource)
+      return query.deleteAny(_dependent)
     }), DependentsController._deleteDependent);
 
   /**
@@ -73,7 +74,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Logged customer
    */
        app.delete('/my-dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
-        return query.deleteOwn(_resource)
+        return query.deleteOwn(_dependent)
       }), DependentsController._deleteDependent);
 
 
@@ -87,7 +88,7 @@ export const DependentsRoute = (app: express.Application) => {
    * }
    */
   app.put('/my-dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
-    return query.updateOwn(_resource)
+    return query.updateOwn(_dependent)
   }), DependentsController._updateDependentById);
 
   /**Update dependent data by ID
@@ -100,7 +101,7 @@ export const DependentsRoute = (app: express.Application) => {
    * }
    */
    app.put('/dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
-    return query.updateAny(_resource)
+    return query.updateAny(_dependent)
   }), DependentsController._updateDependentById);
 
   /**
@@ -112,7 +113,7 @@ export const DependentsRoute = (app: express.Application) => {
    * }
    */
    app.patch('/status/:dependentID', AccessControlMiddelware._grantAccess((query) => {
-    return query.updateAny(_resource)
+    return query.updateAny(_dependent)
   }), DependentsController._updateDependentStatus);
 
   /**
@@ -125,7 +126,7 @@ export const DependentsRoute = (app: express.Application) => {
    * }
    */
    app.patch('/myStatus/:dependentID', AccessControlMiddelware._grantAccess((query) => {
-    return query.updateOwn(_resource)
+    return query.updateOwn(_dependent)
   }), DependentsController._updateOwnDependentStatus);
 
   /**
@@ -134,7 +135,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @param dependentID
    */
    app.get('/dependentOwners/:depedentID/', AccessControlMiddelware._grantAccess((query) => {
-    return query.readAny(_resource);
+    return query.readAny(_customer);
   }),DependentsController._getOwnersByDependentId);
 
 };
