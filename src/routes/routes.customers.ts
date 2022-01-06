@@ -11,8 +11,8 @@ export const CustomersRoute = (app: express.Application) => {
    * @param acccountID {Number}
    * @protected Admin or User with customerID
    */
-  app.get(`/:customerID`, [AccessControlMiddelware._grantAccess((query) => {
-    return query.readOwn(_resource);
+  app.get(`/customers/:customerID`, [AccessControlMiddelware._grantAccess((query) => {
+    return query.readAny(_resource);
   })], CustomersController._getById);
   /**
    * * Get own customer account
@@ -26,7 +26,7 @@ export const CustomersRoute = (app: express.Application) => {
    * * Get all customer staff
    * @protected Admin
    */
-  app.get(`/`, AccessControlMiddelware._grantAccess((query) => {
+  app.get(`/allCustomers/`, AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_resource)
   }), CustomersController._getAll);
   /**
@@ -34,7 +34,7 @@ export const CustomersRoute = (app: express.Application) => {
    * @param customerID {Number}
    * @protected Admin
    */
-  app.delete('/:customerID', AccessControlMiddelware._grantAccess((query) => {
+  app.delete('/customers/:customerID', AccessControlMiddelware._grantAccess((query) => {
     return query.deleteAny(_resource)
   }), CustomersController._deleteCustomer);
   /**
@@ -71,7 +71,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param direction? {direction}
    * }
    */
-  app.put('/:customerID', AccessControlMiddelware._grantAccess((query) => {
+  app.put('/customers/:customerID', AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
   }), CustomersController._updateById);
 };
