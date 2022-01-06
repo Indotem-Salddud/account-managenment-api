@@ -74,4 +74,17 @@ export const CustomersRoute = (app: express.Application) => {
   app.put('/customers/:customerID', AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
   }), CustomersController._updateById);
+  /**
+   * * Update own customer data
+   * @protected Logged user
+   * @body {
+   *  @param name? {string}
+   *  @param email? {string}
+   *  @param phone? {string}
+   *  @param direction? {direction}
+   * }
+   */
+  app.put('/myAccount/', AccessControlMiddelware._grantAccess((query) => {
+    return query.updateOwn(_resource)
+  }), CustomersController._updateOwnCustomerAccount);
 };
