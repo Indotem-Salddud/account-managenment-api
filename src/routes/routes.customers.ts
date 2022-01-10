@@ -19,7 +19,7 @@ export const CustomersRoute = (app: express.Application) => {
    * @param acccountID {Number}
    * @protected Logged customer
    */
-    app.get(`/myAccount/`, [AccessControlMiddelware._grantAccess((query) => {
+    app.get(`/my-account/`, [AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_resource);
   })], CustomersController._getOwnCustomerAccount);
   /**
@@ -45,7 +45,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param status {Number}
    * }
    */
-  app.patch('/myStatus/', AccessControlMiddelware._grantAccess((query) => {
+  app.patch('/my-status/', AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
   }), CustomersController._updateOwnStatus);
 
@@ -84,7 +84,15 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param direction? {direction}
    * }
    */
-  app.put('/myAccount/', AccessControlMiddelware._grantAccess((query) => {
+  app.put('/my-account/', AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
   }), CustomersController._updateOwnCustomerAccount);
+
+  /**
+   * * Get customer profile
+   * @protected Logged user
+   */
+  app.get(`/my-account/profile/`, AccessControlMiddelware._grantAccess((query) => {
+    return query.readOwn(_resource)
+  }), CustomersController._profile);
 };
