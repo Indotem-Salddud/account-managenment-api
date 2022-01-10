@@ -125,7 +125,7 @@ export const DependentsRoute = (app: express.Application) => {
    *  @param status {Number}
    * }
    */
-   app.patch('/myStatus/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+   app.patch('/my-status/:dependentID', AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_dependent)
   }), DependentsController._updateOwnDependentStatus);
 
@@ -134,7 +134,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Admin
    * @param dependentID
    */
-   app.get('/dependentOwners/:depedentID/', AccessControlMiddelware._grantAccess((query) => {
+   app.get('/dependent-owners/:depedentID/', AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_customer);
   }),DependentsController._getOwnersByDependentId);
 
