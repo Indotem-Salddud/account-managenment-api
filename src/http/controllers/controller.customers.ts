@@ -235,4 +235,27 @@ export module CustomersController {
       );
     });
   };
+
+  /**
+   * ! Get customer data profile by customer ID
+   * * Alcazar87 - 2022/01/10
+   * TODO: isOnboarding
+   * @param req {Request}
+   * @param res {Response}
+   */
+   export const _profile = async (req, res) => {
+    const {customerID} = req.user;
+    CustomerActions.profile( customerID, err => {
+      if (err) {
+        _handleResponse(
+          {statusCode: 500, message: 'Server response cannot be processed'},
+          res
+        );
+      }
+      _handleResponse(
+        {statusCode: 200, message: 'Customer data received'},
+        res
+      );
+    });
+  };
 }
