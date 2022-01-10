@@ -133,4 +133,21 @@ export module CustomerActions {
       callback()
     });
   };
+  /**
+   * ! Get customer data profile by customer ID
+   * * Alcazar87 - 2022/01/10
+   * TODO isOnBoarding
+   * @param customerID {Number}
+   * @param callback {Function}
+   */
+  export const profile = (customerID: string, callback: Function) => {
+    const queryString = `SELECT name FROM @table WHERE id=${customerID}`;
+    _runner.run(queryString, (res) => {
+      if (res.err) {
+        callback(res.err);
+      }
+      
+      callback(null, res.data);
+    });
+  };
 }
