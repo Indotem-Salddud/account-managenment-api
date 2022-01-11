@@ -1,4 +1,6 @@
 import {DebuggerProtocol} from './DebuggerProtocol';
+import { DebuggerTypes } from './DebuggerTypes';
+import { DebbugerEnvironments } from './Environments';
 
 /**
  * ! Module debugger to show logs in cosole

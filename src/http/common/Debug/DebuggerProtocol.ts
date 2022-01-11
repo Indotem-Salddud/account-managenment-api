@@ -1,3 +1,6 @@
+import { DebbugerEnvironments } from "./Environments";
+import { DebuggerTypes } from "./DebuggerTypes";
+
 /**
  * ! Debugger protocol to conform test
  * TODO: Implement test

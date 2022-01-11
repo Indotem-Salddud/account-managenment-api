@@ -1,4 +1,4 @@
-import { Debugger } from '../../../http/common/Debug/Debugger';
+import { DebbugerEnvironments } from '../../../http/common/Debug/Environments';
 import {TokenPayload} from '../gen/gen.token';
 
 /**
