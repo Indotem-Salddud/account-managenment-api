@@ -26,7 +26,7 @@ export const CustomersRoute = (app: express.Application) => {
    * * Get all customer staff
    * @protected Admin
    */
-  app.get(`/allCustomers/`, AccessControlMiddelware._grantAccess((query) => {
+  app.get(`/customers/`, AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_resource)
   }), CustomersController._getAll);
   /**

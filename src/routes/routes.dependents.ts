@@ -28,7 +28,7 @@ export const DependentsRoute = (app: express.Application) => {
    * * Get owned dependents
    * @protected Logged customer
    */
-   app.get('/all-my-dependents/', AccessControlMiddelware._grantAccess((query) => {
+   app.get('/my-dependents/', AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_dependent);
   }), DependentsController._getMyDependents);
 
