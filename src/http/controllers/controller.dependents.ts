@@ -5,6 +5,7 @@ import {
   newDependentForCustomerDTO,
   UpdateDependentModel,
 } from '../../models/types/model.dependent';
+import { DependentsEndpoints } from '../common/Base/Base.DependentsEndpoints';
 
 // * Global properties
 const _microservice = 'Dependents';

@@ -2,16 +2,18 @@ import express from 'express';
 import {CustomersController} from '../http/controllers/controller.customers';
 import { PermissionActions } from '../models/types/gen/gen.permissions';
 import { AccessControlMiddelware } from '../http/middlewares/middelware.access.validation';
+import { CustomerEndpoints } from '../http/common/Base/Base.CustomerEndpoint';
 
+// * Global variables
 const _resource = PermissionActions.CUSTOMER;
 
 export const CustomersRoute = (app: express.Application) => {
   /**
-   * * Get customer by ID endpoint
+   * * Get customer by ID 
    * @param acccountID {Number}
    * @protected Admin or User with customerID
    */
-  app.get(`/customers/:customerID`, [AccessControlMiddelware._grantAccess((query) => {
+  app.get(CustomerEndpoints.GetCustomerById, [AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_resource);
   })], CustomersController._getById);
   /**
@@ -19,14 +21,14 @@ export const CustomersRoute = (app: express.Application) => {
    * @param acccountID {Number}
    * @protected Logged customer
    */
-    app.get(`/my-account/`, [AccessControlMiddelware._grantAccess((query) => {
+    app.get(CustomerEndpoints.GetOwnCustomerData, [AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_resource);
   })], CustomersController._getOwnCustomerAccount);
   /**
    * * Get all customer staff
    * @protected Admin
    */
-  app.get(`/customers/`, AccessControlMiddelware._grantAccess((query) => {
+  app.get(CustomerEndpoints.GetAllCustomersData, AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_resource)
   }), CustomersController._getAll);
   /**
@@ -34,7 +36,7 @@ export const CustomersRoute = (app: express.Application) => {
    * @param customerID {Number}
    * @protected Admin
    */
-  app.delete('/customers/:customerID', AccessControlMiddelware._grantAccess((query) => {
+  app.delete(CustomerEndpoints.DeleteCustomerById, AccessControlMiddelware._grantAccess((query) => {
     return query.deleteAny(_resource)
   }), CustomersController._deleteCustomer);
   /**
@@ -45,7 +47,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param status {Number}
    * }
    */
-  app.patch('/my-status/', AccessControlMiddelware._grantAccess((query) => {
+  app.patch(CustomerEndpoints.UpdateOwnCustomerStatus, AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
   }), CustomersController._updateOwnStatus);
 
@@ -57,7 +59,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param status {Number}
    * }
    */
-   app.patch('/status/:customerID', AccessControlMiddelware._grantAccess((query) => {
+   app.patch(CustomerEndpoints.UpdateCustomerStatusById, AccessControlMiddelware._grantAccess((query) => {
     return query.updateAny(_resource)
   }), CustomersController._updateStatusById);
   /**
@@ -71,7 +73,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param direction? {direction}
    * }
    */
-  app.put('/customers/:customerID', AccessControlMiddelware._grantAccess((query) => {
+  app.put(CustomerEndpoints.UpdateCustomerDataById, AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
   }), CustomersController._updateById);
   /**
@@ -84,7 +86,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param direction? {direction}
    * }
    */
-  app.put('/my-account/', AccessControlMiddelware._grantAccess((query) => {
+  app.put(CustomerEndpoints.UpdateOwnCustomerData, AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource)
   }), CustomersController._updateOwnCustomerAccount);
 
@@ -92,7 +94,7 @@ export const CustomersRoute = (app: express.Application) => {
    * * Get customer profile
    * @protected Logged user
    */
-  app.get(`/my-account/profile/`, AccessControlMiddelware._grantAccess((query) => {
+  app.get(CustomerEndpoints.GetOwnCustomerProfile, AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_resource)
   }), CustomersController._profile);
 };

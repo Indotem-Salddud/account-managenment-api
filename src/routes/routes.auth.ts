@@ -2,7 +2,9 @@ import express from 'express';
 import {AuthController} from '../http/controllers/controller.auth';
 import { PermissionActions } from '../models/types/gen/gen.permissions';
 import { AccessControlMiddelware } from '../http/middlewares/middelware.access.validation';
+import { AuthEndpoints } from '../http/common/Base/Base.AuthEndpoints';
 
+// * Global variables
 const _resource = PermissionActions.CUSTOMER;
 
 export const CustomersRoute = (app: express.Application) => {
@@ -14,7 +16,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param password: {string}
    * }
    */
-  app.post('/login', AuthController._login);
+  app.post(AuthEndpoints.Login, AuthController._login);
    /**
    * * Update customer password
    * @protected Only customer with ID provided by Token
@@ -22,7 +24,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param password {string} 
    * }
    */
-  app.put('/password', AccessControlMiddelware._grantAccess((query) => {
+  app.put(AuthEndpoints.UpdatePassword, AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource);
   }), AuthController._updatePassword);
 };

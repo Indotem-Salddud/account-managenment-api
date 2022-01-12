@@ -2,7 +2,9 @@ import express from 'express';
 import {DependentsController} from '../http/controllers/controller.dependents';
 import { PermissionActions } from '../models/types/gen/gen.permissions';
 import { AccessControlMiddelware } from '../http/middlewares/middelware.access.validation';
+import { DependentsEndpoints } from '../http/common/Base/Base.DependentsEndpoints';
 
+// * Global variables
 const _dependent = PermissionActions.DEPENDENTS;
 const _customer = PermissionActions.CUSTOMER;
 
@@ -12,7 +14,7 @@ export const DependentsRoute = (app: express.Application) => {
    * * Create new owned dependent
    * @protected Logged customer
    */
-   app.post('/my-dependents/', AccessControlMiddelware._grantAccess((query) => {
+   app.post(DependentsEndpoints.GetOwnedDependents, AccessControlMiddelware._grantAccess((query) => {
     return query.createOwn(_dependent);
   }),DependentsController._newOwnedDependent)
   
@@ -20,7 +22,7 @@ export const DependentsRoute = (app: express.Application) => {
    * * Create new dependent for one or many customer
    * @protected Admin
    */
-   app.post('/dependents/', AccessControlMiddelware._grantAccess((query) => {
+   app.post(DependentsEndpoints.CreateNewDependent, AccessControlMiddelware._grantAccess((query) => {
     return query.createAny(_dependent);
   }),DependentsController._newDependentForCustomer)
   
@@ -28,7 +30,7 @@ export const DependentsRoute = (app: express.Application) => {
    * * Get owned dependents
    * @protected Logged customer
    */
-   app.get('/my-dependents/', AccessControlMiddelware._grantAccess((query) => {
+   app.get(DependentsEndpoints.GetOwnedDependents, AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_dependent);
   }), DependentsController._getMyDependents);
 
@@ -37,7 +39,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Admin or User with Customer ID
    * @param customerID
    */
-   app.get('/dependents-for/:customerID', AccessControlMiddelware._grantAccess((query) => {
+   app.get(DependentsEndpoints.GetDependentsCustomer, AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_dependent);
   }), DependentsController._getAllCustomerDependents);
 
@@ -46,7 +48,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Logged customer
    * @param dependentID
    */
-  app.get('my-dependents/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
+  app.get(DependentsEndpoints.GetOwnedDependentById, AccessControlMiddelware._grantAccess((query) => {
     return query.readOwn(_dependent);
   }),DependentsController._getMyDependentById)
 
@@ -55,7 +57,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Admin
    * @param dependentID
    */
-  app.get('/dependents/:dependentID/', AccessControlMiddelware._grantAccess((query) => {
+  app.get(DependentsEndpoints.GetDependentById, AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_dependent);
   }),DependentsController._getDependentById);
 
@@ -64,7 +66,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @param dependentID {Number}
    * @protected Admin
    */
-     app.delete('/dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+     app.delete(DependentsEndpoints.DeleteDependentById, AccessControlMiddelware._grantAccess((query) => {
       return query.deleteAny(_dependent)
     }), DependentsController._deleteDependent);
 
@@ -73,7 +75,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @param dependentID {Number}
    * @protected Logged customer
    */
-       app.delete('/my-dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+       app.delete(DependentsEndpoints.DeleteOwnDependentsById, AccessControlMiddelware._grantAccess((query) => {
         return query.deleteOwn(_dependent)
       }), DependentsController._deleteDependent);
 
@@ -87,7 +89,7 @@ export const DependentsRoute = (app: express.Application) => {
    *  @param direction? {direction}
    * }
    */
-  app.put('/my-dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+  app.put(DependentsEndpoints.DeleteOwnDependentsDataById, AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_dependent)
   }), DependentsController._updateDependentById);
 
@@ -100,7 +102,7 @@ export const DependentsRoute = (app: express.Application) => {
    *  @param direction? {direction}
    * }
    */
-   app.put('/dependents/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+   app.put(DependentsEndpoints.UpdateDependentDataById, AccessControlMiddelware._grantAccess((query) => {
     return query.updateAny(_dependent)
   }), DependentsController._updateDependentById);
 
@@ -112,7 +114,7 @@ export const DependentsRoute = (app: express.Application) => {
    *  @param status {Number}
    * }
    */
-   app.patch('/status/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+   app.patch(DependentsEndpoints.UpdateDependentStatusById, AccessControlMiddelware._grantAccess((query) => {
     return query.updateAny(_dependent)
   }), DependentsController._updateDependentStatus);
 
@@ -125,7 +127,7 @@ export const DependentsRoute = (app: express.Application) => {
    *  @param status {Number}
    * }
    */
-   app.patch('/my-status/:dependentID', AccessControlMiddelware._grantAccess((query) => {
+   app.patch(DependentsEndpoints.UpdateOwnDependentStatusById, AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_dependent)
   }), DependentsController._updateOwnDependentStatus);
 
@@ -134,7 +136,7 @@ export const DependentsRoute = (app: express.Application) => {
    * @protected Admin
    * @param dependentID
    */
-   app.get('/dependent-owners/:depedentID/', AccessControlMiddelware._grantAccess((query) => {
+   app.get(DependentsEndpoints.GetCustomerOwnerByDependentId, AccessControlMiddelware._grantAccess((query) => {
     return query.readAny(_customer);
   }),DependentsController._getOwnersByDependentId);
 

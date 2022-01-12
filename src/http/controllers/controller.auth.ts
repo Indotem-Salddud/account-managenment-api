@@ -1,4 +1,5 @@
 import {AuthActions} from '../actions/actions.auth';
+import { AuthEndpoints } from '../common/Base/Base.AuthEndpoints';
 import {s} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
 

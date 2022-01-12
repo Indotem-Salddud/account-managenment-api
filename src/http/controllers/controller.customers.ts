@@ -4,6 +4,7 @@ import {
   UpdateCustomerModel,
 } from '../../models/types/model.customer';
 import {CustomerActions} from '../actions/actions.customers';
+import { CustomerEndpoints } from '../common/Base/Base.CustomerEndpoint';
 import {s} from '../common/common.responseHandler';
 
 // * Global properties
