@@ -1,7 +1,7 @@
 import {Query, Permission} from 'accesscontrol';
 import express from 'express';
 import {ac} from '../../models/types/gen/gen.permissions';
-import {_handleResponse} from '../common/common.responseHandler';
+import {s} from '../common/common.responseHandler';
 
 export module AccessControlMiddelware {
   /**
@@ -19,8 +19,12 @@ export module AccessControlMiddelware {
       // make a lambda function to run a validation
       const permission = f(ac.can(req.user.role));
       if (!permission.granted) {
-        _handleResponse(
-          {statusCode: 401, message: "You don't have permission to access the requested resource"},
+        s(
+          401,
+          {
+            message:
+              'You dont have permission to access the requested resource',
+          },
           res
         );
       }

@@ -1,9 +1,9 @@
 import express from 'express';
 import * as jwt from 'jsonwebtoken';
 import {Token} from '../../models/types/model.token';
-import {_handleResponse} from '../common/common.responseHandler';
+import {s} from '../common/common.responseHandler';
 import {TokenPayload} from '../../models/types/gen/gen.token';
-import { PermissionRoles } from '../../models/types/gen/gen.permissions';
+import {PermissionRoles} from '../../models/types/gen/gen.permissions';
 
 // global computation exp time
 const _expMax = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
@@ -23,9 +23,9 @@ export module JWTMiddelware {
     const token: string = req.headers.authorization.split(' ')[1];
     // check token
     if (!token) {
-      _handleResponse(
+      s(
+        401,
         {
-          statusCode: 401,
           message: 'Authorization header is not received',
         },
         res
@@ -55,7 +55,7 @@ export module JWTMiddelware {
           exp: _expMax,
           payload: {
             customerID: customerID,
-            role: PermissionRoles.USER
+            role: PermissionRoles.USER,
           },
         },
         process.env.JWT_PRIVATE_KEY
@@ -79,9 +79,9 @@ export module JWTMiddelware {
     const token: string = req.headers.authorization.split(' ')[1];
     // check token
     if (!token) {
-      _handleResponse(
+      s(
+        401,
         {
-          statusCode: 401,
           message: 'Authorization header is not received',
         },
         res
@@ -91,9 +91,9 @@ export module JWTMiddelware {
     // validate token
     jwt.verify(token, process.env.JWT_PRIVATE_KEY, (err, value) => {
       if (err || Date.now() / 1000 > value.exp) {
-        _handleResponse(
+        s(
+          401,
           {
-            statusCode: 401,
             message: 'Token provided is not valid',
           },
           res
@@ -101,7 +101,7 @@ export module JWTMiddelware {
       }
       req.user = {
         customerID: value.payload.customerID,
-        role: value.payload.role
+        role: value.payload.role,
       };
       next();
     });
