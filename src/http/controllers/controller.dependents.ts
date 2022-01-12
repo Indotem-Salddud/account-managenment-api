@@ -9,6 +9,7 @@ import {
 // * Global properties
 const _microservice = 'Dependents';
 const _version = 'v1.0.0';
+const _date = Date.now();
 
 export module DependentsController {
   /**

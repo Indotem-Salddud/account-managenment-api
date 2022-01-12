@@ -9,6 +9,7 @@ import {s} from '../common/common.responseHandler';
 // * Global properties
 const _microservice = 'Customers';
 const _version = 'v1.0.0';
+const _date = Date.now();
 
 export module CustomersController {
   /**

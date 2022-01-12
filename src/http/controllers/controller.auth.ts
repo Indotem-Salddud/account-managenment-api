@@ -5,6 +5,7 @@ import {JWTMiddelware} from '../middlewares/middelware.jwt';
 // * Global properties
 const _microservice = 'Auth';
 const _version = 'v1.0.0';
+const _date = Date.now();
 
 export module AuthController {
   /**
