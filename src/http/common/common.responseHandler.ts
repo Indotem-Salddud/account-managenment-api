@@ -1,4 +1,5 @@
 import express from 'express';
+import { ErrorHandler } from '../../models/types/gen/gen.error';
 
 /**
  * ! Send response from BEND to the FEND with the data provided

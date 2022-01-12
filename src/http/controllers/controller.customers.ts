@@ -6,6 +6,10 @@ import {
 import {CustomerActions} from '../actions/actions.customers';
 import {s} from '../common/common.responseHandler';
 
+// * Global properties
+const _microservice = 'Customers';
+const _version = 'v1.0.0';
+
 export module CustomersController {
   /**
    * ! Controller function to get customer by their ID

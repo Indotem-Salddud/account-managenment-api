@@ -6,6 +6,10 @@ import {
   UpdateDependentModel,
 } from '../../models/types/model.dependent';
 
+// * Global properties
+const _microservice = 'Dependents';
+const _version = 'v1.0.0';
+
 export module DependentsController {
   /**
    * ! Get all owned dependents
