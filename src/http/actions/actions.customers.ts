@@ -8,10 +8,12 @@ import {
 } from '../../models/types/model.customer';
 import { db } from '../core/core.db';
 import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
-import { SQLInsertResponse } from '../../models/types/gen/gen.SQLResponse';
+import { _dependentTableName } from '../../models/types/model.dependent';
+import { _customerDependentRealtionshipTableName } from '../../models/types/model.customerDependentRelationship';
 
 // * SQL Runner to perform MYSQL Requests
 const _runner = new SQLRunner(db, _tableName);
+const _relationshipRunner = new SQLRunner(db, _customerDependentRealtionshipTableName);
 
 export module CustomerActions {
   /**
@@ -75,8 +77,19 @@ export module CustomerActions {
    * @param callback {Function}
    */
   export const deleteCustomer = (customerID: string, callback: Function) => {
-    const queryString = `DELETE FROM @table WHERE id=${customerID}`;
-    _runner.run(queryString, (res)=>{
+    const queryString = `
+    DELETE
+      ${_tableName}
+      @table,
+      ${_dependentTableName}
+    FROM ${_tableName}
+    INNER JOIN @table
+      ON ${_tableName}.id = @table.customerID
+    INNER JOIN ${_dependentTableName}
+      ON @table.dependentID = ${_dependentTableName}.id
+    WHERE id=${customerID}
+    `;
+    _relationshipRunner.run(queryString, (res)=>{
       if (res.err) {
         callback(res.err)
       }
