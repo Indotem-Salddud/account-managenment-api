@@ -11,7 +11,7 @@ import {
   PermissionActions,
   PermissionRoles,
 } from '../../models/types/gen/gen.permissions';
-import { DependentsActions } from '../actions/actions.dependents';
+import {DependentsActions} from '../actions/actions.dependents';
 
 export module CustomersController {
   /**
@@ -25,23 +25,38 @@ export module CustomersController {
     res: express.Response
   ) => {
     const {customerID} = req.params;
-      if (!customerID) {
-        s(400, {
-          message: 'Data provided is not valid'
-        }, res);
-      }
-      // call to action
-      CustomerActions.findById(customerID, (err?: string, data?: TinyCustomer) => {
+    if (!customerID) {
+      s(
+        400,
+        {
+          message: 'Data provided is not valid',
+        },
+        res
+      );
+    }
+    // call to action
+    CustomerActions.findById(
+      customerID,
+      (err?: string, data?: TinyCustomer) => {
         if (err) {
-          s(500, {
-            message: 'Server response cannot be processed'
-          }, res);
+          s(
+            500,
+            {
+              message: 'Server response cannot be processed',
+            },
+            res
+          );
         }
-        s(200, {
-          message: 'Customer data received',
-          data: data
-        }, res);
-      });
+        s(
+          200,
+          {
+            message: 'Customer data received',
+            data: data,
+          },
+          res
+        );
+      }
+    );
   };
   /**
    * ! Controller function to get own customer account
@@ -54,18 +69,29 @@ export module CustomersController {
     res: express.Response
   ) => {
     const {customerID} = req.user;
-      // call to action
-      CustomerActions.findById(customerID, (err?: string, data?: TinyCustomer) => {
+    // call to action
+    CustomerActions.findById(
+      customerID,
+      (err?: string, data?: TinyCustomer) => {
         if (err) {
-          s(500, {
-            message: 'Server response cannot be processed'
-          }, res);
+          s(
+            500,
+            {
+              message: 'Server response cannot be processed',
+            },
+            res
+          );
         }
-        s(200, {
-          message: 'Customer data received',
-          data: data
-        }, res);
-      });
+        s(
+          200,
+          {
+            message: 'Customer data received',
+            data: data,
+          },
+          res
+        );
+      }
+    );
   };
 
   /**
@@ -77,17 +103,24 @@ export module CustomersController {
   export const _getAll = async (req, res) => {
     CustomerActions.findAll((err?: string, data?: TinyCustomer) => {
       if (err) {
-        s(500, {
-          message: 'Server response cannot be processed'
-        }, res);
+        s(
+          500,
+          {
+            message: 'Server response cannot be processed',
+          },
+          res
+        );
       }
-      s(200, {
-        message: 'Customer data received',
-        data: data
-      }, res);
+      s(
+        200,
+        {
+          message: 'Customer data received',
+          data: data,
+        },
+        res
+      );
     });
   };
-
 
   /**
    * ! Delete customer data by ID
@@ -99,20 +132,32 @@ export module CustomersController {
   export const _deleteCustomer = async (req, res) => {
     const {customerID} = req.params;
     if (!customerID) {
-      s(400, {
-        message: 'Customer ID not provided'
-      }, res);
+      s(
+        400,
+        {
+          message: 'Customer ID not provided',
+        },
+        res
+      );
     }
     // call to action
     CustomerActions.deleteCustomer(customerID, (err: string = null) => {
       if (err) {
-        s(500, {
-          message: 'Customer cannot be deleted'
-        }, res);
+        s(
+          500,
+          {
+            message: 'Customer cannot be deleted',
+          },
+          res
+        );
       }
-      s(200, {
-        message: 'Customer was delete sucessfully'
-      }, res);
+      s(
+        200,
+        {
+          message: 'Customer was delete sucessfully',
+        },
+        res
+      );
     });
   };
 
@@ -123,25 +168,37 @@ export module CustomersController {
    * @param res {Response}
    */
   export const _updateStatusById = async (req, res) => {
-      const {customerID} = req.params;
-      const {status} = req.body;
-      // TODO: VALIDATE ACOUNT STATUS
-      if (!customerID) {
-        s(400, {
-          message: 'Customer ID not provided'
-        }, res);
+    const {customerID} = req.params;
+    const {status} = req.body;
+    // TODO: VALIDATE ACOUNT STATUS
+    if (!customerID) {
+      s(
+        400,
+        {
+          message: 'Customer ID not provided',
+        },
+        res
+      );
+    }
+    // call to action
+    CustomerActions.updateStatus(customerID, status, (err: string = null) => {
+      if (err) {
+        s(
+          500,
+          {
+            message: 'Customer status cannot be updated',
+          },
+          res
+        );
       }
-      // call to action
-      CustomerActions.updateStatus(customerID, status, (err: string = null) => {
-        if (err) {
-          s(500, {
-            message: 'Customer status cannot be updated'
-          }, res);
-        }
-        s(200, {
-          message: 'Customer status was updated sucessfully'
-        }, res);
-      });
+      s(
+        200,
+        {
+          message: 'Customer status was updated sucessfully',
+        },
+        res
+      );
+    });
   };
 
   /**
@@ -150,23 +207,30 @@ export module CustomersController {
    * @param req {Request}
    * @param res {Response}
    */
-   export const _updateOwnStatus = async (req, res) => {
+  export const _updateOwnStatus = async (req, res) => {
     const {customerID} = req.user;
     const {status} = req.body;
     // TODO: VALIDATE ACOUNT STATUS
     // call to action
     CustomerActions.updateStatus(customerID, status, (err: string = null) => {
       if (err) {
-        s(500, {
-          message: 'Customer status cannot be updated'
-        }, res);
+        s(
+          500,
+          {
+            message: 'Customer status cannot be updated',
+          },
+          res
+        );
       }
-      s(200, {
-        message: 'Customer status was updated sucessfully'
-      }, res);
+      s(
+        200,
+        {
+          message: 'Customer status was updated sucessfully',
+        },
+        res
+      );
     });
-};
-
+  };
 
   /**
    * ! Update customer data by customerID
@@ -177,22 +241,34 @@ export module CustomersController {
   export const _updateById = async (req, res) => {
     const {customerID} = req.params;
     if (!customerID) {
-      s(400, {
-        message: 'Customer ID not provided'
-      }, res);
+      s(
+        400,
+        {
+          message: 'Customer ID not provided',
+        },
+        res
+      );
     }
     //TODO: VALIDATE FIELDS
     const data: UpdateCustomerModel = req.body;
     // call to action
     CustomerActions.updateData(data, customerID, err => {
       if (err) {
-        s(500, {
-          message: 'Customer data cannot be updated'
-        }, res);
+        s(
+          500,
+          {
+            message: 'Customer data cannot be updated',
+          },
+          res
+        );
       }
-      s(200, {
-        message: 'Customer data was updated sucessfully'
-      }, res);
+      s(
+        200,
+        {
+          message: 'Customer data was updated sucessfully',
+        },
+        res
+      );
     });
   };
 
@@ -202,20 +278,28 @@ export module CustomersController {
    * @param req {Request}
    * @param res {Response}
    */
-   export const _updateOwnCustomerAccount = async (req, res) => {
+  export const _updateOwnCustomerAccount = async (req, res) => {
     const {customerID} = req.user;
     //TODO: VALIDATE FIELDS
     const data: UpdateCustomerModel = req.body;
     // call to action
     CustomerActions.updateData(data, customerID, err => {
       if (err) {
-        s(500, {
-          message: 'Customer data cannot be updated'
-        }, res);
+        s(
+          500,
+          {
+            message: 'Customer data cannot be updated',
+          },
+          res
+        );
       }
-      s(200, {
-        message: 'Customer data was updated sucessfully'
-      }, res);
+      s(
+        200,
+        {
+          message: 'Customer data was updated sucessfully',
+        },
+        res
+      );
     });
   };
 
@@ -226,17 +310,25 @@ export module CustomersController {
    * @param req {Request}
    * @param res {Response}
    */
-   export const _profile = async (req, res) => {
+  export const _profile = async (req, res) => {
     const {customerID} = req.user;
-    CustomerActions.profile( customerID, err => {
+    CustomerActions.profile(customerID, err => {
       if (err) {
-        s(500, {
-          message: 'Server response cannot be processed'
-        }, res);
+        s(
+          500,
+          {
+            message: 'Server response cannot be processed',
+          },
+          res
+        );
       }
-      s(200, {
-        message: 'Customer data received'
-      }, res);
+      s(
+        200,
+        {
+          message: 'Customer data received',
+        },
+        res
+      );
     });
   };
 }
