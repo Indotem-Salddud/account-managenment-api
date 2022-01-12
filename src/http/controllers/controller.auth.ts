@@ -2,6 +2,10 @@ import {AuthActions} from '../actions/actions.auth';
 import {s} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
 
+// * Global properties
+const _microservice = 'Auth';
+const _version = 'v1.0.0';
+
 export module AuthController {
   /**
    * ! Controller action to perform a login

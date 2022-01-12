@@ -9,14 +9,14 @@
 }
 
 // * Internal interface to set the body of the interface
-interface ErrorHandlerBody {
+export interface ErrorHandlerBody {
     message: string;
     code: string;
     date: Number;
 }
 
 // * Internal interface for error handling metadata
-interface ErrorHandlerMetadata {
+export interface ErrorHandlerMetadata {
     endpoint: string;
     mircroservice: string;
     version: string;
