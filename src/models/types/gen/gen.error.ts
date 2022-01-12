@@ -12,7 +12,7 @@
 interface ErrorHandlerBody {
     message: string;
     code: string;
-    date: string;
+    date: Number;
 }
 
 // * Internal interface for error handling metadata
