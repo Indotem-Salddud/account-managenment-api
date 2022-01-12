@@ -7,7 +7,7 @@ const _resource = PermissionActions.CUSTOMER;
 
 export const CustomersRoute = (app: express.Application) => {
 
-/**
+  /**
    * * Login
    * @body {
    *  @param username: {string}
@@ -22,7 +22,7 @@ export const CustomersRoute = (app: express.Application) => {
    *  @param password {string} 
    * }
    */
-    app.put('/password', AccessControlMiddelware._grantAccess((query) => {
-      return query.updateOwn(_resource);
-    }), AuthController._updatePassword);
-   };
+  app.put('/password', AccessControlMiddelware._grantAccess((query) => {
+    return query.updateOwn(_resource);
+  }), AuthController._updatePassword);
+};
