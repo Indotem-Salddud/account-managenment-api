@@ -1,11 +1,6 @@
 import {DependentsActions} from '../actions/actions.dependents';
 import {s} from '../common/common.responseHandler';
 import {
-  PermissionRoles,
-  ac,
-  PermissionActions,
-} from '../../models/types/gen/gen.permissions';
-import {
   Dependent,
   newDependentForCustomerDTO,
   UpdateDependentModel,

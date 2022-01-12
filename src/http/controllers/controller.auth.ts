@@ -1,7 +1,6 @@
 import {AuthActions} from '../actions/actions.auth';
 import {s} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
-import {ac, PermissionActions} from '../../models/types/gen/gen.permissions';
 
 export module AuthController {
   /**

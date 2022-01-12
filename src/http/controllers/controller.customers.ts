@@ -5,13 +5,6 @@ import {
 } from '../../models/types/model.customer';
 import {CustomerActions} from '../actions/actions.customers';
 import {s} from '../common/common.responseHandler';
-import {JWTMiddelware} from '../middlewares/middelware.jwt';
-import {
-  ac,
-  PermissionActions,
-  PermissionRoles,
-} from '../../models/types/gen/gen.permissions';
-import {DependentsActions} from '../actions/actions.dependents';
 
 export module CustomersController {
   /**
