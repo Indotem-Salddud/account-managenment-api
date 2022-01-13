@@ -11,5 +11,5 @@ export enum TranslatorKeys { // ggignore
  * * whitehatdevv - 2022/01/12
  */
 export enum TranslatorKeysUUID { // ggignore
-    AppAuthLoginBadRequest = 'e1a6cdf1-a618-4f3c-bc81-3850ce17d4b9'
+    AppAuthLoginBadRequest = 'e1a6cdf1-a618-4f3c-bc81-3850ce17d4b9' // ggignore
 }
