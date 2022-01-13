@@ -71,7 +71,7 @@ export module CustomerActions {
   };
 
   /**
-   * ! Method to delete acount by ID
+   * ! Method to delete customer AND HIS RELATIONS, by customer ID
    * * whitehatdevv - 2021/12/14
    * @param customerID {string}
    * @param callback {Function}
@@ -81,12 +81,9 @@ export module CustomerActions {
     DELETE
       ${_tableName}
       @table,
-      ${_dependentTableName}
     FROM ${_tableName}
     INNER JOIN @table
       ON ${_tableName}.id = @table.customerID
-    INNER JOIN ${_dependentTableName}
-      ON @table.dependentID = ${_dependentTableName}.id
     WHERE id=${customerID}
     `;
     _relationshipRunner.run(queryString, (res)=>{
