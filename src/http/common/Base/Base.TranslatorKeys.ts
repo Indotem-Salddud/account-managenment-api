@@ -2,7 +2,7 @@
  * ! Translator keys collection
  * * whitehatdevv - 2022/01/12
  */
-export enum TranslatorPlaceholder {
+export enum TranslatorKeys { // ggignore
     AppAuthLoginBadRequest = 'app_auth_login_post_bad_request'
 }
 
@@ -10,6 +10,6 @@ export enum TranslatorPlaceholder {
  * ! TranslatorKeysUUID collection
  * * whitehatdevv - 2022/01/12
  */
-export enum TranslatorUUID {
+export enum TranslatorKeysUUID { // ggignore
     AppAuthLoginBadRequest = 'e1a6cdf1-a618-4f3c-bc81-3850ce17d4b9'
 }
