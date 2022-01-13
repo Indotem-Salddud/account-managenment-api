@@ -6,7 +6,9 @@ import {TokenPayload} from '../../models/types/gen/gen.token';
 import {PermissionRoles} from '../../models/types/gen/gen.permissions';
 
 // global computation exp time
+const _refreshTokenExpirationDays = 7;
 const _expMax = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
+const _expRefreshToken = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * _refreshTokenExpirationDays;
 
 export module JWTMiddelware {
   /**
@@ -54,6 +56,18 @@ export module JWTMiddelware {
         {
           exp: _expMax,
           payload: {
+            customerID: customerID,
+            role: PermissionRoles.USER,
+          },
+        },
+        process.env.JWT_PRIVATE_KEY
+      ),
+      refreshToken: jwt.sign(
+        {
+          exp: _expRefreshToken,
+          payload: {
+            // Provides data for new JWT
+            tokenExp: _expMax,
             customerID: customerID,
             role: PermissionRoles.USER,
           },

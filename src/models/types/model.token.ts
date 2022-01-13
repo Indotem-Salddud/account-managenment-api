@@ -4,6 +4,7 @@
  */
 export interface Token {
   token: string;
+  refreshToken: string;
   expiration: Number;
   type: string;
   identity?: string;
