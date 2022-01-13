@@ -301,7 +301,29 @@ export module DependentsActions {
           callback();
         });
       };
-
+  /**
+   * ! Delete unrelated dependents
+   * * DanBaDo - 2022/01/13
+   * @param callback {Function}
+   */
+  export const deleteUnrelatedDependents = (callback: Function) => {
+    const queryString = `
+    DELETE
+      ${_dependentTableName}
+    FROM 
+      ${_dependentTableName} LEFT JOIN @table
+      ON ${_dependentTableName}.id = @table.dependentID
+    WHERE
+      @table.dependentID IS NULL
+    `
+    _relationshipRunner.run(queryString, (res)=>{
+      if (res.err) {
+        callback(res.err)
+      }
+      callback();
+    })
+  }
+    
    /**
    * ! Update dependent data by ID
    * * Alcazar87 - 2021/12/30
