@@ -4,6 +4,7 @@ import {
   UpdateCustomerModel,
 } from '../../models/types/model.customer';
 import {CustomerActions} from '../actions/actions.customers';
+import { DependentsActions } from '../actions/actions.dependents';
 import { CustomerEndpoints } from '../common/Base/Base.CustomerEndpoint';
 import {s} from '../common/common.responseHandler';
 
@@ -124,7 +125,6 @@ export module CustomersController {
   /**
    * ! Delete customer data by ID
    * * whitehatdevv - 2021/12/14
-   * TODO: Delete in cascade all relaionships associated
    * @param req {Request}
    * @param res {Response}
    */
@@ -139,25 +139,37 @@ export module CustomersController {
         res
       );
     }
-    // call to action
+    // delete customer and his relationships
     CustomerActions.deleteCustomer(customerID, (err: string = null) => {
       if (err) {
         s(
           500,
           {
-            message: 'Customer cannot be deleted',
+            message: 'app_auth_customer_customerID_delete_internal_server_error',
           },
           res
         );
       }
-      s(
-        200,
-        {
-          message: 'Customer was delete sucessfully',
-        },
-        res
-      );
     });
+    // cleanup dependents that haven't relationships
+    DependentsActions.deleteUnrelatedDependents((err: string = null) => {
+      if (err) {
+        s(
+          500,
+          {
+            message: 'app_auth_customers_customerID_delete_error_removing_unrelated_dependents',
+          },
+          res
+        )
+      }
+    });
+    s(
+      200,
+      {
+        message: 'app_auth_customers_customerID_delete_successfully',
+      },
+      res
+    );
   };
 
   /**
