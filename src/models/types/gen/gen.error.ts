@@ -25,7 +25,7 @@ export interface ErrorHandlerMetadata {
     // * Endpoint where error was detected
     endpoint: string;
     // * Microservice which contains the error
-    mircroservice: string;
+    microservice: string;
     // * Version of the microservice
     version: string;
 }
