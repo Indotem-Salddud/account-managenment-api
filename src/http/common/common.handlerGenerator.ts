@@ -1,6 +1,4 @@
-import { ErrorHandler } from "../../models/types/gen/gen.error";
-import { ErrorHandlerMetadata } from "../../models/types/gen/gen.error";
-import { ErrorHandlerBody } from "../../models/types/gen/gen.error";
+import { ErrorHandler, ErrorHandlerMetadata, ErrorHandlerBody } from "../../models/types/gen/gen.error";
 
 /**
  * ! Error handler generator
