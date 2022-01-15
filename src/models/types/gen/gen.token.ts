@@ -8,3 +8,9 @@ export interface TokenPayload {
   customerID: string;
   role: PermissionRoles;
 }
+
+export interface refreshTokenPayload {
+  customerID: string;
+  role: PermissionRoles;
+  tokenExp: number;
+}

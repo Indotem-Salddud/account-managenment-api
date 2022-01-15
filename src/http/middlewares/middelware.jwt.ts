@@ -2,7 +2,7 @@ import express from 'express';
 import * as jwt from 'jsonwebtoken';
 import {Token} from '../../models/types/model.token';
 import {s} from '../common/common.responseHandler';
-import {TokenPayload} from '../../models/types/gen/gen.token';
+import {refreshTokenPayload, TokenPayload} from '../../models/types/gen/gen.token';
 import {PermissionRoles} from '../../models/types/gen/gen.permissions';
 
 // global computation exp time
@@ -120,4 +120,26 @@ export module JWTMiddelware {
       next();
     });
   };
+
+  /**
+   * ! Grant new JWT based in refresh token payload
+   * * DanBaDo - 2022/01/15
+   * @param refresToken {refreshTokenPayload}
+   * @returns token {string}
+   */
+  export const _refresh = (refresToken: refreshTokenPayload) => {
+    const { customerID, role } =  refresToken;
+    return {
+      expiration: _expMax,
+      token: jwt.sign(
+        {
+          exp: _expMax,
+          payload: {customerID, role},
+        },
+        process.env.JWT_PRIVATE_KEY
+      ),
+      refreshToken: refresToken,
+      type: 'Bearer',
+    };
+  }
 }

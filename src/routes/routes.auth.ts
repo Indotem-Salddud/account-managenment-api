@@ -27,4 +27,11 @@ export const CustomersRoute = (app: express.Application) => {
   app.put(AuthEndpoints.UpdatePassword, AccessControlMiddelware._grantAccess((query) => {
     return query.updateOwn(_resource);
   }), AuthController._updatePassword);
+  /**
+   * * Refres JWT
+   * @body {
+   *  @param refreshToken {string}
+   * }
+   */
+  app.get(AuthEndpoints.Refresh, AuthController._refresh);
 };
