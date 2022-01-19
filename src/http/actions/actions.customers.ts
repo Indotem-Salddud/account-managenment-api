@@ -10,7 +10,6 @@ import { db } from '../core/core.db';
 import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
 import { _dependentTableName } from '../../models/types/model.dependent';
 import { _customerDependentRealtionshipTableName } from '../../models/types/model.customerDependentRelationship';
-import { SQLInsertResponse } from '../../models/types/gen/gen.SQLResponse';
 
 // * SQL Runner to perform MYSQL Requests
 const _runner = new SQLRunner(db, _tableName);
@@ -159,56 +158,6 @@ export module CustomerActions {
       }
       
       callback(null, res.data);
-    });
-  };
-
-  /**
-   * ! Insert new customer
-   * * Alcazar87 - 2021/01/18
-   * @param name {string}
-   * @param username {string}
-   * @param email {string}
-   * @param phone {string}
-   * @param direction {string}
-   * @param password {string}
-   * @param callback {Function}
-   */
-  export const newCustomer = (
-    name: string,
-    username: string,
-    email: string,
-    phone: string,
-    direction: string,
-    password: string,
-    callback: Function
-  ) => {
-    bcrypt
-      .hash(password, 10)
-      .then(hash => {
-    const queryString = `
-      INSERT
-      INTO @table (name,username,email,phone, direction,password=${hash})
-      VALUES (${name},${username},${email}, ${phone}, ${direction},${hash})
-    `;
-    _runner.run( queryString, (res: SQLQueryResponse<SQLInsertResponse>) => {
-      if (res.err) {
-        callback(res.err)
-      }
-      callback(
-        null,
-        {
-          id: res.data.insertId,
-          name,
-          username,
-          email,
-          phone,
-          direction,
-          password,
-          status: 1,
-          // TODO: what to do for providing new dependent date
-        }
-      )
-    })
     });
   };
 }
