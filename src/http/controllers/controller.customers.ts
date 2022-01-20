@@ -90,14 +90,12 @@ export module CustomersController {
           );
           
         }
-       s(
+      s(
           200,
-          success(
           {
-            message: TranslatorKeys.AppCustomersCutomersCustomerIDSuccessfully ,
-            code: TranslatorKeysUUID.AppCustomersCutomersCustomerIDSuccessfully ,         
+            message: 'Customer data received',
+            data: data,
           },
-          ),
           res
         );
       }
@@ -120,12 +118,60 @@ export module CustomersController {
       (err?: string, data?: TinyCustomer) => {
         if (err) {
           s(
-            500,
-            {
-              message: 'Server response cannot be processed',
-            },
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMyaccountBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersMyaccountBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetOwnCustomerData,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
+          s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMyaccountUnauthorized,
+                  code: TranslatorKeysUUID.AppCustomersMyaccountUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetOwnCustomerData,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMyaccountInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersMyaccountInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetOwnCustomerData,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          
         }
         s(
           200,
@@ -148,18 +194,101 @@ export module CustomersController {
   export const _getAll = async (req, res) => {
     CustomerActions.findAll((err?: string, data?: TinyCustomer) => {
       if (err) {
-        s(
-          500,
-          {
-            message: 'Server response cannot be processed',
-          },
-          res
-        );
-      }
+         s(
+            204,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersNoContent,
+                  code: TranslatorKeysUUID.AppCustomersCustomersNoContent,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetAllCustomersData,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersCustomersBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetAllCustomersData,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersUnauthorized,
+                  code: TranslatorKeysUUID.AppCustomersCustomersUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetAllCustomersData,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersNotFound,
+                  code: TranslatorKeysUUID.AppCustomersCustomersNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetAllCustomersData,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersCustomersInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetAllCustomersData,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
       s(
         200,
         {
-          message: 'Customer data received',
+          message: 'Customers data received',
           data: data,
         },
         res
