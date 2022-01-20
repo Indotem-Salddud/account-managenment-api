@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 import { AuthEndpoints } from '../common/Base/Base.AuthEndpoints';
 import { error,success } from '../common/common.handlerGenerator';
 import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
-import { refreshTokenPayload } from '../../models/types/gen/gen.token';
+import { refreshTokenPayload, tokenPurpouses } from '../../models/types/gen/gen.token';
 
 // * Global properties
 const _microservice = 'Auth';
@@ -111,6 +111,7 @@ export module AuthController {
       s(
         200,
         JWTMiddelware._refresh({ 
+          purpouse: tokenPurpouses.refres,
           customerID: refresTokeData.payload.customerID,
           role: refresTokeData.payload.role,
           tokenExp: refresTokeData.payload.tokenExp
@@ -149,7 +150,7 @@ export module AuthController {
     const {customerID} = req.user;
     AuthActions.insertNewRefreshToken(
       customerID,
-      (err?: string, data?: refreshTokenPayload) => {
+      (err?: string, tokenExp?: number) => {
         if (err) {
           s(
             500,
@@ -170,26 +171,20 @@ export module AuthController {
             res
           );
         }
+
+        const token: refreshTokenPayload = {
+          customerID,
+          purpouse: tokenPurpouses.refres,
+          role: req.user.role,
+          tokenExp
+        }
         s(
           200,
-          {
-            message: TranslatorKeys.AppAuthRefreshNewRefreshTokenProvided,
-            data: data,
-          },
+          JWTMiddelware._refresh(token),
           res
         );
       }
     )
-    s(
-      200,
-      success(
-      {
-        message: TranslatorKeys.AppAuthLoginLoginSuccessfully ,
-        code: TranslatorKeysUUID.AppAuthLoginLoginSuccessfully ,         
-      },
-      ),
-      res
-    );
   }
   /**
    * ! Update password by customer ID
