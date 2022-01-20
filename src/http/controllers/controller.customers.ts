@@ -626,30 +626,71 @@ export module CustomersController {
     const {customerID} = req.params;
     if (!customerID) {
       s(
-        400,
-        {
-          message: 'Customer ID not provided',
-        },
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateCustomerDataById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
         res
       );
     }
     //TODO: VALIDATE FIELDS
     const data: UpdateCustomerModel = req.body;
     // call to action
-    CustomerActions.updateData(data, customerID, err => {
+    CustomerActions.updateData(data, customerID, (err?: string) => {
       if (err) {
-        s(
-          500,
-          {
-            message: 'Customer data cannot be updated',
-          },
-          res
-        );
-      }
+         s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDUnauthorized,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateCustomerDataById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateCustomerDataById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
       s(
         200,
         {
-          message: 'Customer data was updated sucessfully',
+              message: TranslatorKeys.AppCustomersCustomersCustomerIDSuccessfully,
+              code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDSuccessfully 
         },
         res
       );
