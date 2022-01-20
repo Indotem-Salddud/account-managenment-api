@@ -7,6 +7,8 @@ import {CustomerActions} from '../actions/actions.customers';
 import { DependentsActions } from '../actions/actions.dependents';
 import { CustomerEndpoints } from '../common/Base/Base.CustomerEndpoint';
 import {s} from '../common/common.responseHandler';
+import { error,success } from '../common/common.handlerGenerator';
+import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
 
 // * Global properties
 const _microservice = 'Customers';
@@ -26,11 +28,22 @@ export module CustomersController {
   ) => {
     const {customerID} = req.params;
     if (!customerID) {
-      s(
-        400,
-        {
-          message: 'Data provided is not valid',
-        },
+       s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCutomersCustomerIDBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersCutomersCustomerIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
         res
       );
     }
@@ -39,20 +52,52 @@ export module CustomersController {
       customerID,
       (err?: string, data?: TinyCustomer) => {
         if (err) {
-          s(
-            500,
-            {
-              message: 'Server response cannot be processed',
-            },
+           s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCutomersCustomerIDUnauthorized,
+                  code: TranslatorKeysUUID.AppCustomersCutomersCustomerIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCutomersCustomerIDInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersCutomersCustomerIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          
         }
-        s(
+       s(
           200,
+          success(
           {
-            message: 'Customer data received',
-            data: data,
+            message: TranslatorKeys.AppCustomersCutomersCustomerIDSuccessfully ,
+            code: TranslatorKeysUUID.AppCustomersCutomersCustomerIDSuccessfully ,         
           },
+          ),
           res
         );
       }
