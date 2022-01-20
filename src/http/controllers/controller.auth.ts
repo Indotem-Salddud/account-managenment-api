@@ -106,15 +106,51 @@ export module AuthController {
     const {customerID} = req.user;
     //TODO: VALIDATE DATA
     const {password} = req.body;
-    AuthActions.updatePassword(password, customerID, err => {
+    AuthActions.updatePassword(password, customerID, (err?: string) => {
       if (err) {
+          s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppAuthPasswordBadRequest,
+                  code: TranslatorKeysUUID.AppAuthPasswordBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: AuthEndpoints.Login,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+        s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppAuthPasswordUnauthorized,
+                  code: TranslatorKeysUUID.AppAuthPasswordUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: AuthEndpoints.Login,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
         s(
           500,
           error(
             [
               {
-                message: "app_auth_password_put_internal_server_error",
-                code: "0a3adaec-9f5d-4f13-aed6-fc94ce79dfd9",
+                message: TranslatorKeys.AppAuthPasswordInternalServerError ,
+                code: TranslatorKeysUUID.AppAuthPasswordInternalServerError ,
                 date: _date
               }
             ],
@@ -127,13 +163,16 @@ export module AuthController {
           res
         );
       }
-      s(
-        200,
-        {
-          message: 'app_auth_password_put_updated_sucessfully',
-        },
-        res
-      );
+       s(
+          200,
+          success(
+          {
+            message: TranslatorKeys.AppAuthPasswordUpdatedSuccessfully ,
+            code: TranslatorKeysUUID.AppAuthPasswordUpdatedSuccessfully ,         
+          },
+          ),
+          res
+        );
     });
   };
 }
