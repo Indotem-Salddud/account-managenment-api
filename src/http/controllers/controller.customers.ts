@@ -447,7 +447,7 @@ export module CustomersController {
           success(
           {
             message: TranslatorKeys.AppCustomersCustomersCustomerIDSuccessfully,
-            code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDSuccessfully,         
+            code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDSuccessfully         
           },
           ),
       res
@@ -466,10 +466,21 @@ export module CustomersController {
     // TODO: VALIDATE ACOUNT STATUS
     if (!customerID) {
       s(
-        400,
-        {
-          message: 'Customer ID not provided',
-        },
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersStatusCustomerIDBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersStatusCustomerIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateCustomerStatusById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
         res
       );
     }
@@ -477,17 +488,48 @@ export module CustomersController {
     CustomerActions.updateStatus(customerID, status, (err: string = null) => {
       if (err) {
         s(
-          500,
-          {
-            message: 'Customer status cannot be updated',
-          },
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersStatusCustomerIDNotFound,
+                  code: TranslatorKeysUUID.AppCustomersStatusCustomerIDNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateCustomerStatusById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersStatusCustomerIDInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersStatusCustomerIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateCustomerStatusById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
           res
-        );
+        )
       }
+   
       s(
         200,
         {
-          message: 'Customer status was updated sucessfully',
+           message: TranslatorKeys.AppCustomersStatusCustomerIDSuccessfully,
+           code: TranslatorKeysUUID.AppCustomersStatusCustomerIDSuccessfully  
         },
         res
       );
