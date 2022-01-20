@@ -2,8 +2,9 @@ import {AuthActions} from '../actions/actions.auth';
 import {s} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
 import * as jwt from 'jsonwebtoken';
-import { error } from '../common/common.handlerGenerator';
 import { AuthEndpoints } from '../common/Base/Base.AuthEndpoints';
+import { error,success } from '../common/common.handlerGenerator';
+import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
 
 // * Global properties
 const _microservice = 'Auth';
@@ -26,10 +27,57 @@ export module AuthController {
       (err?: string, ctrl: boolean = false, id?: string) => {
         if (err || !ctrl) {
           s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppAuthLoginBadRequest,
+                  code: TranslatorKeysUUID.AppAuthLoginBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: AuthEndpoints.Login,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
             500,
-            {
-              message: err,
-            },
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppAuthLoginInternalServerError,
+                  code: TranslatorKeysUUID.AppAuthLoginInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: AuthEndpoints.Login,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            503,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppAuthLoginServiceUnavailable ,
+                  code: TranslatorKeysUUID.AppAuthLoginServiceUnavailable ,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: AuthEndpoints.Login,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
         }
@@ -37,9 +85,12 @@ export module AuthController {
         const token = JWTMiddelware._signIn(id);
         s(
           200,
+          success(
           {
-            message: 'Login sucesfully',
+            message: TranslatorKeys.AppAuthLoginLoginSuccessfully ,
+            code: TranslatorKeysUUID.AppAuthLoginLoginSuccessfully ,         
           },
+          ),
           res
         );
       }
@@ -101,16 +152,27 @@ export module AuthController {
       if (err) {
         s(
           500,
-          {
-            message: 'Password cannot be updated',
-          },
+          error(
+            [
+              {
+                message: "app_auth_password_put_internal_server_error",
+                code: "0a3adaec-9f5d-4f13-aed6-fc94ce79dfd9",
+                date: _date
+              }
+            ],
+            {
+              endpoint: AuthEndpoints.Login,
+              microservice: _microservice,
+              version: _version
+            }
+          ),
           res
         );
       }
       s(
         200,
         {
-          message: 'Password was updated sucessfully',
+          message: 'app_auth_password_put_updated_sucessfully',
         },
         res
       );
