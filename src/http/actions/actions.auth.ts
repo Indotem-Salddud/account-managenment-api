@@ -1,12 +1,14 @@
 import {db} from '../core/core.db';
 import * as bcrypt from 'bcryptjs';
-import {
-    _tableName,
-  } from '../../models/types/model.customer';
+import { _tableName  } from '../../models/types/model.customer';
+import { _tokenTableName } from '../../models/types/model.token';
 import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
+import { SQLInsertResponse } from '../../models/types/gen/gen.SQLResponse';
+import { TokenPayload } from '../../models/types/gen/gen.token';
 
 // * SQL Runner to perform MYSQL Requests
 const _runner = new SQLRunner(db, _tableName);
+const _authRunner = new SQLRunner(db, _tokenTableName)
 
 const _expDaysRefreshToken = 2
 const _expMaxRefreshToken = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * _expDaysRefreshToken;
@@ -79,10 +81,33 @@ export module AuthActions {
 
   /**
    * TODO: New refresh JWT
-   * ! Generates random token, calculates expiration time and stores with customerID
+   * ! Generates , calculates expiration time and stores with customerID
    * export const newRefreshToken (customerID: string): string => {}
    */
 
+  export const insertNewRefreshToken = (
+    customerID: string,
+    callback: Function
+  ) => {
+    const expiration = Date.now
+    const queryString = `
+    INSERT
+    INTO @table (customerID, expiration, granted, status)
+    VALUES
+      (
+        ${customerID},
+        ${_expMaxRefreshToken},
+        ${Math.floor(Date.now() / 1000)},
+        1
+      )
+    `;
+    _runner.run(queryString, (res: SQLQueryResponse<SQLInsertResponse>) => {
+      if (res.err) {
+        callback(res.err);
+      }
+      callback(_expMaxRefreshToken);
+    });
+  };
   /**
    * TODO: Get valid refresh JWT
    * ! Search for a non expired refresh token for a active customerId
