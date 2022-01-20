@@ -5,6 +5,7 @@ import * as jwt from 'jsonwebtoken';
 import { AuthEndpoints } from '../common/Base/Base.AuthEndpoints';
 import { error,success } from '../common/common.handlerGenerator';
 import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
+import { refreshTokenPayload } from '../../models/types/gen/gen.token';
 
 // * Global properties
 const _microservice = 'Auth';
@@ -138,6 +139,58 @@ export module AuthController {
     }
 
   };
+  /**
+   * ! Provides new refresh token
+   * * DanBaDo - 2022/01/20
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _provideRefreshToken = (req, res) => {
+    const {customerID} = req.user;
+    AuthActions.insertNewRefreshToken(
+      customerID,
+      (err?: string, data?: refreshTokenPayload) => {
+        if (err) {
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppAuthRefreshBadRequest,
+                  code: TranslatorKeysUUID.AppAuthRefreshBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: AuthEndpoints.Refresh,
+                microservice: _microservice,
+                version: _version,
+              }
+            ),
+            res
+          );
+        }
+        s(
+          200,
+          {
+            message: TranslatorKeys.AppAuthRefreshNewRefreshTokenProvided,
+            data: data,
+          },
+          res
+        );
+      }
+    )
+    s(
+      200,
+      success(
+      {
+        message: TranslatorKeys.AppAuthLoginLoginSuccessfully ,
+        code: TranslatorKeysUUID.AppAuthLoginLoginSuccessfully ,         
+      },
+      ),
+      res
+    );
+  }
   /**
    * ! Update password by customer ID
    * * whitehatdevv - 2021/12/14

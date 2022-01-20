@@ -34,4 +34,15 @@ export const AuthRoute = (app: express.Application) => {
     ],
     AuthController._updatePassword
   );
+  /**
+   * * Grant refresh token if authenticated
+   * @protected Only customer with ID provided by Token
+   */
+  app.get(
+    AuthEndpoints.Refresh,
+    [
+      JWTMiddelware._verify,
+    ],
+    AuthController._provideRefreshToken
+  );
 };
