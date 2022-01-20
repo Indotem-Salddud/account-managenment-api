@@ -786,20 +786,68 @@ export module CustomersController {
    */
   export const _profile = async (req, res) => {
     const {customerID} = req.user;
-    CustomerActions.profile(customerID, err => {
+    CustomerActions.profile(customerID, (err?: string,data?: string) => {
       if (err) {
-        s(
-          500,
-          {
-            message: 'Server response cannot be processed',
-          },
+         s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMyaccountProfileBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersMyaccountProfileBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetOwnCustomerProfile,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+         s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMyaccountProfileNotFound,
+                  code: TranslatorKeysUUID.AppCustomersMyaccountProfileNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetOwnCustomerProfile,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMyaccountProfileInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersMyaccountProfileInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.GetOwnCustomerProfile,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
           res
-        );
-      }
+       );
+            }
       s(
         200,
         {
-          message: 'Customer data received',
+          message: 'Customers data received',
+          data: data,
         },
         res
       );
