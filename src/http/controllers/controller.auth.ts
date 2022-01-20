@@ -2,7 +2,7 @@ import {AuthActions} from '../actions/actions.auth';
 import { AuthEndpoints } from '../common/Base/Base.AuthEndpoints';
 import {s} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
-import { error } from '../common/common.handlerGenerator';
+import { error,success } from '../common/common.handlerGenerator';
 import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
 
 // * Global properties
@@ -84,14 +84,12 @@ export module AuthController {
         const token = JWTMiddelware._signIn(id);
         s(
           200,
+          success(
           {
             message: TranslatorKeys.AppAuthLoginLoginSuccessfully ,
-                  code: TranslatorKeysUUID.AppAuthLoginLoginSuccessfully ,
-                  date: _date,
-                  endpoint: AuthEndpoints.Login,
-                  microservice: _microservice,
-                  version: _version
+            code: TranslatorKeysUUID.AppAuthLoginLoginSuccessfully ,         
           },
+          ),
           res
         );
       }
