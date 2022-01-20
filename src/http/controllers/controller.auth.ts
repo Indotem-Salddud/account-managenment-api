@@ -87,7 +87,7 @@ export module AuthController {
           success(
           {
             message: TranslatorKeys.AppAuthLoginLoginSuccessfully ,
-            code: TranslatorKeysUUID.AppAuthLoginLoginSuccessfully ,         
+            code: TranslatorKeysUUID.AppAuthLoginLoginSuccessfully          
           },
           ),
           res
