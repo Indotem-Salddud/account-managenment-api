@@ -1,4 +1,4 @@
-import express from express;
+import express from "express";
 import {AuthController} from '../http/controllers/controller.auth';
 import {PermissionActions} from '../models/types/gen/gen.permissions';
 import {AccessControlMiddelware} from '../http/middlewares/middelware.access.validation';
