@@ -33,8 +33,8 @@ export module CustomersController {
             error(
               [
                 {
-                  message: TranslatorKeys.AppCustomersCutomersCustomerIDBadRequest,
-                  code: TranslatorKeysUUID.AppCustomersCutomersCustomerIDBadRequest,
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDBadRequest,
                   date: _date
                 }
               ],
@@ -57,8 +57,8 @@ export module CustomersController {
             error(
               [
                 {
-                  message: TranslatorKeys.AppCustomersCutomersCustomerIDUnauthorized,
-                  code: TranslatorKeysUUID.AppCustomersCutomersCustomerIDUnauthorized,
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDUnauthorized,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDUnauthorized,
                   date: _date
                 }
               ],
@@ -75,8 +75,8 @@ export module CustomersController {
             error(
               [
                 {
-                  message: TranslatorKeys.AppCustomersCutomersCustomerIDInternalServerError,
-                  code: TranslatorKeysUUID.AppCustomersCutomersCustomerIDInternalServerError,
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDInternalServerError,
                   date: _date
                 }
               ],
@@ -306,10 +306,21 @@ export module CustomersController {
     const {customerID} = req.params;
     if (!customerID) {
       s(
-        400,
-        {
-          message: 'Customer ID not provided',
-        },
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.DeleteCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
         res
       );
     }
@@ -317,10 +328,57 @@ export module CustomersController {
     CustomerActions.deleteCustomer(customerID, (err: string = null) => {
       if (err) {
         s(
-          500,
-          {
-            message: 'app_customers_customer_customerID_delete_internal_server_error',
-          },
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDUnauthorized,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.DeleteCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDNotFound,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.DeleteCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.DeleteCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
           res
         );
       }
@@ -329,19 +387,69 @@ export module CustomersController {
     DependentsActions.deleteUnrelatedDependents((err: string = null) => {
       if (err) {
         s(
-          500,
-          {
-            message: 'app_auth_customers_customerID_delete_error_removing_unrelated_dependents',
-          },
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDUnauthorized,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.DeleteCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDNotFound,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.DeleteCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersCustomersCustomerIDInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.DeleteCustomerById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
           res
         )
       }
     });
     s(
-      200,
-      {
-        message: 'app_auth_customers_customerID_delete_successfully',
-      },
+          200,
+          success(
+          {
+            message: TranslatorKeys.AppCustomersCustomersCustomerIDSuccessfully,
+            code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDSuccessfully,         
+          },
+          ),
       res
     );
   };
