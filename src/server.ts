@@ -7,6 +7,8 @@ import cors from 'cors';
 import {apiDocumentation} from './docs/api.docs.js';
 import * as dotenv from 'dotenv';
 import { CustomersRoute } from './routes/routes.customers.js';
+import { AuthRoute } from './routes/routes.auth.js';
+import { DependentsRoute } from './routes/routes.dependents.js'
 
 dotenv.config();
 const app = express();
@@ -25,6 +27,8 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 
 // setting routes
 CustomersRoute(app);
+AuthRoute(app);
+DependentsRoute(app);
 
 // * Export modules
 export const App = app;

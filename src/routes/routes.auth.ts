@@ -8,7 +8,7 @@ import {JWTMiddelware} from '../http/middlewares/middelware.jwt';
 // * Global variables
 const _resource = PermissionActions.CUSTOMER;
 
-export const CustomersRoute = (app: express.Application) => {
+export const AuthRoute = (app: express.Application) => {
   /**
    * * Login
    * @body {
