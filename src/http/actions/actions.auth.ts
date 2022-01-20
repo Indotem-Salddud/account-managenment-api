@@ -76,4 +76,28 @@ export module AuthActions {
         callback(err);
       });
   };
+
+  /**
+   * TODO: New refresh JWT
+   * ! Generates random token, calculates expiration time and stores with customerID
+   * export const newRefreshToken (customerID: string): string => {}
+   */
+
+  /**
+   * TODO: Get valid refresh JWT
+   * ! Search for a non expired refresh token for a active customerId
+   * export const getRefreshToken (customerID: string): string => {}
+   */
+
+  /**
+   * TODO: Update refresh JWT expiration
+   * ! Update refresh JWT expiration if not expired for a customerId
+   * export const getRefreshToken (customerID: string): string => {}
+   */
+
+  /**
+   * TODO: Delete invalid refresh JWT
+   * ! Delete all expired refresh JWT and which customerID not in Customers
+   * export const getRefreshToken (customerID: string): string => {}
+   */
 }
