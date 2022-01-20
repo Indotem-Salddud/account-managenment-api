@@ -549,18 +549,67 @@ export module CustomersController {
     // call to action
     CustomerActions.updateStatus(customerID, status, (err: string = null) => {
       if (err) {
-        s(
-          500,
-          {
-            message: 'Customer status cannot be updated',
-          },
+         s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMystatusBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersMystatusBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateOwnCustomerStatus,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+         s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMystatusNotFound,
+                  code: TranslatorKeysUUID.AppCustomersMystatusNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateOwnCustomerStatus,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMystatusInternalServerError,
+                  code: TranslatorKeysUUID.AppCustomersMystatusInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: CustomerEndpoints.UpdateOwnCustomerStatus,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
           res
-        );
+        )
       }
+   
       s(
         200,
         {
-          message: 'Customer status was updated sucessfully',
+           message: TranslatorKeys.AppCustomersMystatusSuccessfully,
+           code: TranslatorKeysUUID.AppCustomersMystatusSuccessfully  
         },
         res
       );
