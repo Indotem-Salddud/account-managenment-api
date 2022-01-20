@@ -1,8 +1,8 @@
 
 -- Contains JWT refresh tokens
 CREATE TABLE `JWTRefreshTokens` IF NOT EXISTS (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     customerID INT PRIMARY KEY NOT NULL,
-    refreshToken BINARY(32), /*TODO: is 256 bytes ok?*/
     expiration TIMESTAMP,
     granted TIMESTAMP,
     status INT,
