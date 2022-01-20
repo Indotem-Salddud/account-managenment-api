@@ -3,6 +3,7 @@ import { AuthEndpoints } from '../common/Base/Base.AuthEndpoints';
 import {s} from '../common/common.responseHandler';
 import {JWTMiddelware} from '../middlewares/middelware.jwt';
 import { error } from '../common/common.handlerGenerator';
+import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
 
 // * Global properties
 const _microservice = 'Auth';
@@ -25,12 +26,48 @@ export module AuthController {
       (err?: string, ctrl: boolean = false, id?: string) => {
         if (err || !ctrl) {
           s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppAuthLoginBadRequest,
+                  code: TranslatorKeysUUID.AppAuthLoginBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: AuthEndpoints.Login,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
             500,
             error(
               [
                 {
-                  message: "app_auth_login_post_internal_server_error",
-                  code: "90fcdcb0-c8ca-4a95-a586-4178292a59cd",
+                  message: TranslatorKeys.AppAuthLoginInternalServerError,
+                  code: TranslatorKeysUUID.AppAuthLoginInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: AuthEndpoints.Login,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            503,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppAuthLoginServiceUnavailable ,
+                  code: TranslatorKeysUUID.AppAuthLoginServiceUnavailable ,
                   date: _date
                 }
               ],
@@ -48,7 +85,12 @@ export module AuthController {
         s(
           200,
           {
-            message: 'app_auth_login_post_login_sucesfully',
+            message: TranslatorKeys.AppAuthLoginLoginSuccessfully ,
+                  code: TranslatorKeysUUID.AppAuthLoginLoginSuccessfully ,
+                  date: _date,
+                  endpoint: AuthEndpoints.Login,
+                  microservice: _microservice,
+                  version: _version
           },
           res
         );
