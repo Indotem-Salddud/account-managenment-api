@@ -260,7 +260,6 @@ export module DependentsController {
       );
     }
        // call to action
-      // TODO: Add 404 for dependant not found
       DependentsActions.findDependentByOwnerAndID(
         customerID,
         dependentID,
@@ -343,7 +342,6 @@ export module DependentsController {
     // get dependent data
     const {name, phone, direction} = req.body;
     // call to action
-    // TODO: Add 404 for dependant not found
     DependentsActions.insertNewDependent(
       customerID,
       name,
@@ -351,24 +349,72 @@ export module DependentsController {
       direction,
       (err?: string, data?: Dependent) => {
         if (err) {
-          s(
-            500,
-            {
-              message: 'Server response cannot be processed',
-            },
+           s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.CreateOwnedDependent,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
-        }
-        s(
-          200,
+          s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsUnauthorized,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.CreateOwnedDependent,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsInternalServerError,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.CreateOwnedDependent,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
+      s(
+        200,
+          success(
           {
-            message: 'Dependent created',
-            data: data,
+            message: TranslatorKeys.AppDependentsMydependentsSuccessfully,
+            code: TranslatorKeysUUID.AppDependentsMydependentsSuccessfully       
           },
-          res
-        );
-      }
-    );
+          ),
+        res
+      );
+    });
   };
 
   /**
