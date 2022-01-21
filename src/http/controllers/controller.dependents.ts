@@ -6,6 +6,8 @@ import {
   UpdateDependentModel,
 } from '../../models/types/model.dependent';
 import { DependentsEndpoints } from '../common/Base/Base.DependentsEndpoints';
+import { error,success } from '../common/common.handlerGenerator';
+import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
 
 // * Global properties
 const _microservice = 'Dependents';
@@ -22,11 +24,22 @@ export module DependentsController {
   export const _getMyDependents = async (req, res) => {
     const {customerID} = req.user;
     if (!customerID) {
-      s(
-        400,
-        {
-          message: 'Data provided is not valid',
-        },
+    s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.CreateOwnedDependent,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
         res
       );
     }
@@ -36,24 +49,70 @@ export module DependentsController {
       customerID,
       (err?: string, data?: Dependent[]) => {
         if (err) {
-          s(
-            500,
-            {
-              message: 'Server response cannot be processed',
-            },
+         s(
+            204,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsNoContent,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsNoContent,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.CreateOwnedDependent,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
-        }
-        s(
-          200,
-          {
-            message: 'Dependents data received',
-            data: data,
-          },
-          res
-        );
-      }
-    );
+          s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsUnauthorized,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.CreateOwnedDependent,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsInternalServerError,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.CreateOwnedDependent,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
+      s(
+        200,
+        {
+          message: 'Dependents data received',
+          data: data,
+        },
+        res
+      );
+    });
   };
   /**
    * ! Get all dependents for a customer
