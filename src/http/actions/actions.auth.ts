@@ -4,7 +4,6 @@ import { _tableName  } from '../../models/types/model.customer';
 import { _tokenTableName } from '../../models/types/model.token';
 import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
 import { SQLInsertResponse } from '../../models/types/gen/gen.SQLResponse';
-import { TokenPayload } from '../../models/types/gen/gen.token';
 
 // * SQL Runner to perform MYSQL Requests
 const _runner = new SQLRunner(db, _tableName);
@@ -80,11 +79,11 @@ export module AuthActions {
   };
 
   /**
-   * TODO: New refresh JWT
-   * ! Generates , calculates expiration time and stores with customerID
-   * export const newRefreshToken (customerID: string): string => {}
+   * ! Adds new refresh token
+   * * DanBaDo - 2022/01/21
+   * @param customerID {string}
+   * @param callback {Function}
    */
-
   export const insertNewRefreshToken = (
     customerID: string,
     callback: Function
@@ -105,18 +104,36 @@ export module AuthActions {
       if (res.err) {
         callback(res.err);
       }
-      callback(_expMaxRefreshToken);
+      callback(null, res.data.insertId, _expMaxRefreshToken);
     });
   };
-  /**
-   * TODO: Get valid refresh JWT
-   * ! Search for a non expired refresh token for a active customerId
-   * export const getRefreshToken (customerID: string): string => {}
-   */
 
   /**
-   * TODO: Update refresh JWT expiration
-   * ! Update refresh JWT expiration if not expired for a customerId
+   * ! Search for active refresh token by ID
+   * * DanBaDo - 2022/01/21
+   * @param tokenID {string}
+   * @param callback {Function}
+   */
+  export const getRefreshToken = (
+    tokenID: string,
+    callback: Function
+  ) => {
+    const queryString = `
+    SELECT customerID
+    FROM @table
+    WHERE id = ${tokenID}
+    `;
+    _runner.run(queryString, (res: SQLQueryResponse<number[]>) => {
+      if (res.err) {
+        callback(res.err);
+      }
+      callback(null, res.data);
+    });
+  };
+
+  /**
+   * TODO: Update refresh JWT status
+   * ! Update refresh JWT status
    * export const getRefreshToken (customerID: string): string => {}
    */
 

@@ -45,4 +45,9 @@ export const AuthRoute = (app: express.Application) => {
     ],
     AuthController._provideRefreshToken
   );
+  /**
+   * * Grant authentication token if valid refresh token
+   * @protected Only customer with ID provided by Token
+   */
+  app.post(AuthEndpoints.Refresh, AuthController._loginByRefreshToken);
 };
