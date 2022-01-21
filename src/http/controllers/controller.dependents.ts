@@ -123,11 +123,22 @@ export module DependentsController {
   export const _getAllCustomerDependents = async (req, res) => {
     const {customerID} = req.params;
     if (!customerID) {
-      s(
-        400,
-        {
-          message: 'Data provided is not valid',
-        },
+    s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsForAccountIDBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsDependentsForAccountIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsCustomer,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
         res
       );
     }
@@ -137,24 +148,88 @@ export module DependentsController {
       customerID,
       (err?: string, data?: Dependent[]) => {
         if (err) {
-          s(
-            500,
-            {
-              message: 'Server response cannot be processed',
-            },
+              s(
+            204,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsForAccountIDNoContent,
+                  code: TranslatorKeysUUID.AppDependentsDependentsForAccountIDNoContent,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsCustomer,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
-        }
-        s(
-          200,
-          {
-            message: 'Dependents data received',
-            data: data,
-          },
-          res
-        );
-      }
-    );
+          s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsForAccountIDUnauthorized,
+                  code: TranslatorKeysUUID.AppDependentsDependentsForAccountIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsCustomer,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsForAccountIDNotFound,
+                  code: TranslatorKeysUUID.AppDependentsDependentsForAccountIDNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsCustomer,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsForAccountIDInternalServerError,
+                  code: TranslatorKeysUUID.AppDependentsDependentsForAccountIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsCustomer,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
+      s(
+        200,
+        {
+          message: 'Dependents data received',
+          data: data,
+        },
+        res
+      );
+    });
   };
   /**
    * ! Get one owned dependant by id
