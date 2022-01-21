@@ -143,7 +143,6 @@ export module DependentsController {
       );
     }
     // call to action
-    // TODO: Add 204 for empty dependents list and 404 for customer not found
     DependentsActions.findAllCustomerDependents(
       customerID,
       (err?: string, data?: Dependent[]) => {
@@ -240,41 +239,97 @@ export module DependentsController {
   export const _getMyDependentById = async (req, res) => {
     const {customerID} = req.user;
     const {dependentID} = req.params;
-    // call to action
-    if (dependentID) {
+     if (!dependentID) {
+    s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsDependentIDBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsDependentIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetOwnedDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+        res
+      );
+    }
+       // call to action
       // TODO: Add 404 for dependant not found
       DependentsActions.findDependentByOwnerAndID(
         customerID,
         dependentID,
         (err?: string, data?: Dependent) => {
-          if (err) {
-            s(
-              500,
-              {
-                message: 'Server response cannot be processed',
-              },
-              res
-            );
-          }
+         if (err) {
           s(
-            200,
-            {
-              message: 'Dependents data received',
-              data: data,
-            },
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsDependentIDUnauthorized,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsDependentIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetOwnedDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
-        }
-      );
-    } else {
+          s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsDependentIDNotFound,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsDependentIDNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetOwnedDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsMydependentsDependentIDInternalServerError,
+                  code: TranslatorKeysUUID.AppDependentsMydependentsDependentIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetOwnedDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
       s(
-        400,
+        200,
         {
-          message: 'A dependent id is needed.',
+          message: 'Dependent data received',
+          data: data,
         },
         res
       );
-    }
+    });
   };
 
   /**
