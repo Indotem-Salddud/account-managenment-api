@@ -15,8 +15,8 @@ export interface TokenPayload {
 }
 
 export interface refreshTokenPayload {
+  tokenID: string;
   purpouse: tokenPurpouses;
-  customerID: string;
   role: PermissionRoles;
   tokenExp: number;
 }
