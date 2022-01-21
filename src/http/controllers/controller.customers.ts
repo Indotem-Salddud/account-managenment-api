@@ -846,7 +846,7 @@ export module CustomersController {
       s(
         200,
         {
-          message: 'Customers data received',
+          message: 'Profile data received',
           data: data,
         },
         res
