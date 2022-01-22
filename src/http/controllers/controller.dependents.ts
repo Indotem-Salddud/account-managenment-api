@@ -589,7 +589,7 @@ export module DependentsController {
     const {customerID} = req.user;
     const {dependentID} = req.params;
     if (!dependentID) {
-  s(
+          s(
             400,
             error(
               [
@@ -675,73 +675,73 @@ export module DependentsController {
           (err: string = null) => {
             if (err) {
               s(
-            401,
-            error(
-              [
-                {
-                  message: TranslatorKeys.AppDependentsDependentsDependentIDUnauthorized,
-                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDUnauthorized,
-                  date: _date
+                  401,
+                  error(
+                    [
+                      {
+                        message: TranslatorKeys.AppDependentsDependentsDependentIDUnauthorized,
+                        code: TranslatorKeysUUID.AppDependentsDependentsDependentIDUnauthorized,
+                        date: _date
+                      }
+                    ],
+                    {
+                      endpoint: DependentsEndpoints.DeleteDependentById,
+                      microservice: _microservice,
+                      version: _version
+                    }
+                  ),
+                  res
+                );
+              s(
+                404,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsDependentsDependentIDNotFound,
+                      code: TranslatorKeysUUID.AppDependentsDependentsDependentIDNotFound,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.DeleteDependentById,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+              s(
+                500,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsDependentsDependentIDInternalServerError,
+                      code: TranslatorKeysUUID.AppDependentsDependentsDependentIDInternalServerError,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.DeleteDependentById,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
                 }
-              ],
+            s(
+              200,
+              success(
               {
-                endpoint: DependentsEndpoints.DeleteDependentById,
-                microservice: _microservice,
-                version: _version
-              }
-            ),
-            res
-          );
-          s(
-            404,
-            error(
-              [
-                {
-                  message: TranslatorKeys.AppDependentsDependentsDependentIDNotFound,
-                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDNotFound,
-                  date: _date
-                }
-              ],
-              {
-                endpoint: DependentsEndpoints.DeleteDependentById,
-                microservice: _microservice,
-                version: _version
-              }
-            ),
-            res
-          );
-          s(
-            500,
-            error(
-              [
-                {
-                  message: TranslatorKeys.AppDependentsDependentsDependentIDInternalServerError,
-                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDInternalServerError,
-                  date: _date
-                }
-              ],
-              {
-                endpoint: DependentsEndpoints.DeleteDependentById,
-                microservice: _microservice,
-                version: _version
-              }
-            ),
-            res
-          );
-            }
-      s(
-        200,
-        success(
-        {
-          message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfully,
-          code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfully
-        },
-        ),
-        res
-      );
-    });
-  })
-  };
+                message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfully,
+                code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfully
+              },
+              ),
+              res
+            );
+          });
+        })
+        };
 
   /**
    * ! Update dependent data by dependentID
@@ -754,13 +754,23 @@ export module DependentsController {
     const {dependentID} = req.params;
     if (!dependentID) {
       s(
-        400,
-        {
-          message: 'Dependent ID not provided',
-        },
-        res
-      );
-    }
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.UpdateDependentDataById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          )};
 
     //TODO: VALIDATE FIELDS
     const data: UpdateDependentModel = req.body;
@@ -771,24 +781,92 @@ export module DependentsController {
       customerID,
       err => {
         if (err) {
-          s(
-            500,
-            {
-              message: 'Dependent data cannot be updated',
-            },
-            res
-          );
-        }
-        s(
-          200,
-          {
-            message: 'Dependent data was updated sucessfully',
-          },
-          res
-        );
-      }
-    );
-  };
+              s(
+                  400,
+                  error(
+                    [
+                      {
+                        message: TranslatorKeys.AppDependentsDependentsDependentIDBadRequest,
+                        code: TranslatorKeysUUID.AppDependentsDependentsDependentIDBadRequest,
+                        date: _date
+                      }
+                    ],
+                    {
+                      endpoint: DependentsEndpoints.UpdateDependentDataById,
+                      microservice: _microservice,
+                      version: _version
+                    }
+                  ),
+                  res
+                );
+              s(
+                  401,
+                  error(
+                    [
+                      {
+                        message: TranslatorKeys.AppDependentsDependentsDependentIDUnauthorized,
+                        code: TranslatorKeysUUID.AppDependentsDependentsDependentIDUnauthorized,
+                        date: _date
+                      }
+                    ],
+                    {
+                      endpoint: DependentsEndpoints.UpdateDependentDataById,
+                      microservice: _microservice,
+                      version: _version
+                    }
+                  ),
+                  res
+                );
+              s(
+                404,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsDependentsDependentIDNotFound,
+                      code: TranslatorKeysUUID.AppDependentsDependentsDependentIDNotFound,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.UpdateDependentDataById,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+              s(
+                500,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsDependentsDependentIDInternalServerError,
+                      code: TranslatorKeysUUID.AppDependentsDependentsDependentIDInternalServerError,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.UpdateDependentDataById,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+                }
+            s(
+              200,
+              success(
+              {
+                message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfully,
+                code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfully
+              },
+              ),
+              res
+            );
+          });
+        };
+
 
   /**
    * ! Update dependent status by dependentID
