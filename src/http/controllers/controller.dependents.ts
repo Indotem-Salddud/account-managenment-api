@@ -879,39 +879,97 @@ export module DependentsController {
     const {status} = req.body;
     // TODO: VALIDATE ACOUNT STATUS
     if (!dependentID) {
-      s(
-        400,
-        {
-          message: 'Dependent ID not provided',
-        },
-        res
-      );
-    }
+       s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsStatusDependentIDBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsStatusDependentIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.UpdateDependentStatusById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          )};
     // call to action
     DependentsActions.updateDependentStatus(
       dependentID,
       status,
       (err: string = null) => {
         if (err) {
-          s(
-            500,
-            {
-              message: 'Dependent status cannot be updated',
-            },
-            res
-          );
-        }
-        s(
-          200,
-          {
-            message: 'Dependent status was updated sucessfully',
-          },
-          res
-        );
-      }
-    );
-  };
-
+           s(
+                  401,
+                  error(
+                    [
+                      {
+                        message: TranslatorKeys.AppDependentsStatusDependentIDUnauthorized,
+                        code: TranslatorKeysUUID.AppDependentsStatusDependentIDUnauthorized,
+                        date: _date
+                      }
+                    ],
+                    {
+                      endpoint: DependentsEndpoints.UpdateDependentStatusById,
+                      microservice: _microservice,
+                      version: _version
+                    }
+                  ),
+                  res
+                );
+              s(
+                404,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsStatusDependentIDNotFound,
+                      code: TranslatorKeysUUID.AppDependentsStatusDependentIDNotFound,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.UpdateDependentStatusById,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+              s(
+                500,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsStatusDependentIDInternalServerError,
+                      code: TranslatorKeysUUID.AppDependentsStatusDependentIDInternalServerError,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.UpdateDependentStatusById,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+                }
+            s(
+              200,
+              success(
+              {
+                message: TranslatorKeys.AppDependentsStatusDependentIDSuccessfully,
+                code: TranslatorKeysUUID.AppDependentsStatusDependentIDSuccessfully
+              },
+              ),
+              res
+            );
+          });
+        };
   /**
    * ! Update dependent status by dependentID
    * * Alcazar87 - 2022/01/04
