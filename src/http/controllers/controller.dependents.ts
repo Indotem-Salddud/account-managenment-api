@@ -982,14 +982,24 @@ export module DependentsController {
     const {status} = req.body;
     // TODO: VALIDATE ACOUNT STATUS
     if (!dependentID) {
-      s(
-        400,
-        {
-          message: 'Dependent ID not provided',
-        },
-        res
-      );
-    }
+       s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppCustomersMystatusDependentIDBadRequest,
+                  code: TranslatorKeysUUID.AppCustomersMystatusDependentIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.UpdateOwnDependentStatusById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          )};
     // call to action
     DependentsActions.updateOwnDependentStatus(
       customerID,
@@ -998,24 +1008,72 @@ export module DependentsController {
       (err: string = null) => {
         if (err) {
           s(
-            500,
-            {
-              message: 'Dependent status cannot be updated',
-            },
-            res
-          );
-        }
-        s(
-          200,
-          {
-            message: 'Dependent status was updated sucessfully',
-          },
-          res
-        );
-      }
-    );
-  };
-
+                  401,
+                  error(
+                    [
+                      {
+                        message: TranslatorKeys.AppCustomersMystatusDependentIDUnauthorized,
+                        code: TranslatorKeysUUID.AppCustomersMystatusDependentIDUnauthorized,
+                        date: _date
+                      }
+                    ],
+                    {
+                      endpoint: DependentsEndpoints.UpdateOwnDependentStatusById,
+                      microservice: _microservice,
+                      version: _version
+                    }
+                  ),
+                  res
+                );
+              s(
+                404,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppCustomersMystatusDependentIDNotFound,
+                      code: TranslatorKeysUUID.AppCustomersMystatusDependentIDNotFound,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.UpdateOwnDependentStatusById,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+              s(
+                500,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppCustomersMystatusDependentIDInternalServerError,
+                      code: TranslatorKeysUUID.AppCustomersMystatusDependentIDInternalServerError,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.UpdateOwnDependentStatusById,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+                }
+            s(
+              200,
+              success(
+              {
+                message: TranslatorKeys.AppCustomersMystatusDependentIDSuccessfully,
+                code: TranslatorKeysUUID.AppCustomersMystatusDependentIDSuccessfully
+              },
+              ),
+              res
+            );
+          });
+        };
   /**
    * ! Get owner by dependet id
    * * DanBaDo - 2022-01-06 🧦👔
