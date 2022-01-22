@@ -496,23 +496,87 @@ export module DependentsController {
       (err: string, data: Dependent) => {
         if (err) {
           s(
-            500,
-            {
-              message: 'Server response cannot be processed',
-            },
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
-        }
-        s(
-          200,
-          {
-            message: 'Dependent data downloaded',
-            data: data,
-          },
-          res
-        );
-      }
-    );
+          s(
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDUnauthorized,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDNotFound,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDInternalServerError,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
+      s(
+        200,
+        {
+          message: 'Dependent data received',
+          data: data,
+        },
+        res
+      );
+    });
   };
 
   /**
@@ -525,14 +589,24 @@ export module DependentsController {
     const {customerID} = req.user;
     const {dependentID} = req.params;
     if (!dependentID) {
-      s(
-        400,
-        {
-          message: 'Dependent ID not provided',
-        },
-        res
-      );
-    }
+  s(
+            400,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.DeleteDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          )};
     // call to action
     DependentsActions.deleteRelationshipUponDependent(
       customerID,
@@ -540,13 +614,60 @@ export module DependentsController {
       (err: string = null) => {
         if (err) {
           s(
-            500,
-            {
-              message: 'Dependent relationship cannot be deleted',
-            },
+            401,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDUnauthorized,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.DeleteDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
-        }
+          s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDNotFound,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.DeleteDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDInternalServerError,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.DeleteDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
         //Delete dependent
         DependentsActions.deleteDependent(
           customerID,
@@ -554,24 +675,72 @@ export module DependentsController {
           (err: string = null) => {
             if (err) {
               s(
-                500,
+            401,
+            error(
+              [
                 {
-                  message: 'Dependent cannot be deleted',
-                },
-                res
-              );
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDUnauthorized,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDUnauthorized,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.DeleteDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDNotFound,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.DeleteDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDInternalServerError,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.DeleteDependentById,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
             }
-          }
-        );
-        s(
-          200,
-          {
-            message: 'Dependent was delete sucessfully',
-          },
-          res
-        );
-      }
-    );
+      s(
+        200,
+        success(
+        {
+          message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfully,
+          code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfully
+        },
+        ),
+        res
+      );
+    });
+  })
   };
 
   /**
