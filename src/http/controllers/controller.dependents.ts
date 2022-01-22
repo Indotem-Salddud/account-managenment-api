@@ -1086,23 +1086,69 @@ export module DependentsController {
       dependentID,
       (err: string, data: Dependent) => {
         if (err) {
-          s(
-            500,
-            {
-              message: 'Server response cannot be processed',
-            },
-            res
-          );
-        }
-        s(
-          200,
-          {
-            message: 'Dependent data downloaded',
-            data: data,
-          },
-          res
-        );
-      }
-    );
-  };
+              s(
+                400,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsDependetsOwnersDependentIDBadRequest,
+                      code: TranslatorKeysUUID.AppDependentsDependetsOwnersDependentIDBadRequest,
+                      date: _date
+                    }
+                    ],
+                    {
+                    endpoint: DependentsEndpoints.GetCustomerOwnerByDependentId,
+                    microservice: _microservice,
+                    version: _version
+                    }
+                  ),
+                  res
+                );
+              s(
+                404,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsDependetsOwnersDependentIDNotFound,
+                      code: TranslatorKeysUUID.AppDependentsDependetsOwnersDependentIDNotFound,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.GetCustomerOwnerByDependentId,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+              s(
+                500,
+                error(
+                  [
+                    {
+                      message: TranslatorKeys.AppDependentsDependetsOwnersDependentIDInternalServerError,
+                      code: TranslatorKeysUUID.AppDependentsDependetsOwnersDependentIDInternalServerError,
+                      date: _date
+                    }
+                  ],
+                  {
+                    endpoint: DependentsEndpoints.GetCustomerOwnerByDependentId,
+                    microservice: _microservice,
+                    version: _version
+                  }
+                ),
+                res
+              );
+                }
+              s(
+                200,
+                {
+                  message: 'Customer data received',
+                  data: data,
+                },
+                res
+              );
+          });
+        };
 }
