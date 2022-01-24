@@ -5,5 +5,6 @@
 export enum AuthEndpoints {
     Login = '/login',
     UpdatePassword = '/password',
-    Onboarding = '/onboarding'
+    Onboarding = '/onboarding',
+    Refresh = '/refresh',
 }

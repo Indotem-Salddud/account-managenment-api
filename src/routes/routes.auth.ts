@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {AuthController} from '../http/controllers/controller.auth';
 import {PermissionActions} from '../models/types/gen/gen.permissions';
 import {AccessControlMiddelware} from '../http/middlewares/middelware.access.validation';
@@ -34,4 +34,20 @@ export const AuthRoute = (app: express.Application) => {
     ],
     AuthController._updatePassword
   );
+  /**
+   * * Grant refresh token if authenticated
+   * @protected Only customer with ID provided by Token
+   */
+  app.get(
+    AuthEndpoints.Refresh,
+    [
+      JWTMiddelware._verify,
+    ],
+    AuthController._provideRefreshToken
+  );
+  /**
+   * * Grant authentication token if valid refresh token
+   * @protected Only customer with ID provided by Token
+   */
+  app.post(AuthEndpoints.Refresh, AuthController._loginByRefreshToken);
 };

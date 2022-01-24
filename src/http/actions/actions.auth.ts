@@ -1,12 +1,13 @@
 import {db} from '../core/core.db';
 import * as bcrypt from 'bcryptjs';
-import {
-    _tableName,
-  } from '../../models/types/model.customer';
+import { _tableName  } from '../../models/types/model.customer';
+import { _tokenTableName } from '../../models/types/model.token';
 import { SQLQueryResponse, SQLRunner } from '../core/build/core.build.runner.sql';
+import { SQLInsertResponse } from '../../models/types/gen/gen.SQLResponse';
 
 // * SQL Runner to perform MYSQL Requests
 const _runner = new SQLRunner(db, _tableName);
+const _authRunner = new SQLRunner(db, _tokenTableName)
 
 const _expDaysRefreshToken = 2
 const _expMaxRefreshToken = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * _expDaysRefreshToken;
@@ -76,4 +77,69 @@ export module AuthActions {
         callback(err);
       });
   };
+
+  /**
+   * ! Adds new refresh token
+   * * DanBaDo - 2022/01/21
+   * @param customerID {string}
+   * @param callback {Function}
+   */
+  export const insertNewRefreshToken = (
+    customerID: string,
+    callback: Function
+  ) => {
+    const expiration = Date.now
+    const queryString = `
+    INSERT
+    INTO @table (customerID, expiration, granted, status)
+    VALUES
+      (
+        ${customerID},
+        ${_expMaxRefreshToken},
+        ${Math.floor(Date.now() / 1000)},
+        1
+      )
+    `;
+    _runner.run(queryString, (res: SQLQueryResponse<SQLInsertResponse>) => {
+      if (res.err) {
+        callback(res.err);
+      }
+      callback(null, res.data.insertId, _expMaxRefreshToken);
+    });
+  };
+
+  /**
+   * ! Search for active refresh token by ID
+   * * DanBaDo - 2022/01/21
+   * @param tokenID {string}
+   * @param callback {Function}
+   */
+  export const getRefreshToken = (
+    tokenID: string,
+    callback: Function
+  ) => {
+    const queryString = `
+    SELECT customerID
+    FROM @table
+    WHERE id = ${tokenID}
+    `;
+    _runner.run(queryString, (res: SQLQueryResponse<number[]>) => {
+      if (res.err) {
+        callback(res.err);
+      }
+      callback(null, res.data);
+    });
+  };
+
+  /**
+   * TODO: Update refresh JWT status
+   * ! Update refresh JWT status
+   * export const getRefreshToken (customerID: string): string => {}
+   */
+
+  /**
+   * TODO: Delete invalid refresh JWT
+   * ! Delete all expired refresh JWT and which customerID not in Customers
+   * export const getRefreshToken (customerID: string): string => {}
+   */
 }
