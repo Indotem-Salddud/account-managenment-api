@@ -431,7 +431,7 @@ export module DependentsController {
       dependent.name,
       dependent.phone,
       dependent.direction,
-      (err: string, newDependent: Dependent) => {
+      (err: string, newDependentId: string) => {
         if (err) {
           s(
             500,
@@ -443,7 +443,7 @@ export module DependentsController {
         }
         customers.forEach(customerId => {
           DependentsActions.linkDependentToCustomer(
-            newDependent.id,
+            newDependentId,
             customerId,
             (err: string) => {
               if (err) {
@@ -451,13 +451,6 @@ export module DependentsController {
                   206,
                   {
                     message: 'Fail linking dependent to one or more customers',
-                    data: {
-                      id: newDependent.id,
-                      name: dependent.name,
-                      phone: dependent.phone,
-                      direction: dependent.direction,
-                      status: 'Fail linking dependent to one or more customers',
-                    },
                   },
                   res
                 );
@@ -469,13 +462,6 @@ export module DependentsController {
           201,
           {
             message: 'Dependent data saved and linked to owners',
-            data: {
-              id: newDependent.id,
-              name: dependent.name,
-              phone: dependent.phone,
-              direction: dependent.direction,
-              status: 'Dependent data saved and linked to owners',
-            },
           },
           res
         );

@@ -189,14 +189,7 @@ export module DependentsActions {
       }
       callback(
         null,
-        {
-          id: res.data.insertId,
-          name,
-          phone,
-          direction,
-          status: 1,
-          // TODO: what to do for providing new dependent date
-        }
+        res.data.insertId,
       )
     });
   };
