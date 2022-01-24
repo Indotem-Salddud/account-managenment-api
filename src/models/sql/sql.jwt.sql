@@ -10,4 +10,4 @@ CREATE TABLE `JWTRefreshTokens` IF NOT EXISTS (
     FOREIGN KEY (customerID) REFERENCE customers(id),
 ) ENGINE = InnoDB,
 CHARSET = utf8,
-COLLATE = utf8_spanish2_ci; 
+COLLATE = utf8_spanish2_ci;
