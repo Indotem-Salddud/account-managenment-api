@@ -405,7 +405,7 @@ export module DependentsController {
           );
             }
       s(
-        200,
+        201,
           success(
           {
             message: TranslatorKeys.AppDependentsMydependentsSuccessfullyB,
