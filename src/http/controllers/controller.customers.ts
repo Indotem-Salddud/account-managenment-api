@@ -446,8 +446,8 @@ export module CustomersController {
           200,
           success(
           {
-            message: TranslatorKeys.AppCustomersCustomersCustomerIDSuccessfully,
-            code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDSuccessfully         
+            message: TranslatorKeys.AppCustomersCustomersCustomerIDSuccessfullyC,
+            code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDSuccessfullyC         
           },
           ),
       res
@@ -689,8 +689,8 @@ export module CustomersController {
       s(
         200,
         {
-              message: TranslatorKeys.AppCustomersCustomersCustomerIDSuccessfully,
-              code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDSuccessfully 
+              message: TranslatorKeys.AppCustomersCustomersCustomerIDSuccessfullyB,
+              code: TranslatorKeysUUID.AppCustomersCustomersCustomerIDSuccessfullyB 
         },
         res
       );

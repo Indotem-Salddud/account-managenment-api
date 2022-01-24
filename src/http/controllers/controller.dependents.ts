@@ -408,8 +408,8 @@ export module DependentsController {
         200,
           success(
           {
-            message: TranslatorKeys.AppDependentsMydependentsSuccessfully,
-            code: TranslatorKeysUUID.AppDependentsMydependentsSuccessfully       
+            message: TranslatorKeys.AppDependentsMydependentsSuccessfullyB,
+            code: TranslatorKeysUUID.AppDependentsMydependentsSuccessfullyB       
           },
           ),
         res
@@ -580,7 +580,7 @@ export module DependentsController {
   };
 
   /**
-   * ! Delete customer data by ID
+   * ! Delete dependent data by ID
    * * Alcazar87 - 2021/12/29
    * @param req {Request}
    * @param res {Response}
@@ -733,8 +733,8 @@ export module DependentsController {
               200,
               success(
               {
-                message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfully,
-                code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfully
+                message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfullyA,
+                code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfullyA
               },
               ),
               res
@@ -858,8 +858,8 @@ export module DependentsController {
               200,
               success(
               {
-                message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfully,
-                code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfully
+                message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfullyB,
+                code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfullyB
               },
               ),
               res
