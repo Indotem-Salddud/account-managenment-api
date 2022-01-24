@@ -5,7 +5,11 @@ import {s} from '../common/common.responseHandler';
 import {refreshTokenPayload, TokenPayload} from '../../models/types/gen/gen.token';
 import {PermissionRoles} from '../../models/types/gen/gen.permissions';
 
-// global computation exp time
+// * Global properties
+const _microservice = 'Auth';
+const _version = 'v1.0.0';
+const _date = Date.now();
+
 const _refreshTokenExpirationDays = 7;
 const _expMax = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
 const _expRefreshToken = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * _refreshTokenExpirationDays;
@@ -42,6 +46,25 @@ export module JWTMiddelware {
   };
 
   /**
+   * ! Decode the refresh token and get payload
+   * * DanBaDo - 2022/01/21
+   * @param token {string}
+   * @returns refreshTokenPayload
+   */
+   export const _decodeRefresh = (
+    token: string,
+  ): refreshTokenPayload => {
+    // get payload
+    const payload = jwt.decode(token, {complete: true});
+    return {
+      tokenID: payload.payload.tokenID,
+      purpouse: payload.payload.purpouse,
+      tokenExp: payload.payload.tokenExp,
+      role: payload.payload.role
+    };
+  };
+
+  /**
    * ! Main actor to sign a JWT Token
    * * whitehatdevv - 2021/12/13
    * * Token valid for 2 hours
@@ -56,18 +79,6 @@ export module JWTMiddelware {
         {
           exp: _expMax,
           payload: {
-            customerID: customerID,
-            role: PermissionRoles.USER,
-          },
-        },
-        process.env.JWT_PRIVATE_KEY
-      ),
-      refreshToken: jwt.sign(
-        {
-          exp: _expRefreshToken,
-          payload: {
-            // Provides data for new JWT
-            tokenExp: _expMax,
             customerID: customerID,
             role: PermissionRoles.USER,
           },
@@ -122,24 +133,15 @@ export module JWTMiddelware {
   };
 
   /**
-   * ! Grant new JWT based in refresh token payload
+   * ! Grant new refresh token
    * * DanBaDo - 2022/01/15
-   * @param refresToken {refreshTokenPayload}
-   * @returns token {string}
+   * @param token {refreshTokenPayload}
+   * @returns {string}
    */
-  export const _refresh = (refresToken: refreshTokenPayload) => {
-    const { customerID, role } =  refresToken;
-    return {
-      expiration: _expMax,
-      token: jwt.sign(
-        {
-          exp: _expMax,
-          payload: {customerID, role},
-        },
-        process.env.JWT_PRIVATE_KEY
-      ),
-      refreshToken: refresToken,
-      type: 'Bearer',
-    };
+  export const _signToken = (token) => {
+    return jwt.sign(
+      token,
+      process.env.JWT_PRIVATE_KEY
+    )
   }
 }

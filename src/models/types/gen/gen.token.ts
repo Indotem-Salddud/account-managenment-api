@@ -1,5 +1,10 @@
 import { PermissionRoles } from "./gen.permissions";
 
+export enum tokenPurpouses {
+  refres = "refresh",
+  auth = "auth",
+}
+
 /**
  * ! Token Payload to save user data
  * * whitehatdevv - 2021/12/14
@@ -10,7 +15,8 @@ export interface TokenPayload {
 }
 
 export interface refreshTokenPayload {
-  customerID: string;
+  tokenID: string;
+  purpouse: tokenPurpouses;
   role: PermissionRoles;
   tokenExp: number;
 }

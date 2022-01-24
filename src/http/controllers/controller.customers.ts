@@ -145,7 +145,7 @@ export module CustomersController {
         s(
           500,
           {
-            message: 'app_auth_customer_customerID_delete_internal_server_error',
+            message: 'app_customers_customer_customerID_delete_internal_server_error',
           },
           res
         );
