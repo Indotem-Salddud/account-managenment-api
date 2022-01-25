@@ -15,5 +15,6 @@ export enum DependentsEndpoints {
   UpdateDependentDataById = '/dependents/:dependentID',
   UpdateDependentStatusById = '/status/:dependentID',
   UpdateOwnDependentStatusById = '/my-status/:dependentID',
-  GetCustomerOwnerByDependentId = '/dependent-owners/:depedentID/'
+  GetCustomerOwnerByDependentId = '/dependent-owners/:depedentID/',
+  GetDependentsSoleForCustomerID = '/dependent-sole-for/:customerID/'
 }
