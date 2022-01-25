@@ -420,7 +420,7 @@ export module DependentsActions {
         SELECT *
         FROM ${_tableName}
         INNER JOIN @table 
-          ON ${_tableName}.id = @table.custonerID
+          ON ${_tableName}.id = @table.customerID
         INNER JOIN ${_dependentTableName}
           ON @table.customerID = ${_dependentTableName}.id
         WHERE ${_dependentTableName}.id = ${dependentID}
@@ -446,4 +446,45 @@ export module DependentsActions {
       });
     };
   
+
+      /**
+   * ! Get dependents for sole customer ID
+   * * Alcazar87 - 2022/01/25
+   * @param customerID {string}
+   * @param callback {string}
+   */
+    export const dependentsSoleForCustomerID = (
+      customerID: string,
+      callback: Function
+    ) => {
+      const queryString = `
+      SELECT *
+      FROM ${_dependentTableName}
+      INNER JOIN @table 
+        ON ${_dependentTableName}.id = @table.dependentID
+      WHERE @table.customerID = ${customerID} IN (
+        SELECT @table.dependentID FROM @table 
+            GROUP BY @table.customerID
+            HAVING COUNT(*)=1
+    )`;
+       _relationshipRunner.run(queryString, (res: SQLQueryResponse<Array<DependentDTO>>)=>{
+      if (res.err) {
+        callback(res.err);
+      }
+      callback(
+        null,
+        res.data.map(item => {
+          const direction: Direction = JSON.parse(item.direction);
+          return {
+            id: item.id,
+            name: item.name,
+            phone: item.phone,
+            direction: direction,
+            status: item.status,
+            date: item.date,
+          };
+        })
+      );
+    });
+  };
 }
