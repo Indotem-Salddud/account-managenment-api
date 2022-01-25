@@ -435,9 +435,20 @@ export module DependentsController {
         if (err) {
           s(
             500,
-            {
-              message: 'Server response cannot be processed',
-            },
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsDependentIDSuccessfullyB,
+                  code: TranslatorKeysUUID.AppDependentsDependentsDependentIDSuccessfullyB,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.CreateNewDependent,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
             res
           );
         }
@@ -448,10 +459,22 @@ export module DependentsController {
             (err: string) => {
               if (err) {
                 s(
-                  206,
-                  {
-                    message: 'Fail linking dependent to one or more customers',
-                  },
+                  203,
+                  error(
+                    [
+                      {
+                        message: TranslatorKeys.AppDependentsDependentsInternalServerError,
+                        code: TranslatorKeysUUID.AppDependentsDependentsInternalServerError,
+                        date: _date
+
+                      }
+                    ],
+                    {
+                      endpoint: DependentsEndpoints.CreateNewDependent,
+                      microservice: _microservice,
+                      version: _version
+                    }
+                  ),
                   res
                 );
               }
@@ -460,9 +483,12 @@ export module DependentsController {
         });
         s(
           201,
-          {
-            message: 'Dependent data saved and linked to owners',
-          },
+          success(
+            {
+              message: TranslatorKeys.AppDependentsDependentsSuccessfully,
+              code: TranslatorKeysUUID.AppDependentsDependentsSuccessfully
+            }
+          ),
           res
         );
       }
