@@ -1163,4 +1163,100 @@ export module DependentsController {
               );
           });
         };
+
+        /**
+  * ! Get dependents for sole customer ID
+   * * Alcazar87 - 2022/01/25
+   * @param req {Request}
+   * @param res {Response}
+   */
+  export const _dependentsSoleForCustomerID = async (req, res) => {
+    const {customerID} = req.params;
+    DependentsActions.dependentsSoleForCustomerID(
+      customerID,
+      (err: string, data: Dependent) => {
+        if (err) {
+          s(
+            204,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsSoleForCustomerIDNoContent,
+                  code: TranslatorKeysUUID.AppDependentsDependentsSoleForCustomerIDNoContent,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsSoleForCustomerID,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsSoleForCustomerIDBadRequest,
+                  code: TranslatorKeysUUID.AppDependentsDependentsSoleForCustomerIDBadRequest,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsSoleForCustomerID,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            404,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsSoleForCustomerIDNoNotFound,
+                  code: TranslatorKeysUUID.AppDependentsDependentsSoleForCustomerIDNoNotFound,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsSoleForCustomerID,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+          s(
+            500,
+            error(
+              [
+                {
+                  message: TranslatorKeys.AppDependentsDependentsSoleForCustomerIDInternalServerError,
+                  code: TranslatorKeysUUID.AppDependentsDependentsSoleForCustomerIDInternalServerError,
+                  date: _date
+                }
+              ],
+              {
+                endpoint: DependentsEndpoints.GetDependentsSoleForCustomerID,
+                microservice: _microservice,
+                version: _version
+              }
+            ),
+            res
+          );
+            }
+      s(
+        200,
+        {
+          message: 'Dependents data received',
+          data: data,
+        },
+        res
+      );
+    });
+  };
 }
