@@ -229,4 +229,20 @@ export const DependentsRoute = (app: express.Application) => {
     ],
     DependentsController._getOwnersByDependentId
   );
+
+  /**
+   * * Get dependents for sole customer ID
+   * @protected Admin
+   * @param customerID
+   */
+  app.get(
+    DependentsEndpoints.GetDependentsSoleForCustomerID,
+    [
+      JWTMiddelware._verify,
+      AccessControlMiddelware._grantAccess(query => {
+        return query.readAny(_customer);
+      }),
+    ],
+    DependentsController._dependentsSoleForCustomerID
+  );
 };
