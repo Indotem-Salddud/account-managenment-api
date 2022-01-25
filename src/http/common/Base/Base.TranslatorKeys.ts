@@ -83,7 +83,8 @@ AppDependentsStatusDependentIDNotFound = "app_dependents_status_dependentID_not_
 AppDependentsStatusDependentIDInternalServerError = "app_dependents_status_dependentID_internal_server_error",
 AppDependentsDependetsOwnersDependentIDBadRequest = "app_dependents_dependets_owners_dependentID_bad_request",
 AppDependentsDependetsOwnersDependentIDNotFound = "app_dependents_dependets_owners_dependentID_not_found",
-AppDependentsDependetsOwnersDependentIDInternalServerError = "app_dependents_dependets_owners_dependentID_internal_server_error"
+AppDependentsDependetsOwnersDependentIDInternalServerError = "app_dependents_dependets_owners_dependentID_internal_server_error",
+AppDependentsDependentsErrorLinkingDependentToCustomers = "app_dependents_dependents_error_linking_dependent_to_customers"
 }
 
 /**
@@ -172,5 +173,6 @@ AppDependentsStatusDependentIDNotFound =	"a15696f4-fd67-4ca3-a66e-4bb96bb77209",
 AppDependentsStatusDependentIDInternalServerError =	"ac0f3370-35ec-4021-8594-7825b4b73c0f",
 AppDependentsDependetsOwnersDependentIDBadRequest =	"1c51d6a6-4546-4f8c-93f6-5a0120deaed7",
 AppDependentsDependetsOwnersDependentIDNotFound =	"396f7c22-a37d-4667-b7b4-cd3ae0c9a12c",
-AppDependentsDependetsOwnersDependentIDInternalServerError = "f3da899e-1f7c-454f-89ef-8c674a986539"
+AppDependentsDependetsOwnersDependentIDInternalServerError = "f3da899e-1f7c-454f-89ef-8c674a986539",
+AppDependentsDependentsErrorLinkingDependentToCustomers = "0f55df4d-1e32-4681-9cb7-1cfd26739b93"
 }
