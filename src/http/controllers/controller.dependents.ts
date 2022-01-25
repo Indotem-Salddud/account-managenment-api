@@ -459,7 +459,7 @@ export module DependentsController {
             (err: string) => {
               if (err) {
                 s(
-                  203,
+                  500,
                   error(
                     [
                       {
