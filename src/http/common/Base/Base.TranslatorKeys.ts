@@ -84,6 +84,11 @@ AppDependentsStatusDependentIDInternalServerError = "app_dependents_status_depen
 AppDependentsDependetsOwnersDependentIDBadRequest = "app_dependents_dependets_owners_dependentID_bad_request",
 AppDependentsDependetsOwnersDependentIDNotFound = "app_dependents_dependets_owners_dependentID_not_found",
 AppDependentsDependetsOwnersDependentIDInternalServerError = "app_dependents_dependets_owners_dependentID_internal_server_error",
+AppDependentsDependentsSoleForCustomerIDNoContent = "app_dependents_dependents_sole_ for_customerID_no_content",
+AppDependentsDependentsSoleForCustomerIDBadRequest = "app_dependents_dependents_sole_ for_customerID_bad_request",
+AppDependentsDependentsSoleForCustomerIDNoNotFound = "app_dependents_dependents_sole_ for_customerID_not_found",
+AppDependentsDependentsSoleForCustomerIDInternalServerError = "app_dependents_dependents_sole_ for_customerID_internal_server_error"
+
 }
 
 /**
@@ -173,4 +178,8 @@ AppDependentsStatusDependentIDInternalServerError =	"ac0f3370-35ec-4021-8594-782
 AppDependentsDependetsOwnersDependentIDBadRequest =	"1c51d6a6-4546-4f8c-93f6-5a0120deaed7",
 AppDependentsDependetsOwnersDependentIDNotFound =	"396f7c22-a37d-4667-b7b4-cd3ae0c9a12c",
 AppDependentsDependetsOwnersDependentIDInternalServerError = "f3da899e-1f7c-454f-89ef-8c674a986539",
+AppDependentsDependentsSoleForCustomerIDNoContent = "b27e4d9c-e26d-434f-8baa-3025db914538",
+AppDependentsDependentsSoleForCustomerIDBadRequest = "ccb19b7f-7c23-46f6-beb6-62c30be03a17",
+AppDependentsDependentsSoleForCustomerIDNoNotFound = "5002a51e-bd85-4247-a211-f48dae5c9b58",
+AppDependentsDependentsSoleForCustomerIDInternalServerError = "b97fd724-545a-4a60-b5ff-a9a5bf72f4e3"
 }
