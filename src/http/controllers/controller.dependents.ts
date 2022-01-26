@@ -8,6 +8,8 @@ import {
 import { DependentsEndpoints } from '../common/Base/Base.DependentsEndpoints';
 import { error,success } from '../common/common.handlerGenerator';
 import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
+import { Request } from 'express';
+import { basename } from 'path';
 
 // * Global properties
 const _microservice = 'Dependents';
@@ -597,7 +599,7 @@ export module DependentsController {
    * @param req {Request}
    * @param res {Response}
    */
-  export const _deleteDependent = async (req, res) => {
+  export const _deleteDependent = async (req: Request, res) => {
     const {customerID} = req.user;
     const {dependentID} = req.params;
     if (!dependentID) {
@@ -612,7 +614,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: DependentsEndpoints.DeleteDependentById,
+                endpoint: req.baseUrl,
                 microservice: _microservice,
                 version: _version
               }
@@ -636,7 +638,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: DependentsEndpoints.DeleteDependentById,
+                endpoint: req.baseUrl,
                 microservice: _microservice,
                 version: _version
               }
@@ -654,7 +656,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: DependentsEndpoints.DeleteDependentById,
+                endpoint: req.baseUrl,
                 microservice: _microservice,
                 version: _version
               }
@@ -672,7 +674,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: DependentsEndpoints.DeleteDependentById,
+                endpoint: req.baseUrl,
                 microservice: _microservice,
                 version: _version
               }
@@ -697,7 +699,7 @@ export module DependentsController {
                       }
                     ],
                     {
-                      endpoint: DependentsEndpoints.DeleteDependentById,
+                      endpoint: req.baseUrl,
                       microservice: _microservice,
                       version: _version
                     }
@@ -715,7 +717,7 @@ export module DependentsController {
                     }
                   ],
                   {
-                    endpoint: DependentsEndpoints.DeleteDependentById,
+                    endpoint: req.baseUrl,
                     microservice: _microservice,
                     version: _version
                   }
@@ -733,7 +735,7 @@ export module DependentsController {
                     }
                   ],
                   {
-                    endpoint: DependentsEndpoints.DeleteDependentById,
+                    endpoint: req.baseUrl,
                     microservice: _microservice,
                     version: _version
                   }
@@ -761,7 +763,7 @@ export module DependentsController {
    * @param req {Request}
    * @param res {Response}
    */
-  export const _updateDependentById = async (req, res) => {
+  export const _updateDependentById = async (req: Request, res) => {
     const {customerID} = req.user;
     const {dependentID} = req.params;
     if (!dependentID) {
@@ -776,7 +778,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: DependentsEndpoints.UpdateDependentDataById,
+                endpoint: req.baseUrl,
                 microservice: _microservice,
                 version: _version
               }
