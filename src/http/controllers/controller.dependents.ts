@@ -9,7 +9,6 @@ import { DependentsEndpoints } from '../common/Base/Base.DependentsEndpoints';
 import { error,success } from '../common/common.handlerGenerator';
 import { TranslatorKeys,TranslatorKeysUUID} from '../common/Base/Base.TranslatorKeys';
 import { Request } from 'express';
-import { basename } from 'path';
 
 // * Global properties
 const _microservice = 'Dependents';
