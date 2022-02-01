@@ -7,8 +7,8 @@ dotenv.config();
  * * whitehatdevv - 2021/12/11
  */
 export const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PWD,
-    database: process.env.DB_NAME
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PWD,
+  database: process.env.DB_NAME,
 });
