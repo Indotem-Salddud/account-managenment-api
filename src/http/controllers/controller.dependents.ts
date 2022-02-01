@@ -613,7 +613,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: req.baseUrl,
+                endpoint: req.route.path,
                 microservice: _microservice,
                 version: _version
               }
@@ -637,7 +637,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: req.baseUrl,
+                endpoint: req.route.path,
                 microservice: _microservice,
                 version: _version
               }
@@ -655,7 +655,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: req.baseUrl,
+                endpoint: req.route.path,
                 microservice: _microservice,
                 version: _version
               }
@@ -673,7 +673,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: req.baseUrl,
+                endpoint: req.route.path,
                 microservice: _microservice,
                 version: _version
               }
@@ -698,7 +698,7 @@ export module DependentsController {
                       }
                     ],
                     {
-                      endpoint: req.baseUrl,
+                      endpoint: req.route.path,
                       microservice: _microservice,
                       version: _version
                     }
@@ -716,7 +716,7 @@ export module DependentsController {
                     }
                   ],
                   {
-                    endpoint: req.baseUrl,
+                    endpoint: req.route.path,
                     microservice: _microservice,
                     version: _version
                   }
@@ -734,7 +734,7 @@ export module DependentsController {
                     }
                   ],
                   {
-                    endpoint: req.baseUrl,
+                    endpoint: req.route.path,
                     microservice: _microservice,
                     version: _version
                   }
@@ -777,7 +777,7 @@ export module DependentsController {
                 }
               ],
               {
-                endpoint: req.baseUrl,
+                endpoint: req.route.path,
                 microservice: _microservice,
                 version: _version
               }
